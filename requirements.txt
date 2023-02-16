@@ -1,3 +1,64 @@
+# =========================================================================
+
+# Python Requirements File: requirements.txt
+
+# Email: henry.winterbottom@noaa.gov
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the respective public license published by the
+# Free Software Foundation and included with the repository within
+# which this application is contained.
+
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+# =========================================================================
+
+# Description
+# -----------
+
+#    This requirements file installs the specified Python packages
+#    (and corresponding versions) accordingly.
+
+# Instructions
+# ------------
+
+#    /path/to/pip install -r /path/to/requirements.txt
+
+# Author(s)
+# ---------
+
+#    Henry R. Winterbottom; 16 February 2023 
+
+# History
+# -------
+
+#    2023-02-16: Henry R. Winterbottom -- Initial implementation.
+
+# External Packages
+# -----------------
+
+#    astropy; https://github.com/astropy/astropy
+
+#    boto3; https://github.com/boto/boto3
+
+#    bs4; https://www.crummy.com/software/BeautifulSoup/
+
+#    croniter; https://github.com/kiorky/croniter
+
+#    netcdf4; https://github.com/Unidata/netcdf4-python
+
+#    numpy; https://github.com/numpy/numpy
+
+#    pyyaml; https://github.com/yaml/pyyaml
+
+#    schema; https://github.com/keleshev/schema
+
+# ----
+
+# Define the Python packages and versions (if applicable) to be
+# installed .
 netcdf4==1.6.2
 numpy==1.22.4
 astropy==5.2
