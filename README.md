@@ -32,7 +32,7 @@ This repository utilizes several sub-modules from various sources. To
 obtain the entire system, do as follows.
 
 ~~~
-user@host:$ git clone --recursive https://github.com/HenryWinterbottom-NOAA/ufs_pyutils
+user@host:$ git clone https://github.com/HenryWinterbottom-NOAA/ufs_pyutils
 ~~~
 
 # Dependencies
@@ -45,15 +45,28 @@ installation attributes are provided in the table below.
 | Dependency Package | Installation Instructions |
 | :-------------: | :-------------: | 
 | [`astropy`](https://github.com/astropy/astropy) | <div align="left">`pip install astropy==5.2`</div> | 
-| [`boto3`](https://github.com/boto/boto3) | <div align="left">`conda install -c anaconda boto3==1.24.28`</div> | 
+| [`boto3`](https://github.com/boto/boto3) | <div align="left">`pip boto3==1.24.28`</div> | 
 | [`bs4`](https://github.com/waylan/beautifulsoup) | <div align="left">`pip install bs4==0.0.1`</div> | 
 | [`croniter`](https://github.com/kiorky/croniter) | <div align="left">`pip install croniter==1.3.8`</div> | 
 | [`netcdf4`](https://github.com/Unidata/netcdf4-python) | <div align="left">`pip install netcdf4==1.6.2`</div> |
 | [`numpy`](https://github.com/numpy/numpy) | <div align="left">`pip install numpy==1.22.4`</div> |
-| [`pyyaml`](https://github.com/yaml/pyyaml) | <div align="left">`conda install -c anaconda pyyaml==6.0`</div> |
+| [`pyyaml`](https://github.com/yaml/pyyaml) | <div align="left">`pip pyyaml==6.0`</div> |
 | [`schema`](https://github.com/keleshev/schema) | <div align="left">`pip install schema==0.7.5`</div> | 
 
 </div>
+
+# Installing Package Dependencies
+
+In order to install the respective Python packages upon which
+`ufs_pyutils` is dependent, do as follow.
+
+~~~
+user@host:$ cd ufs_pyutils
+user@host:$ /path/to/pip install update
+user@host:$ /path/to/pip install -r /path/to/ufs_pyutils/requirements.txt
+~~~
+
+For additional information using `pip` and `requirements.txt` type files, see [here](https://pip.pypa.io/en/stable/reference/requirements-file-format/).
 
 # Building and Installing
 
@@ -65,7 +78,7 @@ user@host:$ python setup.py build
 user@host:$ python setup.py install
 ~~~
 
-For additional information and options for building Python packages, see [here](https://docs.python.org/3.5/distutils/setupscript.html)
+For additional information and options for building Python packages, see [here](https://docs.python.org/3.5/distutils/setupscript.html).
 
 A Docker image exist containing the applications in this repository and can be collected as follows.
 
