@@ -40,7 +40,8 @@ Globals
     GLOBAL: str
 
         Global timestamp format; this is the format from which all
-        others should be defined/determined.
+        others should be defined/determined; format is, assuming the
+        POSIX convention, %Y%m%d%H%M%S.
 
     H: str
 
@@ -59,6 +60,11 @@ Globals
     Ymd: str
 
         A timestamp format, assuming the POSIX convention, of %Y%m%d.
+
+    YmdH: str
+
+        A timestamp format, assuming the POSIX convention, of
+        %Y%m%d%H.
 
     YmdTHM: str
 
@@ -121,6 +127,7 @@ H = "%H"
 INFO = "%H:%M:%S UTC %d %B %Y"
 Y_m_dTHMSZ = "%Y-%m-%dT%H:%M:%SZ"
 Ymd = "%Y%m%d"
+YmdH = "%Y%m%d%H"
 YmdTHM = "%Y%m%dT%H%M"
 YmdTHMS = "%Y%m%dT%H%M%S"
 YmdTHMZ = "%Y%m%dT%H%MZ"
