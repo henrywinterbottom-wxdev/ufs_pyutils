@@ -91,6 +91,7 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
+
 def __andopts__(key: str, valid_opts: List) -> Dict:
     """
     Description
@@ -105,7 +106,7 @@ def __andopts__(key: str, valid_opts: List) -> Dict:
     key: str
 
         A Python string specifying the key for which to valid the
-        respective value against list of accepted values.  
+        respective value against list of accepted values.
 
     valid_opts: list
 
@@ -124,11 +125,11 @@ def __andopts__(key: str, valid_opts: List) -> Dict:
 
     return schema_dict
 
+
 # ----
 
 
-def check_opts(key: str, valid_opts: List, data: Dict,
-               check_and: bool = False) -> None:
+def check_opts(key: str, valid_opts: List, data: Dict, check_and: bool = False) -> None:
     """
     Description
     -----------
@@ -189,6 +190,7 @@ def check_opts(key: str, valid_opts: List, data: Dict,
 
         msg = f"Schema validation failed with error {errmsg}. Aborting!!!"
         raise SchemaInterfaceError(msg=msg) from errmsg
+
 
 # ----
 
