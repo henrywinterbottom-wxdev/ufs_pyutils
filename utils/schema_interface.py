@@ -95,6 +95,10 @@ def check_opts(key: str, valid_opts: List, data: Dict,
                is_and: bool = False) -> None:
     """ """
 
+    print(key)
+    print(valid_opts)
+    quit()
+
     if is_and:
         schema_dict = {f"{key}", And(str, lambda opt: opt in valid_opts)}
 
