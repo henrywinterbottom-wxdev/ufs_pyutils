@@ -97,20 +97,21 @@ def check_opts(key: str, valid_opts: List, data: Dict,
 
     print(key)
     print(valid_opts)
-    quit()
+    print(data)
+    # quit()
 
-    if is_and:
-        schema_dict = {f"{key}", And(str, lambda opt: opt in valid_opts)}
+    # if is_and:
+    #    schema_dict = {f"{key}", And(str, lambda opt: opt in valid_opts)}
 
     # Build the schema.
-    schema = Schema([schema_dict])
+    #schema = Schema([schema_dict])
 
     # Check that the respective key and value pair is valid; proceed
     # accordingly.
 #    try:
 
     # Validate the schema.
-    schema.validate(data)
+    # schema.validate(data)
 
     # except Exception as errmsg:
 
