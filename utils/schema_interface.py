@@ -61,22 +61,57 @@ History
 
 # ----
 
-from typing import Dict
+from typing import Dict, List
 
-from schema import Schema
+from schema import And, Schema
 
 from utils.exceptions_interface import SchemaInterfaceError
 
 # ----
 
 # Define all available attributes.
-__all__ = ["validate_opts"]
+__all__ = ["check_opts", "validate_opts"]
 
 # ----
 
 __author__ = "Henry R. Winterbottom"
 __maintainer__ = "Henry R. Winterbottom"
 __email__ = "henry.winterbottom@noaa.gov"
+
+
+# ----
+
+def __andopts__(key: str, valid_opts: List) -> Dict:
+    """ """
+
+    schema_dict = [{f"{key}", And(str, lambda: opt: opt in valid_opts)}]
+
+    return schema_dict
+
+# ----
+
+
+def check_opts(key: str, valid_opts: List, data: Dict,
+               is_and: bool = False) -> None:
+    """ """
+
+    if is_and:
+        schema_dict = __andopts__(key=key, valid_opts=valid_opts)
+
+    # Build the schema.
+    schema = Schema(schema_dict)
+
+    # Check that the respective key and value pair is valid; proceed
+    # accordingly.
+    try:
+
+        # Validate the schema.
+        schema.validate(data)
+
+    except Exception as errmsg:
+
+        msg = f"Schema validation failed with error {errmsg}. Aborting!!!"
+        raise SchemaInterfaceError(msg=msg) from errmsg
 
 # ----
 
