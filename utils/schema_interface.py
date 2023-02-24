@@ -84,7 +84,7 @@ __email__ = "henry.winterbottom@noaa.gov"
 def __andopts__(key: str, valid_opts: List) -> Dict:
     """ """
 
-    schema_dict = [{f"{key}", And(str, lambda: opt: opt in valid_opts)}]
+    schema_dict = [{f"{key}", And(str, lambda opt: opt in valid_opts)}]
 
     return schema_dict
 
