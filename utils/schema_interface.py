@@ -116,7 +116,7 @@ def check_opts(key: str, valid_opts: List, data: Dict,
 #    try:
 
     # Validate the schema.
-    schema.validate(data)
+    schema.validate([data])
 
     # except Exception as errmsg:
 
