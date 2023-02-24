@@ -101,7 +101,7 @@ def check_opts(key: str, valid_opts: List, data: Dict,
     # quit()
 
     # if is_and:
-    #    schema_dict = {f"{key}", And(str, lambda opt: opt in valid_opts)}
+    schema_dict = {f"{key}", And(str, lambda opt: opt in valid_opts)}
 
     # Build the schema.
     schema = Schema([schema_dict])
