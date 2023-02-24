@@ -92,36 +92,26 @@ def __andopts__(key: str, valid_opts: List) -> Dict:
 
 
 def check_opts(key: str, valid_opts: List, data: Dict,
-               is_and: bool = False) -> None:
+               check_and: bool = False) -> None:
     """ """
 
-    print(key)
-    print(valid_opts)
-
-    # quit()
-
-    if is_and:
-
-        # {f"{key}": And(str, lambda opt: opt in valid_opts)}
+    if check_and:
         schema_dict = __andopts__(key=key, valid_opts=valid_opts)
 
     # Build the schema.
     schema = Schema([schema_dict])
 
-   # print(schema)
-   # print(data)
-
     # Check that the respective key and value pair is valid; proceed
     # accordingly.
-#    try:
+    try:
 
-    # Validate the schema.
-    schema.validate([data])
+        # Validate the schema.
+        schema.validate([data])
 
-    # except Exception as errmsg:
+    except Exception as errmsg:
 
-    #    msg = f"Schema validation failed with error {errmsg}. Aborting!!!"
-    #    raise SchemaInterfaceError(msg=msg) from errmsg
+        msg = f"Schema validation failed with error {errmsg}. Aborting!!!"
+        raise SchemaInterfaceError(msg=msg) from errmsg
 
 # ----
 
