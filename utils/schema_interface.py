@@ -101,7 +101,7 @@ def check_opts(key: str, valid_opts: List, data: Dict,
     # Build the schema.
     schema = Schema([schema_dict])
 
-    print(schema_dict)
+    print(data)
     quit()
 
     # Check that the respective key and value pair is valid; proceed
