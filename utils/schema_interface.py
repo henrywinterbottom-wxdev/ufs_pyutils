@@ -32,6 +32,16 @@ Description
 Functions
 ---------
 
+    __andopts__(key, valid_opts)
+
+        This function builds a Python schema dictionary using the And
+        attribute.
+
+    check_opts(key, valid_opts, data, check_and: bool = False)
+
+        This function checks that key and value pair is valid relative
+        to the list of accepted values.
+
     validate_opts(cls_schema, cls_opts)
 
         This function validates the calling class schema; if the
@@ -82,7 +92,33 @@ __email__ = "henry.winterbottom@noaa.gov"
 # ----
 
 def __andopts__(key: str, valid_opts: List) -> Dict:
-    """ """
+    """
+    Description
+    -----------
+
+    This function builds a Python schema dictionary using the And
+    attribute.
+
+    Parameters
+    ----------
+
+    key: str
+
+        A Python string specifying the key for which to valid the
+        respective value against list of accepted values.  
+
+    valid_opts: list
+
+        A Python list containing the accepted values.
+
+    Returns
+    -------
+
+    schema_dict: dict
+
+        A Python dictionary containing the schema to be validated.
+
+    """
 
     schema_dict = {f"{key}": And(str, lambda opt: opt in valid_opts)}
 
@@ -93,7 +129,48 @@ def __andopts__(key: str, valid_opts: List) -> Dict:
 
 def check_opts(key: str, valid_opts: List, data: Dict,
                check_and: bool = False) -> None:
-    """ """
+    """
+    Description
+    -----------
+
+    This function checks that key and value pair is valid relative to
+    the list of accepted values.
+
+    Parameters
+    ----------
+
+    key: str
+
+        A Python string specifying the key for which to valid the
+        respective value against list of accepted values.
+
+    valid_opts: list
+
+        A Python list containing the accepted values.
+
+    data: dict
+
+        A Python dictionary containing the key and value pair which to
+        validate.
+
+    Keywords
+    --------
+
+    check_and: bool, optional
+
+        A Python boolean valued variable specifying whether to
+        construct the Python schema dictionary using the And
+        attribute; see __andopts__.
+
+    Raises
+    ------
+
+    SchemaInterfaceError:
+
+        * raised if an exception is encountered while validating the
+          schema.
+
+    """
 
     if check_and:
         schema_dict = __andopts__(key=key, valid_opts=valid_opts)
