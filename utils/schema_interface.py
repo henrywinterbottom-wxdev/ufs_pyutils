@@ -101,20 +101,17 @@ def check_opts(key: str, valid_opts: List, data: Dict,
     # Build the schema.
     schema = Schema([schema_dict])
 
-    print(data)
-    quit()
-
     # Check that the respective key and value pair is valid; proceed
     # accordingly.
-    try:
+#    try:
 
-        # Validate the schema.
-        schema.validate([data])
+    # Validate the schema.
+    schema.validate(data)
 
-    except Exception as errmsg:
+    # except Exception as errmsg:
 
-        msg = f"Schema validation failed with error {errmsg}. Aborting!!!"
-        raise SchemaInterfaceError(msg=msg) from errmsg
+    #    msg = f"Schema validation failed with error {errmsg}. Aborting!!!"
+    #    raise SchemaInterfaceError(msg=msg) from errmsg
 
 # ----
 
