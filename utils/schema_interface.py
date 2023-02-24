@@ -84,7 +84,7 @@ __email__ = "henry.winterbottom@noaa.gov"
 def __andopts__(key: str, valid_opts: List) -> Dict:
     """ """
 
-    schema_dict = [{f"{key}", And(str, lambda opt: opt in valid_opts)}]
+    schema_dict = {f"{key}", And(str, lambda opt: opt in valid_opts)}
 
     return schema_dict
 
@@ -99,14 +99,14 @@ def check_opts(key: str, valid_opts: List, data: Dict,
         schema_dict = __andopts__(key=key, valid_opts=valid_opts)
 
     # Build the schema.
-    schema = Schema(schema_dict)
+    schema = Schema([schema_dict])
 
     # Check that the respective key and value pair is valid; proceed
     # accordingly.
     try:
 
         # Validate the schema.
-        schema.validate(data)
+        schema.validate([data])
 
     except Exception as errmsg:
 
