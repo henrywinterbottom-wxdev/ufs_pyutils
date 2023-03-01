@@ -180,7 +180,12 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
                     item[item.find(start) + len(start): item.rfind(stop)].rstrip()).lstrip()
                 variables.append(string)
 
-    print(list(in_dict)[:](0))
+    # Build the list of attribute variables.
+    compare_variables = []
+    for item in list(in_dict):
+        compare_variables.append(item(0))
+
+    print(compare_variables)
     print(variables)
     quit()
 
