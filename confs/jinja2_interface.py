@@ -180,6 +180,10 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
                     item[item.find(start) + len(start): item.rfind(stop)].rstrip()).lstrip()
                 variables.append(string)
 
+    print(list(in_dict))
+    print(variables)
+    quit()
+
     # Compare the respective variable lists and find unique (i.e.,
     # missing variables).
     missing_vars = [
