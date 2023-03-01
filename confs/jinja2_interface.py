@@ -183,7 +183,7 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
     # Build the list of attribute variables.
     compare_variables = []
     for item in list(in_dict):
-        compare_variables.append(item(0))
+        compare_variables.append(item[0])
 
     print(compare_variables)
     print(variables)
