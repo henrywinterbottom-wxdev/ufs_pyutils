@@ -100,13 +100,11 @@ class TestJinja2Methods(TestCase):
         """
 
         # Define the base-class attributes.
-        self.jinja2_test_dict = {"NAME1": "ham",
-                                 "NAME2": "eggs", "NAME3": "spam"}
+        self.jinja2_test_dict = {"NAME1": "ham", "NAME2": "eggs", "NAME3": "spam"}
 
         # Define the file paths required for the test method(s).
         dirpath = os.path.join(os.getcwd(), "tests")
-        self.jinja2_template = os.path.join(
-            dirpath, "test_files", "jinja2.template")
+        self.jinja2_template = os.path.join(dirpath, "test_files", "jinja2.template")
         self.jinja2_check = os.path.join(dirpath, "test_files", "jinja2.check")
         self.jinja2_file = os.path.join(dirpath, "jinja2.test")
 
@@ -149,7 +147,7 @@ class TestJinja2Methods(TestCase):
         # template file.
         jinja2_interface.write_from_template(
             tmpl_path=self.jinja2_template,
-            jinja2_file=self.jinja2_file,
+            output_file=self.jinja2_file,
             in_dict=self.jinja2_test_dict,
             fail_missing=True,
         )

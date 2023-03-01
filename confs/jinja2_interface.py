@@ -57,7 +57,7 @@ Functions
         This function collects the template variable names from a
         Jinja2-formatted template file.
 
-    write_from_template(tmpl_path, jinja2_file, in_dict,
+    write_from_template(tmpl_path, output_file, in_dict,
                         fail_missing=False)
 
         This function writes a Jinja2-formatted file established from
@@ -149,11 +149,52 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
 
     """
 
+    # Check that the Python dictionary is not empty; proceed
+    # accordingly.
+    if not in_dict:
+        msg = "The Python dictionary provided upon entry is empty. Aborting!!!"
+        raise Jinja2InterfaceError(msg=msg)
+
     # Collect the variables within the Jinja2-formatted template file.
     variables = _get_template_vars(tmpl_path=tmpl_path)
 
+    # If variables are collected, check again by search for the
+    # Jinja2-formatted template variables; proceed accordingly.
+    if len(variables) == 0:
+
+        # Initialize the variables.
+        variables = []
+
+        start_str = "{{"
+        stop_str = "}}"
+
+        # Collect all data from the Jinja2-formatted file.
+        with open(tmpl_path, "r", encoding="utf-8") as file:
+            data = file.read().split("\n")
+
+        # Search for Jinja2-formatted template variables; proceed
+        # accordingly; ignoring template variable with default values.
+        for item in data:
+            if (start_str and stop_str in item) and ("or" not in item):
+
+                start = item.index(start_str)
+                stop = item.index(stop_str)
+
+                string = (item[start+len(start_str):stop].rstrip()).lstrip()
+                variables.append(string)
+
+    # Build the list of attribute variables.
+    compare_variables = []
+    for item in list(in_dict):
+        if isinstance(item, tuple):
+            compare_variables.append(item[0])
+        else:
+            compare_variables.append(item)
+
+    # Compare the respective variable lists and find unique (i.e.,
+    # missing variables).
     missing_vars = [
-        variable for variable in variables if variable not in list(in_dict.keys())
+        variable for variable in variables if variable not in compare_variables
     ]
 
     # If Jinja2-formatted template file variables have not been
@@ -328,7 +369,7 @@ def _get_template_vars(tmpl_path: str) -> List:
 
 
 def write_from_template(
-    tmpl_path: str, jinja2_file: str, in_dict: Dict, fail_missing: bool = False
+    tmpl_path: str, output_file: str, in_dict: Dict, fail_missing: bool = False
 ) -> None:
     """
     Description
@@ -345,7 +386,7 @@ def write_from_template(
         A Python string defining the path to the Jinja2-formatted
         template file.
 
-    jinja2_file: str
+    output_file: str
 
         A Python string containing the full-path to the
         Jinja2-formatted file to be written.
@@ -385,12 +426,12 @@ def write_from_template(
     try:
         tmpl = _get_template(tmpl_path=tmpl_path)
 
-        with open(jinja2_file, "w", encoding="utf-8") as file:
+        with open(output_file, "w", encoding="utf-8") as file:
             file.write(tmpl.render(in_dict))
 
     except Exception as errmsg:
         msg = (
-            f"Rendering Jinja2-formatted file {jinja2_file} failed with "
+            f"Rendering Jinja2-formatted file {output_file} failed with "
             f"error {errmsg}. Aborting!!!"
         )
         raise Jinja2InterfaceError(msg=msg)
