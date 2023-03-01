@@ -57,7 +57,7 @@ Functions
         This function collects the template variable names from a
         Jinja2-formatted template file.
 
-    write_from_template(tmpl_path, jinja2_file, in_dict,
+    write_from_template(tmpl_path, output_file, in_dict,
                         fail_missing=False)
 
         This function writes a Jinja2-formatted file established from
@@ -155,6 +155,9 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
     missing_vars = [
         variable for variable in variables if variable not in list(in_dict.keys())
     ]
+
+    print(missing_vars)
+    quit()
 
     # If Jinja2-formatted template file variables have not been
     # defined, proceed accordingly.
@@ -328,7 +331,7 @@ def _get_template_vars(tmpl_path: str) -> List:
 
 
 def write_from_template(
-    tmpl_path: str, jinja2_file: str, in_dict: Dict, fail_missing: bool = False
+    tmpl_path: str, output_file: str, in_dict: Dict, fail_missing: bool = False
 ) -> None:
     """
     Description
@@ -345,7 +348,7 @@ def write_from_template(
         A Python string defining the path to the Jinja2-formatted
         template file.
 
-    jinja2_file: str
+    output_file: str
 
         A Python string containing the full-path to the
         Jinja2-formatted file to be written.
@@ -385,12 +388,12 @@ def write_from_template(
     try:
         tmpl = _get_template(tmpl_path=tmpl_path)
 
-        with open(jinja2_file, "w", encoding="utf-8") as file:
+        with open(output_file, "w", encoding="utf-8") as file:
             file.write(tmpl.render(in_dict))
 
     except Exception as errmsg:
         msg = (
-            f"Rendering Jinja2-formatted file {jinja2_file} failed with "
+            f"Rendering Jinja2-formatted file {output_file} failed with "
             f"error {errmsg}. Aborting!!!"
         )
         raise Jinja2InterfaceError(msg=msg)
