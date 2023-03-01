@@ -149,7 +149,7 @@ class TestJinja2Methods(TestCase):
         # template file.
         jinja2_interface.write_from_template(
             tmpl_path=self.jinja2_template,
-            jinja2_file=self.jinja2_file,
+            output_file=self.jinja2_file,
             in_dict=self.jinja2_test_dict,
             fail_missing=True,
         )
