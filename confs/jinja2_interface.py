@@ -152,12 +152,12 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
     # Collect the variables within the Jinja2-formatted template file.
     variables = _get_template_vars(tmpl_path=tmpl_path)
 
+    print(variables)
+    quit()
+
     missing_vars = [
         variable for variable in variables if variable not in list(in_dict.keys())
     ]
-
-    print(missing_vars)
-    quit()
 
     # If Jinja2-formatted template file variables have not been
     # defined, proceed accordingly.
