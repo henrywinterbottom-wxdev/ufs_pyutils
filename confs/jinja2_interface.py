@@ -185,14 +185,10 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
     for item in list(in_dict):
         compare_variables.append(item[0])
 
-    print(compare_variables)
-    print(variables)
-    quit()
-
     # Compare the respective variable lists and find unique (i.e.,
     # missing variables).
     missing_vars = [
-        variable for variable in variables if variable not in list(in_dict)
+        variable for variable in variables if variable not in compare_variables
     ]
 
     # If Jinja2-formatted template file variables have not been
