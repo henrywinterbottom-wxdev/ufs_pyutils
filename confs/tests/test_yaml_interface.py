@@ -44,6 +44,7 @@ Requirements
 
 - pytest-order; https://github.com/pytest-dev/pytest-order
 
+
 Author(s)
 ---------
 
@@ -88,7 +89,7 @@ class TestYAMLMethods(TestCase):
 
     """
 
-    def setUp(self):
+    def setUp(self: TestCase) -> None:
         """
         Description
         -----------
@@ -119,7 +120,7 @@ class TestYAMLMethods(TestCase):
         self.unit_test_msg = "The unit-test for yaml_interface failed."
 
     @pytest.mark.order(100)
-    def test_cleanup(self):
+    def test_cleanup(self: TestCase) -> None:
         """
         Description
         -----------
@@ -140,7 +141,7 @@ class TestYAMLMethods(TestCase):
         fileio_interface.removefiles(filelist=filelist)
 
     @pytest.mark.order(1)
-    def test_yaml(self):
+    def test_yaml(self: TestCase) -> None:
         """
         Description
         -----------
