@@ -186,11 +186,10 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
     # Build the list of attribute variables.
     compare_variables = []
     for item in list(in_dict):
-        compare_variables.append(item)
-
-    print(compare_variables)
-    print(variables)
-    quit()
+        if isinstance(item, tuple):
+            compare_variables.append(item[0])
+        else:
+            compare_variables.append(item)
 
     # Compare the respective variable lists and find unique (i.e.,
     # missing variables).
