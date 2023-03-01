@@ -165,7 +165,7 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
 
         for item in data:
             if ("{{" and "}}" in item) and ("or" not in item):
-                string = item.split()
+                string = item.split("{{" and "}}")
                 print(string)
 
     print(variables)
