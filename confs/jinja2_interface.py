@@ -160,13 +160,16 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
     variables = _get_template_vars(tmpl_path=tmpl_path)
     if len(variables) == 0:
         variables = ()
+
+        start = "{{"
+        stop = "}}"
+
         with open(tmpl_path, "r", encoding="utf-8") as file:
             data = file.read().split('\n')
 
         for item in data:
-            if ("{{" and "}}" in item) and ("or" not in item):
-                #string = re.search("{{ .* }}", item)
-                string = item[item.find("{{") + len("{{"):item.rfind("}}")]
+            if (start and stop in item) and ("or" not in item):
+                string = (item[item.find(start) + len(start):item.rfind(stop)].rstrip()).lstrip()
                 print(string)
 
     # print(variables)
