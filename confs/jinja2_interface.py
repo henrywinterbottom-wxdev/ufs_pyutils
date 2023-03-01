@@ -149,11 +149,14 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
 
     """
 
+    # Check that the Python dictionary is not empty; proceed
+    # accordingly.
+    if not in_dict:
+        msg = "The Python dictionary provided upon entry is empty. Aborting!!!"
+        raise Jinja2InterfaceError(msg=msg)
+
     # Collect the variables within the Jinja2-formatted template file.
     variables = _get_template_vars(tmpl_path=tmpl_path)
-
-    print(variables)
-    quit()
 
     missing_vars = [
         variable for variable in variables if variable not in list(in_dict.keys())
@@ -322,9 +325,6 @@ def _get_template_vars(tmpl_path: str) -> List:
     tmpl = _get_template(tmpl_path=tmpl_path)
 
     # Collect the templated variable names.
-    print((env.undefined()))
-    quit()
-
     variables = list(meta.find_undeclared_variables(env.parse(tmpl)))
 
     return variables
