@@ -165,8 +165,9 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
 
         for item in data:
             if ("{{" and "}}" in item) and ("or" not in item):
-                string = re.search("{{ .* }}", item)
-                print(string.groups())
+                #string = re.search("{{ .* }}", item)
+                string = item[item.find("{{") + len(2):item.rfind("}}")]
+                print(string)
 
     # print(variables)
     quit()
