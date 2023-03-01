@@ -324,6 +324,9 @@ def _get_template_vars(tmpl_path: str) -> List:
     # Collect the templated variable names.
     variables = list(meta.find_undeclared_variables(env.parse(tmpl)))
 
+    print(variables)
+    quit()
+
     return variables
 
 
