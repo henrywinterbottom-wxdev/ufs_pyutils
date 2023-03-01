@@ -161,7 +161,7 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
     if len(variables) == 0:
         variables = ()
         with open(tmpl_path, "r", encoding="utf-8") as file:
-            data = file.read().rsplit()
+            data = file.read().split('\n')
 
         for item in data:
             if "{{" and "}}" in item:
