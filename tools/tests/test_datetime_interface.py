@@ -41,7 +41,7 @@ Classes
 Author(s)
 ---------
 
-    Henry R. Winterbottom; 03 Deceember 2022
+    Henry R. Winterbottom; 03 December 2022
 
 History
 -------
