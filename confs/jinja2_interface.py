@@ -159,7 +159,7 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
     # Collect the variables within the Jinja2-formatted template file.
     variables = _get_template_vars(tmpl_path=tmpl_path)
     if len(variables) == 0:
-        variables = ()
+        variables = []
 
         start = "{{"
         stop = "}}"
