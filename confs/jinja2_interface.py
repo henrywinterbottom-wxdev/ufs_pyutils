@@ -165,8 +165,8 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
         # Initialize the variables.
         variables = []
 
-        start = "{{"
-        stop = "}}"
+        start_str = "{{"
+        stop_str = "}}"
 
         # Collect all data from the Jinja2-formatted file.
         with open(tmpl_path, "r", encoding="utf-8") as file:
@@ -175,16 +175,18 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
         # Search for Jinja2-formatted template variables; proceed
         # accordingly; ignoring template variable with default values.
         for item in data:
-            if (start and stop in item) and ("or" not in item):
-                string = (
-                    item[item.find(start) + len(start) : item.rfind(stop)].rstrip()
-                ).lstrip()
+            if (start_str and stop_str in item) and ("or" not in item):
+
+                start = item.index(start_str)
+                stop = item.index(stop_str)
+
+                string = (item[start+len(start_str):stop].rstrip()).lstrip()
                 variables.append(string)
 
     # Build the list of attribute variables.
     compare_variables = []
     for item in list(in_dict):
-        compare_variables.append(item[0])
+        compare_variables.append(item)
 
     # Compare the respective variable lists and find unique (i.e.,
     # missing variables).
@@ -316,7 +318,8 @@ def _get_template_file_attrs(tmpl_path: str) -> Union[str, str]:
     """
 
     # Collect the Jinja2-formatted template file attributes.
-    (dirname, basename) = [os.path.dirname(tmpl_path), os.path.basename(tmpl_path)]
+    (dirname, basename) = [os.path.dirname(
+        tmpl_path), os.path.basename(tmpl_path)]
 
     return (dirname, basename)
 
