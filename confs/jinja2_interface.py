@@ -188,6 +188,10 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
     for item in list(in_dict):
         compare_variables.append(item)
 
+    print(compare_variables)
+    print(variables)
+    quit()
+
     # Compare the respective variable lists and find unique (i.e.,
     # missing variables).
     missing_vars = [
