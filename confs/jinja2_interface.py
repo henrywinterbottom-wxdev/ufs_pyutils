@@ -164,7 +164,7 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
             data = file.read().split('\n')
 
         for item in data:
-            if "{{" and "}}" in item:
+            if ("{{" and "}}" in item) and ("or" not in item):
                 print(item)
 
     print(variables)
