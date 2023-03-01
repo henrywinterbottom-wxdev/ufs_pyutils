@@ -169,11 +169,9 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
 
         for item in data:
             if (start and stop in item) and ("or" not in item):
-                string = (item[item.find(start) + len(start):item.rfind(stop)].rstrip()).lstrip()
-                print(string)
-
-    # print(variables)
-    quit()
+                string = (item[item.find(start) +
+                               len(start):item.rfind(stop)].rstrip()).lstrip()
+                variables.append(string)
 
     missing_vars = [
         variable for variable in variables if variable not in list(in_dict.keys())
