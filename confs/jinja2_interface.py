@@ -89,7 +89,6 @@ History
 # ----
 
 import os
-import re
 from typing import Dict, List, Union
 
 from jinja2 import Environment, FileSystemLoader, meta
@@ -158,21 +157,31 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
 
     # Collect the variables within the Jinja2-formatted template file.
     variables = _get_template_vars(tmpl_path=tmpl_path)
+
+    # If variables are collected, check again by search for the
+    # Jinja2-formatted template variables; proceed accordingly.
     if len(variables) == 0:
+
+        # Initialize the variables.
         variables = []
 
         start = "{{"
         stop = "}}"
 
+        # Collect all data from the Jinja2-formatted file.
         with open(tmpl_path, "r", encoding="utf-8") as file:
             data = file.read().split('\n')
 
+        # Search for Jinja2-formatted template variables; proceed
+        # accordingly; ignoring template variable with default values.
         for item in data:
             if (start and stop in item) and ("or" not in item):
                 string = (item[item.find(start) +
                                len(start):item.rfind(stop)].rstrip()).lstrip()
                 variables.append(string)
 
+    # Compare the respective variable lists and find unique (i.e.,
+    # missing variables).
     missing_vars = [
         variable for variable in variables if variable not in list(in_dict.keys())
     ]
