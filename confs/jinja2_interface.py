@@ -180,7 +180,7 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
                     item[item.find(start) + len(start): item.rfind(stop)].rstrip()).lstrip()
                 variables.append(string)
 
-    print(list(in_dict))
+    print(list(in_dict)[:](0))
     print(variables)
     quit()
 
