@@ -165,10 +165,10 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
 
         for item in data:
             if ("{{" and "}}" in item) and ("or" not in item):
-                string = re.search("{{ .* }}", item)
+                string = (re.search("{{ .* }}", item)).group(1)
                 print(string)
 
-    print(variables)
+    # print(variables)
     quit()
 
     missing_vars = [
