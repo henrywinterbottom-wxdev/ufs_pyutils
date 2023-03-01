@@ -177,7 +177,8 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
         for item in data:
             if (start and stop in item) and ("or" not in item):
                 string = (
-                    item[item.find(start) + len(start): item.rfind(stop)].rstrip()).lstrip()
+                    item[item.find(start) + len(start) : item.rfind(stop)].rstrip()
+                ).lstrip()
                 variables.append(string)
 
     # Build the list of attribute variables.
@@ -315,8 +316,7 @@ def _get_template_file_attrs(tmpl_path: str) -> Union[str, str]:
     """
 
     # Collect the Jinja2-formatted template file attributes.
-    (dirname, basename) = [os.path.dirname(
-        tmpl_path), os.path.basename(tmpl_path)]
+    (dirname, basename) = [os.path.dirname(tmpl_path), os.path.basename(tmpl_path)]
 
     return (dirname, basename)
 
