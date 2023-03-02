@@ -427,7 +427,7 @@ def write_from_template(
         tmpl = _get_template(tmpl_path=tmpl_path)
 
         with open(output_file, "w", encoding="utf-8") as file:
-            file.write(tmpl.render(in_dict))
+            file.write(tmpl.render(in_dict, env=os.environ))
 
     except Exception as errmsg:
         msg = (
