@@ -47,7 +47,7 @@ class TestContainerMethods(TestCase):
 
     """
 
-    def setUp(self):
+    def setUp(self: TestCase):
         """
 
         """
@@ -64,7 +64,7 @@ class TestContainerMethods(TestCase):
         )
 
     @pytest.mark.order(1)
-    def test_build_sfd_local(self):
+    def test_build_sfd_local(self: TestCase):
         """ """
 
         # Build the Singularity image from the Docker containerized
@@ -89,7 +89,7 @@ class TestContainerMethods(TestCase):
             self.unit_test_msg.format('build_sfd_local')))
 
     @pytest.mark.order(100)
-    def test_cleanup(self):
+    def test_cleanup(self: TestCase):
         """
         Description
         -----------
