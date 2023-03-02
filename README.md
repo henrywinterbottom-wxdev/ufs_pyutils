@@ -2,7 +2,7 @@
 ![Linux](https://img.shields.io/badge/linux-ubuntu%7Ccentos-lightgrey)
 ![Python Version](https://img.shields.io/badge/python-3.5|3.6|3.7-blue)
 
-![Dependencies](https://img.shields.io/badge/dependencies-astropy_boto3_bs4_croniter_netcdf4_numpy_pyyaml_schema-orange)
+![Dependencies](https://img.shields.io/badge/dependencies-astropy_boto3_bs4_croniter_jinja2_netcdf4_numpy_pyyaml_schema-orange)
 
 [![Build Tests](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/buildtest.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/buildtest.yaml)
 [![Unit Tests](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/unittests.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/unittests.yaml)
