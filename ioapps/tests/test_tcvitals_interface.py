@@ -44,6 +44,7 @@ Requirements
 
 - pytest-order; https://github.com/pytest-dev/pytest-order
 
+
 Author(s)
 ---------
 
@@ -58,14 +59,19 @@ History
 
 # ----
 
+# pylint: disable=invalid-name
+# pylint: disable=unnecessary-dict-index-lookup
+
+# ----
+
 import filecmp
 import os
-import pytest
-
-from ioapps import tcvitals_interface
-from tools import fileio_interface
-from tools import parser_interface
+import unittest
 from unittest import TestCase
+
+import pytest
+from ioapps import tcvitals_interface
+from tools import fileio_interface, parser_interface
 from utils.constants_interface import mps2kts
 
 # ----
@@ -112,7 +118,7 @@ class TestTCVitalsMethods(TestCase):
 
     """
 
-    def setUp(self):
+    def setUp(self: TestCase) -> None:
         """
         Description
         -----------
@@ -130,16 +136,14 @@ class TestTCVitalsMethods(TestCase):
         self.tcv_file = os.path.join(dirpath, "tests", "tcvitals.syndat")
 
         # Collect the contents of the example TC-vitals file.
-        with open(self.tcv_exfile, "r") as f:
-            self.tcinfo = f.read()
+        with open(self.tcv_exfile, "r", encoding="utf-8") as file:
+            self.tcinfo = file.read()
 
         # Define the message to accompany any unit-test failures.
-        self.unit_test_msg = (
-            "The unit-test for tcvitals_interface function {0} " "failed."
-        )
+        self.unit_test_msg = "The unit-test for tcvitals_interface function {0} failed."
 
     @pytest.mark.order(100)
-    def test_cleanup(self):
+    def test_cleanup(self: TestCase) -> None:
         """
         Description
         -----------
@@ -160,7 +164,7 @@ class TestTCVitalsMethods(TestCase):
         fileio_interface.removefiles(filelist=filelist)
 
     @pytest.mark.order(1)
-    def test_write_tcvfile(self):
+    def test_write_tcvfile(self: TestCase) -> None:
         """
         Description
         -----------
@@ -180,7 +184,7 @@ class TestTCVitalsMethods(TestCase):
         self.assertTrue(check, msg=(self.unit_test_msg.format("write_tcvfile")))
 
     @pytest.mark.order(1)
-    def test_write_tcvstr(self):
+    def test_write_tcvstr(self: TestCase) -> None:
         """
         Description
         -----------
@@ -197,7 +201,7 @@ class TestTCVitalsMethods(TestCase):
             # Build the local attribute containing the TC-vitals
             # attributes for the respective TC event.
             tcvit_obj = parser_interface.object_define()
-            for tcv_attr in tcv_attrs_dict.keys():
+            for (tcv_attr, _) in tcv_attrs_dict.items():
 
                 idx = parser_interface.dict_key_value(
                     dict_in=tcv_attrs_dict[tcv_attr], key="idx", no_split=True
