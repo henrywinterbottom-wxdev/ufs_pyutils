@@ -48,6 +48,7 @@ installation attributes are provided in the table below.
 | [`boto3`](https://github.com/boto/boto3) | <div align="left">`pip boto3==1.24.28`</div> | 
 | [`bs4`](https://github.com/waylan/beautifulsoup) | <div align="left">`pip install bs4==0.0.1`</div> | 
 | [`croniter`](https://github.com/kiorky/croniter) | <div align="left">`pip install croniter==1.3.8`</div> | 
+| [`jinja2`](https://palletsprojects.com/p/jinja/) | <div align="left">`pip install jinja2==3.1.2`</div> |
 | [`netcdf4`](https://github.com/Unidata/netcdf4-python) | <div align="left">`pip install netcdf4==1.6.2`</div> |
 | [`numpy`](https://github.com/numpy/numpy) | <div align="left">`pip install numpy==1.22.4`</div> |
 | [`pyyaml`](https://github.com/yaml/pyyaml) | <div align="left">`pip pyyaml==6.0`</div> |

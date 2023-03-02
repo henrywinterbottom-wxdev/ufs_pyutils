@@ -44,6 +44,7 @@ Requirements
 
 - pytest-order; https://github.com/pytest-dev/pytest-order
 
+
 Author(s)
 ---------
 
@@ -58,13 +59,17 @@ History
 
 # ----
 
-import os
-import pytest
-import subprocess
+# pylint: disable=consider-using-f-string
 
+# ----
+
+import os
+import unittest
+from unittest import TestCase
+
+import pytest
 from ioapps import tarfile_interface
 from tools import fileio_interface
-from unittest import TestCase
 
 # ----
 
@@ -85,7 +90,7 @@ class TesTarFileMethods(TestCase):
 
     """
 
-    def setUp(self):
+    def setUp(self: TestCase) -> None:
         """
         Description
         -----------
@@ -101,7 +106,8 @@ class TesTarFileMethods(TestCase):
         self.tarball = os.path.join(self.dirpath, "tests", "member_files.tar")
 
         # Define and create the local files to compose the tarball.
-        self.filelist = list()
+        self.filelist = []
+
         for mem in range(self.nmems):
 
             # Create the respective member file for the tarball.
@@ -112,12 +118,10 @@ class TesTarFileMethods(TestCase):
             fileio_interface.touch(path=filepath)
 
             # Define the message to accompany any unit-test failures.
-        self.unit_test_msg = (
-            "The unit-test for tarball_interface function {0} " "failed."
-        )
+        self.unit_test_msg = "The unit-test for tarball_interface function {0} failed."
 
     @pytest.mark.order(100)
-    def test_cleanup(self):
+    def test_cleanup(self: TestCase) -> None:
         """
         Description
         -----------
@@ -138,7 +142,7 @@ class TesTarFileMethods(TestCase):
         fileio_interface.removefiles(filelist=filelist)
 
     @pytest.mark.order(2)
-    def test_read_tarfile(self):
+    def test_read_tarfile(self: TestCase) -> None:
         """
         Description
         -----------
@@ -162,7 +166,7 @@ class TesTarFileMethods(TestCase):
             self.assertTrue(exist, msg=(self.unit_test_msg.format("read_tarfile")))
 
     @pytest.mark.order(1)
-    def test_write_tarfile(self):
+    def test_write_tarfile(self: TestCase) -> None:
         """
         Description
         -----------
