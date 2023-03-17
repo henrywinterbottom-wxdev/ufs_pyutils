@@ -1426,7 +1426,7 @@ def unique_list(in_list: List) -> List:
 # ----
 
 
-def update_dict(dict_in: Dict, default_dict: Dict, base_dict: Dict) -> Dict:
+def update_dict(default_dict: Dict, base_dict: Dict) -> Dict:
     """ """
 
     output_dict = {}
