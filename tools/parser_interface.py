@@ -1429,9 +1429,7 @@ def unique_list(in_list: List) -> List:
 def update_dict(default_dict: Dict, base_dict: Dict, update_none: bool = False) -> Dict:
     """ """
 
-    output_dict = dict([base_dict[key] for key in default_dict if key in
-                        base_dict
-                        ])
+    output_dict = base_dict
 
     for key in default_dict:
 
