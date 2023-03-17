@@ -1414,10 +1414,27 @@ def unique_list(in_list: List) -> List:
 
     """
     out_list = []
-    out_dict = collections.OrderedDict.fromkeys(x for x in in_list if x not in out_list)
+    out_dict = collections.OrderedDict.fromkeys(
+        x for x in in_list if x not in out_list)
 
     out_list = []
     for key in sorted(out_dict.keys()):
         out_list.append(key.replace(" ", ""))
 
     return out_list
+
+# ----
+
+
+def update_dict(dict_in: Dict, default_dict: Dict, base_dict: Dict) -> Dict:
+    """ """
+
+    output_dict = {}
+
+    output_dict = [base_dict[key] for key in default_dict if key in
+                   base_dict
+                   ]
+
+    output_dict.update([key for key in default_dict if key not in output_dict])
+
+    return output_dict
