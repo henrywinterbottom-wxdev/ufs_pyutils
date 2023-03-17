@@ -1426,23 +1426,31 @@ def unique_list(in_list: List) -> List:
 # ----
 
 
-def update_dict(default_dict: Dict, base_dict: Dict) -> Dict:
+def update_dict(default_dict: Dict, base_dict: Dict, update_none: bool = False) -> Dict:
     """ """
 
-    output_dict = {}
-
-    output_dict = [base_dict[key] for key in default_dict if key in
-                   base_dict
-                   ]
+    output_dict = dict([base_dict[key] for key in default_dict if key in
+                        base_dict
+                        ])
 
     for key in default_dict:
 
         if key not in output_dict:
 
-            output_dict[key] = default_dict[key]
+            value = dict_key_value(dict_in=default_dict,
+                                   key=key, force=True, no_split=True)
+
+            if update_none:
+
+                if value is None:
+                    pass
+
+            if not update_none:
+
+                output_dict[key] = value
 
     # tmp_dict = dict([key for key in default_dict if key not in output_dict])
 
-    #print(tmp_dict)
+    # print(tmp_dict)
 
     return output_dict
