@@ -1435,6 +1435,8 @@ def update_dict(default_dict: Dict, base_dict: Dict) -> Dict:
                    base_dict
                    ]
 
-    output_dict.update([key for key in default_dict if key not in output_dict])
+    tmp_dict = [key for key in default_dict if key not in output_dict])
+
+    print(tmp_dict)
 
     return output_dict
