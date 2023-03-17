@@ -48,7 +48,7 @@ Functions
 
         This function ingests a Python dictionary and a dictionary key
         and return the value(s) corresponding to the respective
-        dictionary key; if the optional variable 'force' is True and
+        dictionary key; if the optional variable `force` is True and
         the dictionary key does not exist within the Python
         dictionary, the function will return NoneType.
 
@@ -61,13 +61,13 @@ Functions
     enviro_get(envvar)
 
         This function retrieves the environment variable corresponding
-        to the user specified string; if the environment variable is
-        not defined, NoneType is returned.
+        to the specified string; if the environment variable is not
+        defined, NoneType is returned.
 
     enviro_set(envvar, value)
 
-        This function defines the environment variable corresponding to
-        the user specified string.
+        This function defines the environment variable corresponding
+        to the supported specified value.
 
     find_commonprefix(strings_list)
 
@@ -82,15 +82,14 @@ Functions
 
         This function ingests a Python list and a Python string and
         matches, either exact or partial, are sought for the string
-        within the provided list and a tuple of values is returned; if
-        exact='True', a Python string is returned if a match is found
-        (i.e., match_chk=True) or 'None' if no match is found; if
-        exact='False', a list of Python strings if matches are found
-        (i.e., match_chk=True).
+        within the provided; if `exact` is True upon entry, the
+        matching Python string is returned if a match is found;
+        otherwise NoneType is returned; if `exact` is False upon
+        entry, a list of matching Python strings is returned.
 
     object_append(object_in, object_key, dict_in):
 
-        This function appends the contents of Python dictionary to user
+        This function appends the contents of Python dictionary to
         specified object key.
 
     object_compare(obj1, obj2)
@@ -108,12 +107,10 @@ Functions
 
     object_getattr(object_in, key, force=False)
 
-        This function ingests a Python object and a Python attribute and
-        returns the value of the respective attribute; if force is
-        True and the Python object attribute does not exist, this
-        function returns NoneType; if force is False and the Python
-        object attribute does not exist, this function raises an
-        ParserInterfaceError exception.
+        This function ingests a Python object and a Python attribute
+        and returns the value of the respective attribute; if `force`
+        is True and the Python object attribute does not exist, this
+        function returns NoneType.
 
     object_hasattr(object_in, key)
 
@@ -153,6 +150,16 @@ Functions
         This function ingests a list, possibly with duplicate values,
         and returns a list of only unique values.
 
+    update_dict(default_dict, base_dict, update_none=False)
+
+        This function reads Python dictionaries containing default key
+        and value pairs (`default_dict`) and a base (optional or
+        changed values) Python dictionary containing key and value
+        pairs (`base_dict`); the output Python dictionary
+        `output_dict` is initialized with the base Python dictionary;
+        any key and value pairs within `default_dict` which are not in
+        `output_dict` are updated with those from `default_dict`.
+
 Author(s)
 ---------
 
@@ -182,7 +189,7 @@ import os
 import sys
 import types
 from json.decoder import JSONDecodeError
-from typing import Dict, Generator, List, Union
+from typing import Any, Dict, Generator, List, Union
 
 import numpy
 from utils.exceptions_interface import ParserInterfaceError
@@ -212,6 +219,7 @@ __all__ = [
     "string_parser",
     "true_or_false",
     "unique_list",
+    "update_dict",
 ]
 
 # ----
@@ -368,14 +376,14 @@ def dict_key_value(
     min_value: bool = False,
     index_value: int = None,
     no_split: bool = False,
-) -> Union[bool, Dict, float, int, List, numpy.array, object, str]:
+) -> Any:
     """
     Description
     -----------
 
     This function ingests a Python dictionary and a dictionary key and
     return the value(s) corresponding to the respective dictionary
-    key; if the optional variable 'force' is True and the dictionary
+    key; if the optional variable `force` is True and the dictionary
     key does not exist within the Python dictionary, the function will
     return NoneType.
 
@@ -429,7 +437,7 @@ def dict_key_value(
     value: bool, dict, float, int, list, numpy.array, object, or str
 
         A list of values collected from the ingested Python dictionary
-        and the respective dictionary key if no_split is False; a
+        and the respective dictionary key if `no_split` is False; a
         string otherwise.
 
     Raises
@@ -448,7 +456,7 @@ def dict_key_value(
     if max_value and min_value:
         msg = (
             "The user has requested both minimum and maximum list "
-            "values. Please check that only one threshold value is "
+            "value; please check that only one threshold value is "
             "is to be sought from the list. Aborting!!!"
         )
         raise ParserInterfaceError(msg=msg)
@@ -457,16 +465,16 @@ def dict_key_value(
         if max_value:
             msg = (
                 "The user has selected both a single value (as per "
-                "the specified index) and the maximum list value. "
-                "Please check which criteria to fulfill. Aborting!!!"
+                "the specified index) and the maximum list value; "
+                "please check which criteria to fulfill. Aborting!!!"
             )
             raise ParserInterfaceError(msg=msg)
 
         if min_value:
             msg = (
                 "The user has selected both a single value (as per "
-                "the specified index) and the minimum list value. "
-                "Please check which criteria to fulfill. Aborting!!!"
+                "the specified index) and the minimum list value; "
+                "please check which criteria to fulfill. Aborting!!!"
             )
             raise ParserInterfaceError(msg=msg)
     try:
@@ -523,8 +531,8 @@ def dict_merge(dict1: Dict, dict2: Dict) -> Generator[Dict, Dict, Dict]:
 
          A Python dictionary to be merged.
 
-    Returns
-    -------
+    Yields
+    ------
 
     A Python generator is returned containing the merged Python
     dictionaries.
@@ -572,8 +580,8 @@ def enviro_get(envvar: str) -> Union[bool, float, int, str]:
     -----------
 
     This function retrieves the environment variable corresponding to
-    the user specified string; if the environment variable is not
-    defined, NoneType is returned.
+    the specified string; if the environment variable is not defined,
+    NoneType is returned.
 
     Parameters
     ----------
@@ -611,7 +619,7 @@ def enviro_set(envvar: str, value: Union[bool, float, int, str]) -> None:
     -----------
 
     This function defines the environment variable corresponding to
-    the user specified string.
+    the supported specified value.
 
     Parameters
     ----------
@@ -708,6 +716,7 @@ def list_get_type(in_list: List, dtype: str) -> List:
     # Find all items within the list specified upon entry of a
     # specified data type upon entry.
     var_list = []
+
     try:
         for item in in_list:
             if isinstance(item, dtype):
@@ -727,7 +736,7 @@ def object_append(object_in: object, object_key: str, dict_in: Dict) -> object:
     Description
     -----------
 
-    This function appends the contents of Python dictionary to user
+    This function appends the contents of Python dictionary to
     specified object key.
 
     Parameters
@@ -753,7 +762,7 @@ def object_append(object_in: object, object_key: str, dict_in: Dict) -> object:
     object_out: object
 
         An appended Python object containing the input Python
-        dictionary key and value pairs relative to the user-specified
+        dictionary key and value pairs relative to the specified
         Python object attribute.
 
     """
@@ -769,8 +778,7 @@ def object_append(object_in: object, object_key: str, dict_in: Dict) -> object:
         object_dict[key] = value
 
     # Build the output Python object.
-    object_out = object_setattr(
-        object_in=object_out, key=object_key, value=object_dict)
+    object_out = object_setattr(object_in=object_out, key=object_key, value=object_dict)
 
     return object_out
 
@@ -794,7 +802,7 @@ def object_compare(obj1: object, obj2: object) -> bool:
 
     obj2: object
 
-        A Python object to compare to obj1 (above).
+        A Python object to compare to `obj1` (above).
 
     Returns
     -------
@@ -835,8 +843,8 @@ def object_deepcopy(object_in: object) -> object:
 
     object_out: object
 
-        A Python object which is a deep copy of the user specified
-        input object (e.g., object_in).
+        A Python object which is a deep copy of the specified input
+        object `object_in`.
 
     """
 
@@ -883,7 +891,7 @@ def object_getattr(
     -----------
 
     This function ingests a Python object and a Python attribute and
-    returns the value of the respective attribute; if force is True
+    returns the value of the respective attribute; if `force` is True
     and the Python object attribute does not exist, this function
     returns NoneType.
 
@@ -919,7 +927,7 @@ def object_getattr(
 
     ParserInterfaceError:
 
-        * raised if force is False and the Python object attribute
+        * raised if `force` is False and the Python object attribute
           does not exist.
 
     """
@@ -955,10 +963,10 @@ def match_list(in_list: List, match_string: str, exact: bool = False) -> (bool, 
 
     This function ingests a Python list and a Python string and
     matches, either exact or partial, are sought for the string within
-    the provided; if exact=True upon entry, the matching Python string
-    is returned if a match is found otherwise NoneType is returned; if
-    exact=False upon entry, a list of matching Python strings is
-    returned.
+    the provided; if `exact` is True upon entry, the matching Python
+    string is returned if a match is found; otherwise NoneType is
+    returned; if `exact` is False upon entry, a list of matching
+    Python strings is returned.
 
     Parameters
     ----------
@@ -977,10 +985,10 @@ def match_list(in_list: List, match_string: str, exact: bool = False) -> (bool, 
 
     exact: bool, optional
 
-        A Python boolean variable; if 'True', a Python string will be
-        returned assuming a match is made; if 'False', a Python list
-        of strings matching 'match_string' will be returned assuming
-        matches can be made; the default value is 'False'.
+        A Python boolean variable; if True, a Python string will be
+        returned assuming a match is made; if False, a Python list of
+        strings matching `match_string` will be returned assuming
+        matches can be made.
 
     Returns
     -------
@@ -992,19 +1000,18 @@ def match_list(in_list: List, match_string: str, exact: bool = False) -> (bool, 
 
     match_str: str
 
-        A Python string (if exact=True upon entry) or a Python list of
-        strings (if exact=False upon entry) containing all matches to
-        the input match string; if no matches can be found, either
-        NoneType (if exact=True upon entry) or an empty list (if
-        exact=False upon entry) is returned.
+        A Python string (if `exact` is True upon entry) or a Python
+        list of strings (if `exact` is False upon entry) containing
+        all matches to the input match string; if no matches can be
+        found, either NoneType (if `exact` is True upon entry) or an
+        empty list (if `exact` is False upon entry) is returned.
 
     """
 
     # Define the local lists to be used for the matching application.
     lower_list = [word for word in in_list if word.islower()]
     upper_list = [word for word in in_list if word.isupper()]
-    mixed_list = [word for word in in_list if not word.islower()
-                  and not word.isupper()]
+    mixed_list = [word for word in in_list if not word.islower() and not word.isupper()]
     match_chk = False
 
     # If appropriate, seek exact matches; proceed accordingly.
@@ -1091,7 +1098,7 @@ def object_hasattr(object_in: object, key: str) -> bool:
 def object_setattr(
     object_in: object,
     key: str,
-    value: Union[bool, Dict, float, int, List, numpy.array, str],
+    value: Any,
 ) -> object:
     """
     Description
@@ -1111,18 +1118,18 @@ def object_setattr(
 
         A Python string value specifying the attribute to define.
 
-    value: bool, dict, float, int, numpy.array, or str
+    value: any supported Python type.
 
         A Python variable value specifying the value to accompany the
-        Python object attribute (key).
+        Python object attribute (`key`).
 
     Returns
     -------
 
     object_out: object
 
-       A Python object containing the user specified key and value
-       pair (e.g., attribute).
+       A Python object containing the specified key and value pair
+       (e.g., attribute).
 
     """
 
@@ -1178,7 +1185,7 @@ def singletrue(bool_list: List) -> bool:
     -----------
 
     This function ingests a list of boolean (e.g., logical) variables
-    (bool_list) and returns True if a single true value is in the
+    (`bool_list`) and returns True if a single true value is in the
     boolean list or False otherwise.
 
     Parameters
@@ -1195,7 +1202,7 @@ def singletrue(bool_list: List) -> bool:
 
         A Python boolean variable specifying whether only a single
         True value is within the respective boolean list; if so, True
-        is returned; if not False is returned.
+        is returned; otherwise False is returned.
 
     """
 
@@ -1278,7 +1285,7 @@ def string_parser(in_list: List, remove_comma: bool = False) -> List:
     remove_comma: bool, optional
 
         A Python boolean variable specifying to remove any comma
-        string occurances in the returned list (see out_list).
+        string occurances in the returned list (see `out_list`).
 
     Returns
     -------
@@ -1288,7 +1295,11 @@ def string_parser(in_list: List, remove_comma: bool = False) -> List:
         A Python list of appropriately formatted variable values.
 
     """
+
+    # Initialize the output list.
     out_list = []
+
+    # Build the output list; proceed accordingly.
     try:
         for value in in_list:
             test_value = value
@@ -1298,12 +1309,14 @@ def string_parser(in_list: List, remove_comma: bool = False) -> List:
             except NameError:
                 pass
 
+            # Boolean-type variable instances.
             if isinstance(test_value, bool):
                 if test_value:
                     value = True
                     if not test_value:
                         value = False
 
+            # String-type variable instances.
             if isinstance(test_value, str):
                 try:
                     dummy = float(test_value)
@@ -1312,6 +1325,7 @@ def string_parser(in_list: List, remove_comma: bool = False) -> List:
                     else:
                         value = int(test_value)
 
+                # Update any values passed as strings accordingly.
                 except ValueError:
                     if test_value.lower() == "none":
                         value = None
@@ -1334,11 +1348,14 @@ def string_parser(in_list: List, remove_comma: bool = False) -> List:
         value = None
         out_list.append(value)
 
+    # Update the output list accordingly.
     if remove_comma:
         new_list = []
+
         for item in out_list:
             if item != ",":
                 new_list.append(item)
+
         out_list = new_list
 
     return out_list
@@ -1347,7 +1364,7 @@ def string_parser(in_list: List, remove_comma: bool = False) -> List:
 # ----
 
 
-def true_or_false(argval: Union[bool, Dict, float, int, str]) -> Union[bool, None]:
+def true_or_false(argval: Any) -> Union[bool, None]:
     """
     Description
     -----------
@@ -1359,7 +1376,7 @@ def true_or_false(argval: Union[bool, Dict, float, int, str]) -> Union[bool, Non
     Parameters
     ----------
 
-    argval: bool, dict, float, int, or str
+    argval: any supported Python type.
 
         A value corresponding to an argument.
 
@@ -1421,3 +1438,80 @@ def unique_list(in_list: List) -> List:
         out_list.append(key.replace(" ", ""))
 
     return out_list
+
+
+# ----
+
+
+def update_dict(default_dict: Dict, base_dict: Dict, update_none: bool = False) -> Dict:
+    """
+    Description
+    -----------
+
+    This function reads Python dictionaries containing default key and
+    value pairs (`default_dict`) and a base (optional or changed
+    values) Python dictionary containing key and value pairs
+    (`base_dict`); the output Python dictionary `output_dict` is
+    initialized with the base Python dictionary; any key and value
+    pairs within `default_dict` which are not in `output_dict` are
+    updated with those from `default_dict`.
+
+    Parameters
+    ----------
+
+    default_dict: dict
+
+        A Python dictionary containing default key and value pairs;
+        this Python dictionary contains all possible key and value
+        pairs to compute the output dictionary (`output_dict`).
+
+    base_dict: dict
+
+        A Python dictionary containing either optional or changed key
+        and value pairs; this Python dictionary is used to initialize
+        the output Python dictionary `output_dict`.
+
+    Keywords
+    --------
+
+    update_none: bool, optional
+
+        A Python boolean valued variable specifying whether to update
+        the output Python dictionary `output_dict` with None-type
+        value occurances within the default Python dictionary
+        `default_dict`.
+
+    Returns
+    -------
+
+    output_dict: dict
+
+        A Python dictionary containing the respective attributes from
+        the base and default Python dictionaries, `base_dict` and
+        `default_dict` respectively.
+
+    """
+
+    # Initialize the output Python dictionary.
+    output_dict = base_dict
+
+    # For any keys missing from the base Python dictionary
+    # `base_dict`, update with the key and value pairs from the
+    # default Python dictionary `default_dict`.
+    for key in default_dict:
+        if key not in output_dict:
+
+            # Collect the key and value pair.
+            value = dict_key_value(
+                dict_in=default_dict, key=key, force=True, no_split=True
+            )
+
+            # Update the Python dictionary accordingly.
+            if update_none:
+                if value is None:
+                    pass
+
+            if not update_none:
+                output_dict[key] = value
+
+    return output_dict
