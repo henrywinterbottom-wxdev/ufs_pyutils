@@ -946,7 +946,7 @@ def object_getattr(
 
         if not force:
             msg = (
-                "The object {object_in} does not contain attribute "
+                f"The object {object_in} does not contain attribute "
                 f"{key}. Aborting!!!"
             )
             raise ParserInterfaceError(msg=msg)
@@ -1433,7 +1433,8 @@ def unique_list(in_list: List) -> List:
 
     """
     out_list = []
-    out_dict = collections.OrderedDict.fromkeys(x for x in in_list if x not in out_list)
+    out_dict = collections.OrderedDict.fromkeys(
+        x for x in in_list if x not in out_list)
 
     out_list = []
     for key in sorted(out_dict.keys()):
