@@ -116,7 +116,8 @@ class Arguments:
 
         # Collect the command-line argument key and value pairs.
         (_, args) = ArgumentParser().parse_known_args()
-        (arg_keys, arg_values) = ([item.strip("-") for item in args[::2]], args[1::2])
+        (arg_keys, arg_values) = ([item.strip("-")
+                                   for item in args[::2]], args[1::2])
 
         # Build the Python object containing the command line
         # arguments.
@@ -138,6 +139,7 @@ class Arguments:
                 # Build the Python dictionary containing the command
                 # line arguments.
                 cls_opts = {}
+                
                 for option in vars(options_obj):
                     cls_opts[option] = parser_interface.object_getattr(
                         object_in=options_obj, key=option, force=True
