@@ -83,9 +83,9 @@ class Arguments:
         Description
         -----------
 
-        This method collects the arguments passed for the command line
-        to the respective caller script and builds a Python object
-        containing the respective arguments.
+        This method collects the arguments passed from the command
+        line to the respective caller script and builds a Python
+        object containing the respective arguments.
 
         The command line arguments may be specified as follows.
 
@@ -139,7 +139,7 @@ class Arguments:
                 # Build the Python dictionary containing the command
                 # line arguments.
                 cls_opts = {}
-                
+
                 for option in vars(options_obj):
                     cls_opts[option] = parser_interface.object_getattr(
                         object_in=options_obj, key=option, force=True
@@ -147,7 +147,8 @@ class Arguments:
                 cls_opts = parser_interface.dict_formatter(in_dict=cls_opts)
 
                 # Evalute the schema; proceed accordingly.
-                schema_interface.validate_opts(cls_schema=cls_schema, cls_opts=cls_opts)
+                schema_interface.validate_opts(
+                    cls_schema=cls_schema, cls_opts=cls_opts)
 
             except Exception as errmsg:
 
