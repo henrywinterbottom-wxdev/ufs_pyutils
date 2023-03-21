@@ -279,8 +279,10 @@ def dict_formatter(in_dict: Dict) -> Dict:
                 if sys.version_info < (3, 0, 0):
                     if isinstance(key, str):
                         key = key.encode("ascii", "ignore")
+
                     if isinstance(value, str):
                         value = value.encode("ascii", "ignore")
+
                 test_value = value
 
                 # Check if the key and value pair is a boolean type
@@ -288,6 +290,7 @@ def dict_formatter(in_dict: Dict) -> Dict:
                 if isinstance(test_value, bool):
                     if test_value:
                         value = True
+
                     if not test_value:
                         value = False
 
@@ -303,10 +306,13 @@ def dict_formatter(in_dict: Dict) -> Dict:
                     except ValueError:
                         if test_value.lower() == "none":
                             value = None
+
                         elif test_value.lower() == "true":
                             value = True
+
                         elif test_value.lower() == "false":
                             value = False
+
                         else:
                             value = str(test_value)
 
@@ -319,7 +325,6 @@ def dict_formatter(in_dict: Dict) -> Dict:
     out_dict = sorted_by_keys(dct=in_dict)
 
     return out_dict
-
 
 # ----
 

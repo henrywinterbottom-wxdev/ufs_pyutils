@@ -57,6 +57,11 @@ Classes
         This is the base-class for exceptions encountered within the
         utils/curl_interface module; it is a sub-class of Error.
 
+    EnviroInterfaceError()
+
+        This is the base-class for exceptions encountered within the
+        confs/enviro_interface module; it is a sub-class of Error.
+
     GRIBInterfaceError()
 
         This is the base-class for exceptions encountered within the
@@ -173,6 +178,7 @@ __all__ = [
     "Boto3InterfaceError",
     "ContainerInterfaceError",
     "CurlInterfaceError",
+    "EnviroInterfaceError",
     "GRIBInterfaceError",
     "HashLibInterfaceError",
     "Jinja2InterfaceError",
@@ -211,7 +217,6 @@ class ArgumentsInterfaceError(Error):
     utils/arguments_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
@@ -266,6 +271,18 @@ class CurlInterfaceError(Error):
 
     """
 
+# ----
+
+
+class EnviroInterfaceError(Error):
+    """
+    Description
+    -----------
+
+    This is the base-class for exceptions encountered within the
+    confs/enviro_interface module; it is a sub-class of Error.
+
+    """
 
 # ----
 
@@ -279,7 +296,6 @@ class GRIBInterfaceError(Error):
     ioapps/grib_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
