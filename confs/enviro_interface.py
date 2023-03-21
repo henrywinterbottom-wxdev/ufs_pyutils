@@ -46,7 +46,7 @@ Author(s)
 History
 -------
 
-    2023-03-21: Henry Winterbottom -- Initial implementation.    
+    2023-03-21: Henry Winterbottom -- Initial implementation.
 
 """
 
@@ -55,8 +55,7 @@ History
 import os
 
 from tools import parser_interface
-
-from utils.exception_interface import EnviroInterfaceError
+from utils.exceptions_interface import EnviroInterfaceError
 from utils.logger_interface import Logger
 
 # ----
@@ -108,13 +107,17 @@ def enviro_to_obj() -> object:
 
         try:
             value = parser_interface.dict_key_value(
-                dict_in=envdict, key=envvar, no_split=True)
+                dict_in=envdict, key=envvar, no_split=True
+            )
             envobj = parser_interface.object_setattr(
-                object_in=envobj, key=envvar, value=value)
+                object_in=envobj, key=envvar, value=value
+            )
 
         except Exception as errmsg:
-            msg = ("Casting the runtime environment as a Python dictionary "
-                   f"failed with error {errmsg}. Aborting!!!")
+            msg = (
+                "Casting the runtime environment as a Python dictionary "
+                f"failed with error {errmsg}. Aborting!!!"
+            )
             raise EnviroInterfaceError(msg=msg) from errmsg
 
     return envobj
