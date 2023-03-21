@@ -26,10 +26,17 @@ Module
 Description
 -----------
 
-    This module contains functions to write TC-vitals records.
+    This module contains functions to read and write TC-vitals
+    records.
 
 Functions
 ---------
+
+    read_tcvfile(filepath)
+
+        This function reads a TC-vitals formatted file and returns a
+        Python object containing the TC-vitals attributes for all
+        records within the filepath.
 
     write_tcvfile(filepath, tcvstr)
 
@@ -59,6 +66,9 @@ History
 
 # ----
 
+
+from collections import OrderedDict
+
 import numpy
 from tools import parser_interface
 from utils import constants_interface
@@ -68,7 +78,7 @@ from utils.logger_interface import Logger
 # ----
 
 # Define all available functions.
-__all__ = ["write_tcvfile", "write_tcvstr"]
+__all__ = ["read_tcvfile", "write_tcvfile", "write_tcvstr"]
 
 # ----
 
@@ -79,6 +89,122 @@ logger = Logger()
 __author__ = "Henry R. Winterbottom"
 __maintainer__ = "Henry R. Winterbottom"
 __email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
+TCV_34QUAD_DICT = OrderedDict(
+    {
+        "tcv_center": {"idx": 0, "spval": None},
+        "tcid": {"idx": 1, "spval": None},
+        "event_name": {"idx": 2, "spval": None},
+        "time_ymd": {"idx": 3, "spval": None},
+        "time_hm": {"idx": 4, "spval": None},
+        "lat": {"idx": 5, "spval": None},
+        "lon": {"idx": 6, "spval": None},
+        "stormdir": {"idx": 7, "spval": "-99"},
+        "stormspeed": {"idx": 8, "spval": "-99"},
+        "mslp": {"idx": 9, "spval": None},
+        "poci": {"idx": 10, "spval": "-999"},
+        "roci": {"idx": 11, "spval": "-999"},
+        "vmax": {"idx": 12, "spval": None},
+        "rmw": {"idx": 13, "spval": "-99"},
+        "NE34": {"idx": 14, "spval": "-999"},
+        "SE34": {"idx": 15, "spval": "-999"},
+        "SW34": {"idx": 16, "spval": "-999"},
+        "NW34": {"idx": 17, "spval": "-999"},
+        "stormdepth": {"idx": 18, "spval": "X"},
+    }
+)
+# ----
+
+
+def read_tcvfile(filepath: str) -> object:
+    """
+    Description
+    -----------
+
+    This function reads a TC-vitals formatted file and returns a
+    Python object containing the TC-vitals attributes for all records
+    within the filepath.
+
+    Parameters
+    ----------
+
+    filepath: str
+
+        A Python string specifying the file path for the TC-vitals
+        formatted file.
+
+    Returns
+    -------
+
+    tcvobj: object
+
+        A Python object containing the attributes for each TC record
+        within the file path specified upon entry.
+
+    """
+
+    # Read in TC-vitals records.
+    with open(filepath, "r", encoding="utf-8") as file:
+        tcvdata = file.read()
+
+    # Collect the attributes for the respective TC-vitals record(s);
+    # proceed accordingly.
+    tcvobj = parser_interface.object_define()
+
+    for (idx, tcv) in enumerate(tcvdata.split("\n")):
+
+        # Collect the attributes for the current TC-vitals record;
+        # proceed accordingly.
+        if tcv.strip():
+            tcvdict = {}
+
+            # Determine the appropriate Python dictionary to be used
+            # for parsing and assigning values for the TC-vitals
+            # records.
+            msg = f"Parsing TC-vitals record {tcv}."
+            logger.info(msg)
+            tcvrec = tcv.split()
+
+            if len(tcvrec) == 19:
+                tcvrec_dict = TCV_34QUAD_DICT
+            else:
+                msg = (
+                    "Too many attributes were found for TC-vitals "
+                    f"record {tcvrec}; found {len(tcvrec)}. Aborting!!!"
+                )
+                raise TCVitalsInterfaceError(msg=msg)
+
+            for item in tcvrec_dict:
+
+                # Collect the record index and the missing value
+                # indicator for the respective attribute and update
+                # the local values accordingly.
+                tcvidx = parser_interface.dict_key_value(
+                    dict_in=tcvrec_dict[item], key="idx", no_split=True
+                )
+                attr_value = parser_interface.dict_key_value(
+                    dict_in=tcvrec_dict[item], key="spval", no_split=True
+                )
+
+                # Collect the respective TC-vitals attribute; proceed
+                # accordingly.
+                tcvdict[item] = tcvrec[tcvidx]
+
+                if attr_value is not None:
+                    if str(attr_value) == str(tcvdict[item]):
+
+                        # Update the missing datum with NoneType.
+                        tcvdict[item] = None
+
+            # Update the local Python object.
+            tcvobj = parser_interface.object_setattr(
+                object_in=tcvobj, key=f"TC{idx}", value=tcvdict
+            )
+
+    return tcvobj
+
 
 # ----
 
