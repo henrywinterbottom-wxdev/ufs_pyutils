@@ -142,7 +142,7 @@ def check_opts(key: str, valid_opts: List, data: Dict, check_and: bool = False) 
 
     key: str
 
-        A Python string specifying the key for which to valid the
+        A Python string specifying the key for which to validate the
         respective value against list of accepted values.
 
     valid_opts: list
