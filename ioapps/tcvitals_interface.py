@@ -32,11 +32,33 @@ Description
 Functions
 ---------
 
+    __scalegeo__(lat, lon)
+
+        This function scales the geographical location coordinates for
+        the TC-vitals record according.
+
+    __scaleintns__(mslp, vmax)
+
+        This function scales the minimum sea-level pressure (`mslp`)
+        and maximum wind speed (`vmax`) intensity values to their
+        corresponding MKS units.
+
+    __scalesize__(poci, rmw, roci)
+
+        This function scales the tropical cyclone size metric values
+        to their corresponding MKS units.
+
     read_tcvfile(filepath)
 
         This function reads a TC-vitals formatted file and returns a
         Python object containing the TC-vitals attributes for all
         records within the filepath.
+
+    scale_tcvrec(tcv_dict)
+
+        This function scales the relavant tropical cyclone records to
+        their respective MKS representations and returns a Python
+        object containing the respective scaled values.
 
     write_tcvfile(filepath, tcvstr)
 
@@ -68,17 +90,19 @@ History
 
 
 from collections import OrderedDict
+from typing import Dict, Tuple
 
 import numpy
 from tools import parser_interface
 from utils import constants_interface
+from utils.constants_interface import hPa2Pa, kn2m
 from utils.exceptions_interface import TCVitalsInterfaceError
 from utils.logger_interface import Logger
 
 # ----
 
 # Define all available functions.
-__all__ = ["read_tcvfile", "write_tcvfile", "write_tcvstr"]
+__all__ = ["read_tcvfile", "scale_tcvrec", "write_tcvfile", "write_tcvstr"]
 
 # ----
 
@@ -115,6 +139,181 @@ TCV_34QUAD_DICT = OrderedDict(
         "stormdepth": {"idx": 18, "spval": "X"},
     }
 )
+
+
+def __scalegeo__(lat: str, lon: str) -> Tuple[float, float]:
+    """
+    Description
+    -----------
+
+    This function scales the geographical location coordinates for the
+    TC-vitals record according.
+
+    Parameters
+    ----------
+
+    lat: str
+
+        A Python string defining the geographical location latitude
+        coordinate for the respective TC-vitals record.
+
+    lon: str
+
+        A Python string defining the geographical location longitude
+        coordinate for the respective TC-vitals record.
+
+    Returns
+    -------
+
+    lat_out: float
+
+        A Python float value defining the scaled geographical location
+        latitude coordinate; units are degrees.
+
+    lon_out: float
+
+        A Python float value defining the scaled geographical location
+        longitude coordinate; units are degrees.
+
+    """
+
+    # Initialize the respective TC-vitals attribute variables.
+    (lat_in, lon_in) = (lat, lon)
+
+    # Define the scaling values accordingly.
+    (lat_scale, lon_scale) = [1.0 / 10.0 for idx in range(2)]
+
+    if "S" in lat_in:
+        lat_scale = -1.0 / 10.0
+
+    if "E" in lon_in:
+        lon_scale = -1.0 / 10.0
+
+    # Rescale the geographical location values.
+    lat_out = lat_scale * int(lat_in[:-1])
+    lon_out = lon_scale * int(lon_in[:-1])
+
+    return (lat_out, lon_out)
+
+
+# ----
+
+
+def __scaleintns__(mslp: str, vmax: str) -> Tuple[float, float]:
+    """
+    Description
+    -----------
+
+    This function scales the minimum sea-level pressure (`mslp`) and
+    maximum wind speed (`vmax`) intensity values to their
+    corresponding MKS units.
+
+    Parameters
+    ----------
+
+    mslp: str
+
+        A Python string defining the minimum sea-level pressure value.
+
+    vmax: str
+
+        A Python string defining the maximum wind speed intensity
+        value.
+
+    Returns
+    -------
+
+    mslp_out: float
+
+        A Python float value defining the formatted minimum sea-level
+        pressure value; units are Pascals.
+
+    vmax_out: float
+
+        A Python float value defining the formatted maxmimum wind
+        speed value; units are meters per second.
+
+    """
+
+    # Initialize the respective TC-vitals attribute variables.
+    (mslp_in, vmax_in) = (mslp, vmax)
+
+    # Scale the values accordingly.
+    mslp_out = int(mslp_in) * hPa2Pa
+    vmax_out = float(vmax_in)
+
+    return (mslp_out, vmax_out)
+
+
+# ----
+
+
+def __scalesize__(poci: str, rmw: str, roci: str) -> Tuple[float, float, float]:
+    """
+    Description
+    -----------
+
+    This function scales the tropical cyclone size metric values to
+    their corresponding MKS units.
+
+    Parameters
+    ----------
+
+    poci: str
+
+        A Python string defining the pressure of the outer-most closed
+        isobar relative to the respective TC event.
+
+    rmw: str
+
+        A Python string defining the radius of maximum wind speed
+        relative to the respective TC event.
+
+    roci: str
+
+        A Python string defining the radius of the outer-most closed
+        isobar relative to the respective TC event.
+
+    Returns
+    -------
+
+    poci_out: float
+
+        A Python float value defining the pressure of the outer-most
+        closed isobar; units are Pascals; if NoneType upon entry,
+        NoneType is returned.
+
+    rmw_out: float
+
+        A Python float value defining the radius of maximum winds;
+        units are meters; if NoneType upon entry, NoneType is
+        returned.
+
+    roci_out: float
+
+        A Python float value defining the radius of the outer-most
+        closed isobar; units are meters; if NoneType upon entry,
+        NoneType is returned.
+
+    """
+
+    # Initialize the respective TC-vitals attribute variables.
+    (poci_in, rmw_in, roci_in) = (poci, rmw, roci)
+    (poci_out, rmw_out, roci_out) = [None for idx in range(3)]
+
+    # Scale the values accordingly.
+    if poci_in is not None:
+        poci_out = int(poci_in) * hPa2Pa
+
+    if rmw_in is not None:
+        rmw_out = int(rmw_in) * kn2m
+
+    if roci_in is not None:
+        roci_out = int(roci_in) * kn2m
+
+    return (poci_out, rmw_out, roci_out)
+
+
 # ----
 
 
@@ -204,6 +403,56 @@ def read_tcvfile(filepath: str) -> object:
             )
 
     return tcvobj
+
+
+# ----
+
+
+def scale_tcvrec(tcv_dict: Dict) -> object:
+    """
+    Description
+    -----------
+
+    This function scales the relavant tropical cyclone records to
+    their respective MKS representations and returns a Python object
+    containing the respective scaled values.
+
+    Parameters
+    ----------
+
+    tcv_dict: dict
+
+        A Python dictionary containing the TC-vitals record
+        attributes.
+
+    Returns
+    -------
+
+    tcv_obj: object
+
+        A Python object containing the MKS values for the respective
+        TC-vitals record attributes.
+
+    """
+
+    # Collect the relevant attributes from the TC-vitals record.
+    tcv_obj = parser_interface.object_define()
+    (lat, lon, mslp, poci, rmw, roci, vmax) = [
+        parser_interface.dict_key_value(
+            dict_in=tcv_dict, key=key, no_split=True)
+        for key in ["lat", "lon", "mslp", "poci", "rmw", "roci", "vmax"]
+    ]
+
+    # Scale the TC-vitals record attributes accordingly.
+    (tcv_obj.lat, tcv_obj.lon) = __scalegeo__(lat=lat, lon=lon)
+
+    (tcv_obj.mslp, tcv_obj.vmax) = __scaleintns__(mslp=mslp, vmax=vmax)
+
+    (tcv_obj.poci, tcv_obj.rmw, tcv_obj.roci) = __scalesize__(
+        poci=poci, roci=roci, rmw=rmw
+    )
+
+    return tcv_obj
 
 
 # ----
@@ -368,7 +617,8 @@ def write_tcvstr(tcvit_obj: object) -> str:
 
     # Check that all mandatory TC-vitals record attributes are
     # specified; proceed accordingly.
-    mand_attr_list = ["lat", "lon", "mslp", "tcid", "time_hm", "time_ymd", "vmax"]
+    mand_attr_list = ["lat", "lon", "mslp",
+                      "tcid", "time_hm", "time_ymd", "vmax"]
 
     for mand_attr in mand_attr_list:
         if not parser_interface.object_hasattr(object_in=tcvit_obj, key=mand_attr):
