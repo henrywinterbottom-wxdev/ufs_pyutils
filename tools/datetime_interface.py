@@ -121,6 +121,12 @@ Functions
         This function computes and returns the total number of seconds
         (e.g., the difference) between two input date strings.
 
+    epoch_to_datestr(epoch_seconds, out_frmttyp=None)
+
+        This function transforms the epoch time (e.g., the number of
+        seconds relative to 0000 UTC 01 January 1970) to the
+        (optional) date-string format (`out_frmttyp`).
+
 Requirements
 ------------
 
@@ -149,6 +155,7 @@ import sqlite3
 import time
 
 import croniter
+from utils import timestamp_interface
 
 from tools import parser_interface
 
@@ -162,6 +169,7 @@ __all__ = [
     "datestrfrmt",
     "datestrupdate",
     "elapsed_seconds",
+    "epoch_to_datestr",
 ]
 
 # ----
@@ -362,6 +370,8 @@ def datestrcomps(datestr: str, frmttyp: str) -> object:
     The day of the year (day_of_year); begins from day 1 of respective
     year.
 
+    epoch (seconds since 0000 UTC 01 January 1970).
+
     Parameters
     ----------
 
@@ -406,8 +416,8 @@ def datestrcomps(datestr: str, frmttyp: str) -> object:
         "century": "%G",
         "weekday_long": "%A",
         "weekday_short": "%a",
-        "date_string": "%Y-%m-%d_%H:%M:%S",
-        "cycle": "%Y%m%d%H%M%S",
+        "date_string": timestamp_interface.GENERAL,
+        "cycle": timestamp_interface.GLOBAL,
         "day_of_year": "%j",
     }
 
@@ -423,38 +433,43 @@ def datestrcomps(datestr: str, frmttyp: str) -> object:
     # Define connect object for SQlite3 library and define the
     # timestamp values accordingly.
     connect = sqlite3.connect(":memory:")
-    datestr = "{0}-{1}-{2} {3}:{4}:{5}".format(
-        parser_interface.object_getattr(object_in=date_comps_obj, key="year"),
-        parser_interface.object_getattr(object_in=date_comps_obj, key="month"),
-        parser_interface.object_getattr(object_in=date_comps_obj, key="day"),
-        parser_interface.object_getattr(object_in=date_comps_obj, key="hour"),
-        parser_interface.object_getattr(object_in=date_comps_obj, key="minute"),
-        parser_interface.object_getattr(object_in=date_comps_obj, key="second"),
-    )
+    datestr = "{0}-{1}-{2} {3}:{4}:{5}".format(date_comps_obj.year,
+                                               date_comps_obj.month,
+                                               date_comps_obj.day,
+                                               date_comps_obj.hour,
+                                               date_comps_obj.minute,
+                                               date_comps_obj.second
+                                               )
 
     # Collect the Julian attribute using SQLite3 and proceed
     # accordingly.
     value = list(connect.execute(f'select julianday("{datestr}")'))[0][0]
-    date_comps_obj = parser_interface.object_setattr(
-        object_in=date_comps_obj, key="julian_day", value=value
-    )
-    timedate = time.strptime(datestr, "%Y-%m-%d %H:%M:%S")
+    date_comps_obj.julian_day = value
 
     # Collect the total number of seconds of the day corresponding to
     # the respective timestamp provided upon entry.
+    timedate = time.strptime(datestr, "%Y-%m-%d %H:%M:%S")
+
     value = datetime.timedelta(
         hours=timedate.tm_hour, minutes=timedate.tm_min, seconds=timedate.tm_sec
     ).total_seconds()
-    value = f"{int(value):05d}"  # .format(int(value))
-    date_comps_obj = parser_interface.object_setattr(
-        object_in=date_comps_obj, key="total_seconds_of_day", value=value
-    )
+    value = f"{int(value):05d}"
+    date_comps_obj.total_seconds_of_day = value
+
+    # Define the epoch time (seconds) corresponding to the respective
+    # timestamp.
+    value = datetime.datetime(int(date_comps_obj.year),
+                              int(date_comps_obj.month),
+                              int(date_comps_obj.day),
+                              int(date_comps_obj.hour),
+                              int(date_comps_obj.minute),
+                              int(date_comps_obj.second),
+                              ).timestamp()
+    date_comps_obj.epoch = value
 
     # Add the date and time component list corresponding to the
     # respective timestamp provided upon entry.
-    date_comps_obj = parser_interface.object_setattr(
-        object_in=date_comps_obj, key="comps_list", value=vars(date_comps_obj)
-    )
+    date_comps_obj.comps_list = vars(date_comps_obj)
 
     return date_comps_obj
 
@@ -582,15 +597,16 @@ def datestrupdate(
 
     if offset_seconds is not None:
         dateobj = dateobj + datetime.timedelta(0, offset_seconds)
+
     outdatestr = datetime.datetime.strftime(dateobj, out_frmttyp)
     date_comps_obj = datestrcomps(datestr=datestr, frmttyp=in_frmttyp)
-    comps_list = parser_interface.object_getattr(
-        object_in=date_comps_obj, key="comps_list"
-    )
+
+    comps_list = date_comps_obj.comps_list
 
     for item in comps_list:
         if f"<{item}>" in outdatestr:
-            time_attr = parser_interface.object_getattr(date_comps_obj, key=item)
+            time_attr = parser_interface.object_getattr(
+                date_comps_obj, key=item)
             outdatestr = outdatestr.replace(f"<{item}>", time_attr)
 
     return outdatestr
@@ -650,3 +666,49 @@ def elapsed_seconds(
     seconds = float((stop_dateobj - start_dateobj).total_seconds())
 
     return seconds
+
+
+# ----
+
+
+def epoch_to_datestr(epoch_seconds: int, out_frmttyp: str = None) -> str:
+    """
+    Description
+    -----------
+
+    This function transforms the epoch time (e.g., the number of
+    seconds relative to 0000 UTC 01 January 1970) to the (optional)
+    date-string format (`out_frmttyp`).
+
+    Parameters
+    ----------
+
+    epoch_seconds: int
+
+        A Python integer specifying the epoch seconds.
+
+    Keywords
+    --------
+
+    out_frmttyp: str, optional
+
+        A Python string defining the date-string format for the epoch
+        time format.
+
+    Returns
+    -------
+
+    epoch_datestr: str
+
+        A Python string defining the epoch time (seconds) represented
+        as date-string characters.
+
+    """
+
+    # Define the epoch time (seconds) date-string.
+    datestr = out_frmttyp or timestamp_interface.GLOBAL
+
+    epoch_datestr = datetime.datetime.fromtimestamp(
+        epoch_seconds).strftime(datestr)
+
+    return epoch_datestr
