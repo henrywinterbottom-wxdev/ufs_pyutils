@@ -47,6 +47,8 @@
 
 #    croniter; https://github.com/kiorky/croniter
 
+#    jinja2; https://github.com/pallets/jinja
+
 #    netcdf4; https://github.com/Unidata/netcdf4-python
 
 #    numpy; https://github.com/numpy/numpy
