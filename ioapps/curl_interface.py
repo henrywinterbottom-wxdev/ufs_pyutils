@@ -33,11 +33,6 @@ Description
 Functions
 ---------
 
-    __error__(msg=None)
-
-        This function is the exception handler for the respective
-        module.
-
     _check_curl_env()
 
         This function checks whether the run-time environment contains
@@ -87,7 +82,6 @@ import subprocess
 import requests
 from bs4 import BeautifulSoup
 from tools import system_interface
-from utils.error_interface import msg_except_handle
 from utils.exceptions_interface import CurlInterfaceError
 from utils.logger_interface import Logger
 
@@ -105,27 +99,6 @@ __email__ = "henry.winterbottom@noaa.gov"
 # ----
 
 logger = Logger()
-
-# ----
-
-
-@msg_except_handle(CurlInterfaceError)
-def __error__(msg: str = None) -> None:
-    """
-    Description
-    -----------
-
-    This function is the exception handler for the respective module.
-
-    Parameters
-    ----------
-
-    msg: str
-
-        A Python string containing a message to accompany the
-        exception.
-
-    """
 
 
 # ----
@@ -168,7 +141,7 @@ def _check_curl_env() -> str:
             "The curl application executable could not be determined "
             "from the run-time environment. Aborting!!!"
         )
-        __error__(msg=msg)
+        raise CurlInterfaceError(msg=msg)
 
     return curl_exec
 
@@ -281,7 +254,7 @@ def get_webfile(
                 f"Collecting of internet path {url} failed with error {error}. "
                 "Aborting!!!"
             )
-            __error__(msg=msg)
+            raise CurlInterfaceError(msg=msg)
 
 
 # ----
@@ -358,6 +331,6 @@ def get_weblist(url: str, decode_utf8: bool = False, ext: str = None) -> list:
             f"Collection of files available at internet path {url} failed "
             f"with error {error}. Aborting!!!"
         )
-        __error__(msg=msg)
+        raise CurlInterfaceError(msg=msg)
 
     return weblist
