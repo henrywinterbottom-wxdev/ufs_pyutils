@@ -43,6 +43,11 @@ import xmltodict
 
 from utils.exceptions_interface import XMLInterfaceError
 
+# ----
+
+XML_SPECIAL_CHAR_DICT = {"__ENTITY__": "&"
+                         }
+
 
 # ----
 
@@ -96,7 +101,10 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     # Read the XML-formatted file.
     with open(xml_path, "r", encoding="utf-8") as file:
-        xml_contents = file.read().replace("&", "__ENTITY__")
+        xml_contents = [file.read().replace(value, key)
+                        for (key, value) in XML_SPECIAL_CHAR_DICT.items()]
+
+        # xml_contents = file.read().replace("&", "__ENTITY__")
 
     # Define the XML parser object and parse the XML-formatted file
     # contents.
