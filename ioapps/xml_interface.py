@@ -35,6 +35,8 @@ from lxml import etree
 from bs4 import BeautifulSoup
 from xml.dom import minidom
 
+import yaml
+
 import xmltodict
 
 from utils.exceptions_interface import XMLInterfaceError
@@ -102,7 +104,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
                 etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
 
         if not resolve_entities:
-            xmlstr = file.read().replace("&amp;", "\&amp;amp;")
+            xmlstr = file.read().replace("&amp;", "SPECIAL_CHAR_AMP;")
 
     xml_dict = xmltodict.parse(xmlstr)
 
