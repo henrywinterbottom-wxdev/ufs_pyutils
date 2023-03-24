@@ -106,8 +106,8 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     xml_dict = xmltodict.parse(xml_str)
 
-    xml_dict = dict([json.dumps(xml_dict).replace(key, value)
-                     for (key, value) in {"__ENTITY__": "&"}.items()])
+    xml_dict = json.loads([json.dumps(xml_dict).replace(key, value)
+                           for (key, value) in {"__ENTITY__": "&"}.items()])
 
     print(type(xml_dict))
     quit()
