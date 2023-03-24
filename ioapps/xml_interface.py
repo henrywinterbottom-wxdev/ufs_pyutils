@@ -105,7 +105,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     xml_dict = xmltodict.parse(xml_str)
 
-    for (key, value) in xml_dict.items():
+    for (key, value) in xml_dict:
         #        key = [item for item in {"__ENTITY__": "&"}.keys() if item in key]
 
         print(key)
