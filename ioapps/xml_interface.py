@@ -97,7 +97,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
     with open(xml_path, "r", encoding="utf-8") as file:
         xml_contents = file.read()
 
-    entities = [entity for entity in soup.find_all(re.compile("&"))]
+    entities = [entity for entity in xml_contents(re.compile("&"))]
     print(entities)
     quit()
 
