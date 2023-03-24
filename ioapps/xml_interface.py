@@ -104,7 +104,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
         xml_contents = file.read()
 
     for (key, value) in XML_SPECIAL_CHAR_DICT.items():
-        xml_contents.replace(value, key)
+        xml_contents.replace(key, value)
 
     print(xml_contents)
     quit()
