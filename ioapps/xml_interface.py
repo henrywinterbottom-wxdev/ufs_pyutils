@@ -99,9 +99,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
         # Define the XML parser object.
         parser = etree.XMLParser(resolve_entities=resolve_entities,
-                                 attribute_defaults=attribute_defaults,
-                                 remove_comments=remove_comments,
-                                 remove_pis=remove_pis)
+                                 remove_comments=remove_comments)
 
     # Read the XML-formatted file.
     xmlstr = minidom.parseString(etree.tostring(
