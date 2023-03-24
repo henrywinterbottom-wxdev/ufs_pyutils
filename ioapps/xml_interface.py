@@ -109,6 +109,8 @@ def read_xml(xml_path: str, remove_comments: bool = False,
             xml_contents_out[idx] = item.replace(key, value)
 
     print(xml_contents_out)
+
+    print(xml_contents)
     quit()
 
     # xml_dict = json.loads(xml_contents)
