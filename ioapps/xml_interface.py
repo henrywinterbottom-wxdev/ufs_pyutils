@@ -114,8 +114,10 @@ def read_xml(xml_path: str, remove_comments: bool = False,
     xml_dict = xmltodict.parse(xml_str)
 
     xml_str = json.dumps(xml_dict)
+    for (key, value) in XML_SPECIAL_CHAR_DICT.items():
+        xml_str_out = xml_str.replace(key, value)
 
-    print(xml_str)
+    print(xml_str_out)
     quit()
 
     # xml_str = [json.dumps(xml_dict).replace(key, value)
