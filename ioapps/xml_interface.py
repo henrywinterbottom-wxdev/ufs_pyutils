@@ -113,7 +113,9 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     xml_dict = xmltodict.parse(xml_str)
 
-    print(xml_dict)
+    xml_str = json.dumps(xml_dict)
+
+    print(xml_str)
     quit()
 
     # xml_str = [json.dumps(xml_dict).replace(key, value)
