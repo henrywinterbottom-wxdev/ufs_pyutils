@@ -18,43 +18,31 @@
 # =========================================================================
 
 """
-
+pass
 
 """
 
 # ----
 
-import io
-import os
-import re
 import json
 
-import deepdiff
-
 from typing import Dict
-
-from tools import fileio_interface
-
-from lxml import etree
-from bs4 import BeautifulSoup as soup
 from xml.dom import minidom
 
-import yaml
-
 import xmltodict
-
+from lxml import etree
+from tools import fileio_interface
 from utils.exceptions_interface import XMLInterfaceError
 
 # ----
 
-XML_SPECIAL_CHAR_DICT = {"__ENTITY__": "&"
-                         }
-
+XML_CHAR_DICT = {"__ENTITY__": "&"}
 
 # ----
 
-def read_xml(xml_path: str, remove_comments: bool = False,
-             resolve_entities: bool = True) -> Dict:
+
+def read_xml(
+        xml_path: str, remove_comments: bool = False) -> Dict:
     """
     Description
     -----------
@@ -79,12 +67,6 @@ def read_xml(xml_path: str, remove_comments: bool = False,
         XML-formatted comment strings when parsing the XML-formatted
         file.
 
-    resolve_entities: bool, optional
-
-        A Python boolean valued variable specifying whether to expand
-        any entity references with the XML-formatted file path (if
-        applicable).
-
     Returns
     -------
 
@@ -92,6 +74,29 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
         A Python dictionary containing the contents of the
         XML-formatted file path `xml_path`.
+
+    Raises
+    ------
+
+    XMLInterfaceError:
+
+        * raised if the XML-formatted file path does not exist.
+
+        * raised if an exception is encountered while reading the
+          XML-formatted file path.
+
+        * raised if an exception is encountered while replacing any
+          defined special characters in the XML-formatted file path
+          contents.
+
+        * raised if an exception is encountered while parsing and
+          defining the Python dictionary containing the contents of
+          the XML-formatted file path specified upon entry
+          (`xml_path`).
+
+        * raised if an exception is encountered while creating a
+          Python dictionary from the formatted contents of the
+          XML-formatted file path specified upon entry (`xml_path`).
 
     """
 
@@ -101,41 +106,65 @@ def read_xml(xml_path: str, remove_comments: bool = False,
         msg = f"The XML-formatted file path {xml_path} does not exist. Aborting!!!"
         raise XMLInterfaceError(msg=msg)
 
-    # Read the XML-formatted file.
-    with open(xml_path, "r", encoding="utf-8") as file:
-        xml_contents = file.read()
+    # Read the XML-formatted file; proceed accordingly.
+    try:
+        with open(xml_path, "r", encoding="utf-8") as file:
+            xml_contents_in = file.read()
 
-    xml_contents_out = xml_contents
-    for (key, value) in XML_SPECIAL_CHAR_DICT.items():
-        xml_contents_out = xml_contents.replace(value, key)
+    except Exception as errmsg:
+        msg = (
+            f"Reading XML-formatted file path {xml_path} failed with error "
+            f"{errmsg}. Aborting!!!"
+        )
+        raise XMLInterfaceError(msg=msg) from errmsg
 
-    parser = etree.XMLParser(remove_comments=remove_comments)
-    xml_str = minidom.parseString(etree.tostring(
-        etree.fromstring(xml_contents_out, parser))).toprettyxml(indent=5*" ")
+    # Replace any defined special character strings; proceed
+    # accordingly.
+    try:
+        xml_contents_out = xml_contents_in
+        for (key, value) in XML_CHAR_DICT.items():
+            xml_contents_out = xml_contents_in.replace(value, key)
 
-    xml_dict = xmltodict.parse(xml_str)
+    except Exception as errmsg:
+        msg = (
+            f"Replacing special characters {XML_CHAR_DICT.items()[1]} "
+            f"failed with error {errmsg}. Aborting!!!"
+        )
+        raise XMLInterfaceError(msg=msg) from errmsg
 
-    xml_dict1 = xml_dict
+    # Define the XML parser object and define the XML-formatted
+    # string; proceed accordingly.
+    try:
+        parser = etree.XMLParser(remove_comments=remove_comments)
+        xml_str = minidom.parseString(
+            etree.tostring(etree.fromstring(xml_contents_out, parser))
+        ).toprettyxml(indent=5 * " ")
 
-    xml_str = json.dumps(xml_dict)
-    for (key, value) in XML_SPECIAL_CHAR_DICT.items():
-        xml_str_out = xml_str.replace(key, value)
+        # Define the Python dictionary containing the XML contents.
+        xml_dict = xmltodict.parse(xml_str)
 
-    xml_dict = json.loads(xml_str_out)
+    except Exception as errmsg:
+        msg = (
+            f"Parsing XML-formatted file path {xml_path} contents failed with "
+            f"error {errmsg}. Aborting!!!"
+        )
+        raise XMLInterfaceError(msg=msg) from errmsg
 
-    xml_dict2 = xml_dict
+    # Update (e.g., replace) any special character strings.
+    try:
+        xml_str_in = json.dumps(xml_dict)
+        for (key, value) in XML_CHAR_DICT.items():
+            xml_str_out = xml_str_in.replace(key, value)
 
-    shared_items = deepdiff.DeepDiff(xml_dict1, xml_dict2)
+            # Update the Python dictionary containing the
+            # XML-formatted input file attributes.
+        xml_dict = json.loads(xml_str_out)
 
-    # shared_items = {
-    #    k: xml_dict1[k] for k in xml_dict1 if k not in xml_dict2}  # and xml_dict1[k] == xml_dict2[k]}
-
-    print(shared_items)
-    quit()
-
-    # xml_str = [json.dumps(xml_dict).replace(key, value)
-    #           for (key, value) in {"__ENTITY__": "&"}.items()][0]
-
-    # xml_dict = json.loads(xml_str)
+    except Exception as errmsg:
+        msg = (
+            f"Defining a Python dictionary from the contents of XML-formatted "
+            f"file path {xml_path} failed with error {errmsg}. Aborting!!!"
+        )
+        raise XMLInterfaceError(msg=msg) from errmsg
 
     return xml_dict
