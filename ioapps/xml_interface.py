@@ -107,29 +107,18 @@ def read_xml(xml_path: str, remove_comments: bool = False,
     for (key, value) in XML_SPECIAL_CHAR_DICT.items():
         xml_contents_out = xml_contents.replace(value, key)
 
-    print(xml_contents_out)
+    parser = etree.XMLParser(remove_comments=remove_comments)
+    xml_str = minidom.parseString(etree.tostring(
+        etree.fromstring(xml_contents_out, parser))).toprettyxml(indent=5*" ")
 
-    # print(xml_contents)
-    quit()
-
-    # xml_dict = json.loads(xml_contents)
+    xml_dict = xmltodict.parse(xml_str)
 
     print(xml_dict)
     quit()
 
-    # xml_contents = file.read().replace("&", "__ENTITY__")
+    # xml_str = [json.dumps(xml_dict).replace(key, value)
+    #           for (key, value) in {"__ENTITY__": "&"}.items()][0]
 
-    # Define the XML parser object and parse the XML-formatted file
-    # contents.
-    parser = etree.XMLParser(remove_comments=remove_comments)
-    xml_str = minidom.parseString(etree.tostring(
-        etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
-
-    xml_dict = xmltodict.parse(xml_str)
-
-    xml_str = [json.dumps(xml_dict).replace(key, value)
-               for (key, value) in {"__ENTITY__": "&"}.items()][0]
-
-    xml_dict = json.loads(xml_str)
+    # xml_dict = json.loads(xml_str)
 
     return xml_dict
