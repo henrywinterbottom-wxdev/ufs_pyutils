@@ -24,6 +24,8 @@
 
 # ----
 
+import os
+
 from typings import Dict
 
 from tools import fileio_interface
@@ -63,3 +65,7 @@ def read_xml(xml_path: str, resolve_entities: bool = True,
     # Read the XML-formatted file.
     xmlstr = minidom.parseString(etree.tostring(
         etree.fromstring(xml_contents, parser))).toprettyxml(indent=5"*")
+
+    xml_dict = xmltodict.parse(xmlstr)
+
+    return xml_dict
