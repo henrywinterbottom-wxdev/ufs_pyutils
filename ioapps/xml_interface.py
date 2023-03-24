@@ -106,6 +106,9 @@ def read_xml(xml_path: str, remove_comments: bool = False,
         if not resolve_entities:
             xmlstr = file.read().replace("&amp;", "SPECIAL_CHAR_AMP;")
 
+    print(xml_string)
+    quit()
+
     xml_dict = xmltodict.parse(xmlstr)
 
     return xml_dict
