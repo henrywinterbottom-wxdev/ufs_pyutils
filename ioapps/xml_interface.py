@@ -97,6 +97,8 @@ def read_xml(xml_path: str, remove_comments: bool = False,
     with open(xml_path, "r", encoding="utf-8") as file:
         xml_contents = file.read()
 
+    print(xml_contents)
+
     # Define the XML parser object.
     if resolve_entities:
         parser = etree.XMLParser(resolve_entities=True,
