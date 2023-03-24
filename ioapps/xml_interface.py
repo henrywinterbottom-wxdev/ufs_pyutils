@@ -113,11 +113,17 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     xml_dict = xmltodict.parse(xml_str)
 
+    xml_dict1 = xml_dict
+
     xml_str = json.dumps(xml_dict)
     for (key, value) in XML_SPECIAL_CHAR_DICT.items():
         xml_str_out = xml_str.replace(key, value)
 
-    print(xml_str_out)
+    xml_dict = json.loads(xml_str_out)
+
+    xml_dict2 = xml_dict
+
+    print(xml_dict2)
     quit()
 
     # xml_str = [json.dumps(xml_dict).replace(key, value)
