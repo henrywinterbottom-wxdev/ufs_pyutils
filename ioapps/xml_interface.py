@@ -97,34 +97,12 @@ def read_xml(xml_path: str, remove_comments: bool = False,
     with open(xml_path, "r", encoding="utf-8") as file:
         xml_contents = file.read().replace("&", "__ENTITY__")
 
-    print(xml_contents)
-    quit()
-
-    # Define the XML parser object.
-    parser = etree.XMLParser(resolve_entities=resolve_entities,
-                             remove_comments=remove_comments)
+    # Define the XML parser object and parse the XML-formatted file
+    # contents.
+    parser = etree.XMLParser(remove_comments=remove_comments)
     xml_str = minidom.parseString(etree.tostring(
         etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
 
-    print(xml_str)
-
-    quit()
-
-    if resolve_entities:
-        parser = etree.XMLParser(resolve_entities=True,
-                                 remove_comments=remove_comments)
-        xmlstr = minidom.parseString(etree.tostring(
-            etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
-
-    if not resolve_entities:
-        parser = etree.XMLParser(resolve_entities=False,
-                                 remove_comments=remove_comments)
-        xmlstr = minidom.parseString(etree.tostring(
-            etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
-
-    print(xmlstr)
-    quit()
-
-    xml_dict = xmltodict.parse(xmlstr)
+    xml_dict = xmltodict.parse(xml_str)
 
     return xml_dict
