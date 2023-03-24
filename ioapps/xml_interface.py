@@ -105,6 +105,15 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     xml_dict = xmltodict.parse(xml_str)
 
-    xml_dict = xml_dict.get("__ENTITY__", "&")
+    for (key, value) in xml_dict.items():
+        key = [item for item in {"__ENTITY__": "&"}.keys() if item in key]
+
+        print(key)
+
+        # xml_dict[key] = [item for item in {"__ENTITY__": "&"} if
+
+    # print(address)
+
+#    xml_dict = xml_dict.get("__ENTITY__", "&")
 
     return xml_dict
