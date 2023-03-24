@@ -97,6 +97,10 @@ def read_xml(xml_path: str, remove_comments: bool = False,
     with open(xml_path, "r", encoding="utf-8") as file:
         xml_contents = file.read()
 
+    entities = [for entity in soup.find_all(re.compile("&"))]
+    print(entities)
+    quit()
+
     # Define the XML parser object.
     parser = etree.XMLParser(resolve_entities=resolve_entities,
                              remove_comments=remove_comments)
