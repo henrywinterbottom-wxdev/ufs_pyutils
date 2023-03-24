@@ -33,7 +33,7 @@ from typing import Dict
 from tools import fileio_interface
 
 from lxml import etree
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup as soup
 from xml.dom import minidom
 
 import yaml
