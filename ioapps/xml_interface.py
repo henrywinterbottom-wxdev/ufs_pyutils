@@ -111,7 +111,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     xml_dict = json.loads(xml_str)
 
-    print(type(xml_dict))
+    print((xml_dict))
     quit()
 
     for key in xml_dict:
