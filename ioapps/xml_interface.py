@@ -106,8 +106,6 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
             print(docTree)
 
-            print(docTree.xpath("//editor"))
-
             quit()
 
     # Read the XML-formatted file.
