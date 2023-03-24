@@ -105,11 +105,11 @@ def read_xml(xml_path: str, remove_comments: bool = False,
         xmlstr = minidom.parseString(etree.tostring(
             etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
 
-        if not resolve_entities:
-            parser = etree.XMLParser(resolve_entities=False,
-                                     remove_comments=remove_comments)
-            xmlstr = minidom.parseString(etree.tostring(
-                etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
+    if not resolve_entities:
+        parser = etree.XMLParser(resolve_entities=False,
+                                 remove_comments=remove_comments)
+        xmlstr = minidom.parseString(etree.tostring(
+            etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
 
     print(xmlstr)
     quit()
