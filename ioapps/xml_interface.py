@@ -41,10 +41,45 @@ from utils.exceptions_interface import XMLInterfaceError
 
 # ----
 
-def read_xml(xml_path: str, resolve_entities: bool = True,
-             attribute_defaults: bool = True,
-             remove_comments: bool = False, remove_pis: bool = False) -> Dict:
+def read_xml(xml_path: str, remove_comments: bool = False,
+             resolve_entities: bool = True) -> Dict:
     """
+    Description
+    -----------
+
+    This function parses an XML-formatted file and returns the
+    contents of the file formatted as a Python Dictionary.
+
+    Parameters
+    ----------
+
+    xml_path: str
+
+        A Python string specifying the path to the XML-formatted file
+        to be read.
+
+    Keywords
+    --------
+
+    remove_comments: bool, optional
+
+        A Python boolean valued variable specifying whether to include
+        XML-formatted comment strings when parsing the XML-formatted
+        file.
+
+    resolve_entities: bool, optional
+
+        A Python boolean valued variable specifying whether to expand
+        any entity references with the XML-formatted file path (if
+        applicable).
+
+    Returns
+    -------
+
+    xml_dict: dict
+
+        A Python dictionary containing the contents of the
+        XML-formatted file path `xml_path`.
 
     """
 
@@ -55,13 +90,18 @@ def read_xml(xml_path: str, resolve_entities: bool = True,
         raise XMLInterfaceError(msg=msg)
 
     with open(xml_path, "r", encoding="utf-8") as file:
-        xml_contents = file.read()
 
-    # Define the XML parser object.
-    parser = etree.XMLParser(resolve_entities=resolve_entities,
-                             attribute_defaults=attribute_defaults,
-                             remove_comments=remove_comments,
-                             remove_pis=remove_pis)
+        if resolve_entities:
+            xml_contents = file.read()
+
+        if not resolve_entities:
+            xml_contents = file.read().replace("&amp;", "&amp;amp;")
+
+        # Define the XML parser object.
+        parser = etree.XMLParser(resolve_entities=resolve_entities,
+                                 attribute_defaults=attribute_defaults,
+                                 remove_comments=remove_comments,
+                                 remove_pis=remove_pis)
 
     # Read the XML-formatted file.
     xmlstr = minidom.parseString(etree.tostring(
