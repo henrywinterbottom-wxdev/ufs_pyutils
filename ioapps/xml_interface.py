@@ -102,7 +102,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
                 etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
 
         if not resolve_entities:
-            xmlstr = file.read().replace("&amp;", "&amp;amp;")
+            xmlstr = file.read().replace("&amp;", "\&amp;amp;")
 
     xml_dict = xmltodict.parse(xmlstr)
 
