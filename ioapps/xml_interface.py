@@ -90,6 +90,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
         msg = f"The XML-formatted file path {xml_path} does not exist. Aborting!!!"
         raise XMLInterfaceError(msg=msg)
 
+    # Read the XML-formatted file.
     with open(xml_path, "r", encoding="utf-8") as file:
 
         # Define the XML parser object.
@@ -97,13 +98,11 @@ def read_xml(xml_path: str, remove_comments: bool = False,
             xml_contents = file.read()
             parser = etree.XMLParser(resolve_entities=True,
                                      remove_comments=remove_comments)
+            xmlstr = minidom.parseString(etree.tostring(
+                etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
 
         if not resolve_entities:
-            xml_contents = file.read().replace("&amp;", "&amp;amp;")
-
-    # Read the XML-formatted file.
-    xmlstr = minidom.parseString(etree.tostring(
-        etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
+            xmlstr = file.read().replace("&amp;", "&amp;amp;")
 
     xml_dict = xmltodict.parse(xmlstr)
 
