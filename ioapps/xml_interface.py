@@ -106,7 +106,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
     xml_dict = xmltodict.parse(xml_str)
 
     for (item, value) in {"__ENTITY__": "&"}.items():
-        text = text.replace(item value)
+        text = text.replace(item, value)
         print(text)
 
     quit()
