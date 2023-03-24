@@ -101,7 +101,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     # Read the XML-formatted file.
     with open(xml_path, "r", encoding="utf-8") as file:
-        xml_contents = list(file.read())
+        xml_contents = list(file.read().split())
 
     xml_contents_out = xml_contents
     for (key, value) in XML_SPECIAL_CHAR_DICT.items():
