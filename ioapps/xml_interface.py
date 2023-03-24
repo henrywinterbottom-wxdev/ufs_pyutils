@@ -102,8 +102,9 @@ def read_xml(xml_path: str, remove_comments: bool = False,
             xml_contents = file.read().replace("&amp;", "&amp;amp;")
             parser = etree.XMLParser(encoding="utf-8",
                                      remove_comments=remove_comments)
-            docTree = etree.parse(io.BytesIO(
-                bytes(xml_contents, "utf-8")), parser)
+            docTree = etree.parse(bytes(xml_contents, "utf-8"))
+
+            print(docTree)
 
             print(docTree.xpath("//editor"))
 
