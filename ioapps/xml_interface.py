@@ -96,17 +96,20 @@ def read_xml(xml_path: str, remove_comments: bool = False,
     # Read the XML-formatted file.
     with open(xml_path, "r", encoding="utf-8") as file:
 
-        # Define the XML parser object.
-        if resolve_entities:
-            xml_contents = file.read()
-            parser = etree.XMLParser(resolve_entities=True,
+        xml_contents = file.read()
+
+    # Define the XML parser object.
+    if resolve_entities:
+        parser = etree.XMLParser(resolve_entities=True,
+                                 remove_comments=remove_comments)
+        xmlstr = minidom.parseString(etree.tostring(
+            etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
+
+        if not resolve_entities:
+            parser = etree.XMLParser(resolve_entities=False,
                                      remove_comments=remove_comments)
             xmlstr = minidom.parseString(etree.tostring(
                 etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
-
-        if not resolve_entities:
-            # file.read().replace("&amp;", "SPECIAL_CHAR_AMP;")
-            xmlstr = file.read()
 
     print(xmlstr)
     quit()
