@@ -106,8 +106,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
         if not resolve_entities:
             # file.read().replace("&amp;", "SPECIAL_CHAR_AMP;")
-            xmlstr = file.read().re.sub(
-                '[^a-zA-Z0-9 \n\.]', 'SPECIAL_CHAR_AMP')
+            xmlstr = file.read()
 
     print(xmlstr)
     quit()
