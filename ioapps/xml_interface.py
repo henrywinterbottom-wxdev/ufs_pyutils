@@ -27,6 +27,7 @@
 import io
 import os
 import re
+import json
 
 from typing import Dict
 
@@ -105,7 +106,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     xml_dict = xmltodict.parse(xml_str)
 
-    print(xml_dict)
+    print(json.dumps(xml_dict))
     quit()
 
     for (item, value) in {"__ENTITY__": "&"}.items():
