@@ -105,11 +105,11 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     xml_contents_out = xml_contents
     for (key, value) in XML_SPECIAL_CHAR_DICT.items():
-        xml_contents_out = xml_contents.replace(key, value)
+        xml_contents_out = xml_contents.replace(value, key)
 
     print(xml_contents_out)
 
-    print(xml_contents)
+    # print(xml_contents)
     quit()
 
     # xml_dict = json.loads(xml_contents)
