@@ -100,7 +100,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
     # Define the XML parser object.
     parser = etree.XMLParser(resolve_entities=resolve_entities,
                              remove_comments=remove_comments)
-    xmlstr = minidom.parseString(etree.tostring(
+    xml_str = minidom.parseString(etree.tostring(
         etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
 
     print(xml_str)
