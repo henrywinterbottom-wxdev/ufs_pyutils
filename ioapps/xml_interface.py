@@ -110,7 +110,9 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
         print(key)
 
-        # xml_dict[key] = [item for item in {"__ENTITY__": "&"} if
+    quit()
+
+    # xml_dict[key] = [item for item in {"__ENTITY__": "&"} if
 
     # print(address)
 
