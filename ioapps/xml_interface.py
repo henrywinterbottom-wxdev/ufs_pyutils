@@ -104,7 +104,10 @@ def read_xml(xml_path: str, remove_comments: bool = False,
         xml_contents = str([file.read().replace(value, key)
                             for (key, value) in XML_SPECIAL_CHAR_DICT.items()])
 
-        # xml_contents = file.read().replace("&", "__ENTITY__")
+    print(xml_contents)
+    quit()
+
+    # xml_contents = file.read().replace("&", "__ENTITY__")
 
     # Define the XML parser object and parse the XML-formatted file
     # contents.
