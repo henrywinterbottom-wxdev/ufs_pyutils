@@ -26,7 +26,7 @@
 
 import os
 
-from typings import Dict
+from typing import Dict
 
 from tools import fileio_interface
 
