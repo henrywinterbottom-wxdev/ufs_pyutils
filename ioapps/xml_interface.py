@@ -26,6 +26,7 @@
 
 import io
 import os
+import re
 
 from typing import Dict
 
@@ -104,7 +105,9 @@ def read_xml(xml_path: str, remove_comments: bool = False,
                 etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
 
         if not resolve_entities:
-            xmlstr = file.read().replace("&amp;", "SPECIAL_CHAR_AMP;")
+            # file.read().replace("&amp;", "SPECIAL_CHAR_AMP;")
+            xmlstr = file.read().re.sub(
+                '[^a-zA-Z0-9 \n\.]', 'SPECIAL_CHAR_AMP')
 
     print(xmlstr)
     quit()
