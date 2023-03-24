@@ -103,11 +103,12 @@ def read_xml(xml_path: str, remove_comments: bool = False,
     with open(xml_path, "r", encoding="utf-8") as file:
         xml_contents = list(file.read())
 
+    xml_contents_out = xml_contents
     for (key, value) in XML_SPECIAL_CHAR_DICT.items():
         for (idx, item) in enumerate(xml_contents):
-            xml_contents[idx] = item.replace(key, value)
+            xml_contents_out[idx] = item.replace(key, value)
 
-    print(xml_contents)
+    print(xml_contents_out)
     quit()
 
     # xml_dict = json.loads(xml_contents)
