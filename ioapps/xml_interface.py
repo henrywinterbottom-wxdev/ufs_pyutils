@@ -91,19 +91,16 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     with open(xml_path, "r", encoding="utf-8") as file:
 
+        # Define the XML parser object.
         if resolve_entities:
             xml_contents = file.read()
-            parser = etree.XMLParser(resolve_entities=resolve_entities,
+            parser = etree.XMLParser(resolve_entities=True,
                                      remove_comments=remove_comments)
 
         if not resolve_entities:
             xml_contents = file.read().replace("&amp;", "&amp;amp;")
-
-            print(xml_contents)
-
-            quit()
-
-        # Define the XML parser object.
+            parser = etree.XMLParser(encoding="utf-8",
+                                     remove_comments=remove_comments)
 
     # Read the XML-formatted file.
     xmlstr = minidom.parseString(etree.tostring(
