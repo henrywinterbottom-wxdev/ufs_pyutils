@@ -104,10 +104,6 @@ def read_xml(xml_path: str, remove_comments: bool = False,
                                      remove_comments=remove_comments)
             docTree = etree.parse(bytes(xml_contents, "utf-8"))
 
-            print(docTree)
-
-            quit()
-
     # Read the XML-formatted file.
     xmlstr = minidom.parseString(etree.tostring(
         etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
