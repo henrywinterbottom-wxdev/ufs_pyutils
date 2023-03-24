@@ -29,6 +29,8 @@ import os
 import re
 import json
 
+import deepdiff
+
 from typing import Dict
 
 from tools import fileio_interface
