@@ -100,9 +100,6 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
         if not resolve_entities:
             xml_contents = file.read().replace("&amp;", "&amp;amp;")
-            parser = etree.XMLParser(encoding="utf-8",
-                                     remove_comments=remove_comments)
-            docTree = etree.parse(bytes(xml_contents, "utf-8"))
 
     # Read the XML-formatted file.
     xmlstr = minidom.parseString(etree.tostring(
