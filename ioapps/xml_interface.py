@@ -35,7 +35,7 @@ from bs4 import BeautifulSoup
 
 import xmltodict
 
-from exceptions import XMLInterfaceError
+from utils.exceptions_interface import XMLInterfaceError
 
 
 # ----
