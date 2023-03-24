@@ -103,7 +103,9 @@ def read_xml(xml_path: str, remove_comments: bool = False,
     with open(xml_path, "r", encoding="utf-8") as file:
         xml_contents = file.read().replace("&", "__ENTITY__")
 
-    print(xml_contents)
+    xml_dict = json.loads(xml_contents)
+
+    print(xml_dict)
     quit()
 
     # xml_contents = file.read().replace("&", "__ENTITY__")
