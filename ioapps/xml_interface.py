@@ -98,6 +98,8 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
         xml_contents = file.read()
 
+    os.unlink()
+
     # Define the XML parser object.
     if resolve_entities:
         parser = etree.XMLParser(resolve_entities=True,
