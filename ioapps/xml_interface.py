@@ -90,7 +90,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
         msg = f"The XML-formatted file path {xml_path} does not exist. Aborting!!!"
         raise XMLInterfaceError(msg=msg)
 
-    with open(xml_path, "rb", encoding="utf-8") as file:
+    with open(xml_path, "rb") as file:
 
         # Define the XML parser object.
         if resolve_entities:
