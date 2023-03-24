@@ -103,6 +103,8 @@ def read_xml(xml_path: str, remove_comments: bool = False,
     xmlstr = minidom.parseString(etree.tostring(
         etree.fromstring(xml_contents, parser))).toprettyxml(indent=5*" ")
 
+    print(xml_str)
+
     quit()
 
     if resolve_entities:
