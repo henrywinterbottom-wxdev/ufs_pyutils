@@ -26,15 +26,39 @@ Module
 Description
 -----------
 
-    This module contains functions to write TC-vitals records.
+    This module contains functions to read and write TC-vitals
+    records.
 
 Functions
 ---------
 
-    __error__(msg=None)
+    __scalegeo__(lat, lon)
 
-        This function is the exception handler for the respective
-        module.
+        This function scales the geographical location coordinates for
+        the TC-vitals record according.
+
+    __scaleintns__(mslp, vmax)
+
+        This function scales the minimum sea-level pressure (`mslp`)
+        and maximum wind speed (`vmax`) intensity values to their
+        corresponding MKS units.
+
+    __scalesize__(poci, rmw, roci)
+
+        This function scales the tropical cyclone size metric values
+        to their corresponding MKS units.
+
+    read_tcvfile(filepath)
+
+        This function reads a TC-vitals formatted file and returns a
+        Python object containing the TC-vitals attributes for all
+        records within the filepath.
+
+    scale_tcvrec(tcv_dict)
+
+        This function scales the relavant tropical cyclone records to
+        their respective MKS representations and returns a Python
+        object containing the respective scaled values.
 
     write_tcvfile(filepath, tcvstr)
 
@@ -61,21 +85,24 @@ History
 # ----
 
 # pylint: disable=consider-using-f-string
-# pylint: disable=unused-argument
 
 # ----
+
+
+from collections import OrderedDict
+from typing import Dict, Tuple
 
 import numpy
 from tools import parser_interface
 from utils import constants_interface
-from utils.error_interface import msg_except_handle
+from utils.constants_interface import hPa2Pa, kn2m
 from utils.exceptions_interface import TCVitalsInterfaceError
 from utils.logger_interface import Logger
 
 # ----
 
 # Define all available functions.
-__all__ = ["write_tcvfile", "write_tcvstr"]
+__all__ = ["read_tcvfile", "scale_tcvrec", "write_tcvfile", "write_tcvstr"]
 
 # ----
 
@@ -89,24 +116,343 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
+TCV_34QUAD_DICT = OrderedDict(
+    {
+        "tcv_center": {"idx": 0, "spval": None},
+        "tcid": {"idx": 1, "spval": None},
+        "event_name": {"idx": 2, "spval": None},
+        "time_ymd": {"idx": 3, "spval": None},
+        "time_hm": {"idx": 4, "spval": None},
+        "lat": {"idx": 5, "spval": None},
+        "lon": {"idx": 6, "spval": None},
+        "stormdir": {"idx": 7, "spval": "-99"},
+        "stormspeed": {"idx": 8, "spval": "-99"},
+        "mslp": {"idx": 9, "spval": None},
+        "poci": {"idx": 10, "spval": "-999"},
+        "roci": {"idx": 11, "spval": "-999"},
+        "vmax": {"idx": 12, "spval": None},
+        "rmw": {"idx": 13, "spval": "-99"},
+        "NE34": {"idx": 14, "spval": "-999"},
+        "SE34": {"idx": 15, "spval": "-999"},
+        "SW34": {"idx": 16, "spval": "-999"},
+        "NW34": {"idx": 17, "spval": "-999"},
+        "stormdepth": {"idx": 18, "spval": "X"},
+    }
+)
 
-@msg_except_handle(TCVitalsInterfaceError)
-def __error__(msg: str = None) -> None:
+
+def __scalegeo__(lat: str, lon: str) -> Tuple[float, float]:
     """
     Description
     -----------
 
-    This function is the exception handler for the respective module.
+    This function scales the geographical location coordinates for the
+    TC-vitals record according.
 
     Parameters
     ----------
 
-    msg: str
+    lat: str
 
-        A Python string containing a message to accompany the
-        exception.
+        A Python string defining the geographical location latitude
+        coordinate for the respective TC-vitals record.
+
+    lon: str
+
+        A Python string defining the geographical location longitude
+        coordinate for the respective TC-vitals record.
+
+    Returns
+    -------
+
+    lat_out: float
+
+        A Python float value defining the scaled geographical location
+        latitude coordinate; units are degrees.
+
+    lon_out: float
+
+        A Python float value defining the scaled geographical location
+        longitude coordinate; units are degrees.
 
     """
+
+    # Initialize the respective TC-vitals attribute variables.
+    (lat_in, lon_in) = (lat, lon)
+
+    # Define the scaling values accordingly.
+    (lat_scale, lon_scale) = [1.0 / 10.0 for idx in range(2)]
+
+    if "S" in lat_in:
+        lat_scale = -1.0 / 10.0
+
+    if "E" in lon_in:
+        lon_scale = -1.0 / 10.0
+
+    # Rescale the geographical location values.
+    lat_out = lat_scale * int(lat_in[:-1])
+    lon_out = lon_scale * int(lon_in[:-1])
+
+    return (lat_out, lon_out)
+
+
+# ----
+
+
+def __scaleintns__(mslp: str, vmax: str) -> Tuple[float, float]:
+    """
+    Description
+    -----------
+
+    This function scales the minimum sea-level pressure (`mslp`) and
+    maximum wind speed (`vmax`) intensity values to their
+    corresponding MKS units.
+
+    Parameters
+    ----------
+
+    mslp: str
+
+        A Python string defining the minimum sea-level pressure value.
+
+    vmax: str
+
+        A Python string defining the maximum wind speed intensity
+        value.
+
+    Returns
+    -------
+
+    mslp_out: float
+
+        A Python float value defining the formatted minimum sea-level
+        pressure value; units are Pascals.
+
+    vmax_out: float
+
+        A Python float value defining the formatted maxmimum wind
+        speed value; units are meters per second.
+
+    """
+
+    # Initialize the respective TC-vitals attribute variables.
+    (mslp_in, vmax_in) = (mslp, vmax)
+
+    # Scale the values accordingly.
+    mslp_out = int(mslp_in) * hPa2Pa
+    vmax_out = float(vmax_in)
+
+    return (mslp_out, vmax_out)
+
+
+# ----
+
+
+def __scalesize__(poci: str, rmw: str, roci: str) -> Tuple[float, float, float]:
+    """
+    Description
+    -----------
+
+    This function scales the tropical cyclone size metric values to
+    their corresponding MKS units.
+
+    Parameters
+    ----------
+
+    poci: str
+
+        A Python string defining the pressure of the outer-most closed
+        isobar relative to the respective TC event.
+
+    rmw: str
+
+        A Python string defining the radius of maximum wind speed
+        relative to the respective TC event.
+
+    roci: str
+
+        A Python string defining the radius of the outer-most closed
+        isobar relative to the respective TC event.
+
+    Returns
+    -------
+
+    poci_out: float
+
+        A Python float value defining the pressure of the outer-most
+        closed isobar; units are Pascals; if NoneType upon entry,
+        NoneType is returned.
+
+    rmw_out: float
+
+        A Python float value defining the radius of maximum winds;
+        units are meters; if NoneType upon entry, NoneType is
+        returned.
+
+    roci_out: float
+
+        A Python float value defining the radius of the outer-most
+        closed isobar; units are meters; if NoneType upon entry,
+        NoneType is returned.
+
+    """
+
+    # Initialize the respective TC-vitals attribute variables.
+    (poci_in, rmw_in, roci_in) = (poci, rmw, roci)
+    (poci_out, rmw_out, roci_out) = [None for idx in range(3)]
+
+    # Scale the values accordingly.
+    if poci_in is not None:
+        poci_out = int(poci_in) * hPa2Pa
+
+    if rmw_in is not None:
+        rmw_out = int(rmw_in) * kn2m
+
+    if roci_in is not None:
+        roci_out = int(roci_in) * kn2m
+
+    return (poci_out, rmw_out, roci_out)
+
+
+# ----
+
+
+def read_tcvfile(filepath: str) -> object:
+    """
+    Description
+    -----------
+
+    This function reads a TC-vitals formatted file and returns a
+    Python object containing the TC-vitals attributes for all records
+    within the filepath.
+
+    Parameters
+    ----------
+
+    filepath: str
+
+        A Python string specifying the file path for the TC-vitals
+        formatted file.
+
+    Returns
+    -------
+
+    tcvobj: object
+
+        A Python object containing the attributes for each TC record
+        within the file path specified upon entry.
+
+    """
+
+    # Read in TC-vitals records.
+    with open(filepath, "r", encoding="utf-8") as file:
+        tcvdata = file.read()
+
+    # Collect the attributes for the respective TC-vitals record(s);
+    # proceed accordingly.
+    tcvobj = parser_interface.object_define()
+
+    for (idx, tcv) in enumerate(tcvdata.split("\n")):
+
+        # Collect the attributes for the current TC-vitals record;
+        # proceed accordingly.
+        if tcv.strip():
+            tcvdict = {}
+
+            # Determine the appropriate Python dictionary to be used
+            # for parsing and assigning values for the TC-vitals
+            # records.
+            msg = f"Parsing TC-vitals record {tcv}."
+            logger.info(msg)
+            tcvrec = tcv.split()
+
+            if len(tcvrec) == 19:
+                tcvrec_dict = TCV_34QUAD_DICT
+            else:
+                msg = (
+                    "Too many attributes were found for TC-vitals "
+                    f"record {tcvrec}; found {len(tcvrec)}. Aborting!!!"
+                )
+                raise TCVitalsInterfaceError(msg=msg)
+
+            for item in tcvrec_dict:
+
+                # Collect the record index and the missing value
+                # indicator for the respective attribute and update
+                # the local values accordingly.
+                tcvidx = parser_interface.dict_key_value(
+                    dict_in=tcvrec_dict[item], key="idx", no_split=True
+                )
+                attr_value = parser_interface.dict_key_value(
+                    dict_in=tcvrec_dict[item], key="spval", no_split=True
+                )
+
+                # Collect the respective TC-vitals attribute; proceed
+                # accordingly.
+                tcvdict[item] = tcvrec[tcvidx]
+
+                if attr_value is not None:
+                    if str(attr_value) == str(tcvdict[item]):
+
+                        # Update the missing datum with NoneType.
+                        tcvdict[item] = None
+
+            # Update the local Python object.
+            tcvobj = parser_interface.object_setattr(
+                object_in=tcvobj, key=f"TC{idx}", value=tcvdict
+            )
+
+    return tcvobj
+
+
+# ----
+
+
+def scale_tcvrec(tcv_dict: Dict) -> object:
+    """
+    Description
+    -----------
+
+    This function scales the relavant tropical cyclone records to
+    their respective MKS representations and returns a Python object
+    containing the respective scaled values.
+
+    Parameters
+    ----------
+
+    tcv_dict: dict
+
+        A Python dictionary containing the TC-vitals record
+        attributes.
+
+    Returns
+    -------
+
+    tcv_obj: object
+
+        A Python object containing the MKS values for the respective
+        TC-vitals record attributes.
+
+    """
+
+    # Collect the relevant attributes from the TC-vitals record.
+    tcv_obj = parser_interface.object_define()
+    (lat, lon, mslp, poci, rmw, roci, vmax) = [
+        parser_interface.dict_key_value(
+            dict_in=tcv_dict, key=key, no_split=True)
+        for key in ["lat", "lon", "mslp", "poci", "rmw", "roci", "vmax"]
+    ]
+
+    # Scale the TC-vitals record attributes accordingly.
+    (tcv_obj.lat, tcv_obj.lon) = __scalegeo__(lat=lat, lon=lon)
+
+    (tcv_obj.mslp, tcv_obj.vmax) = __scaleintns__(mslp=mslp, vmax=vmax)
+
+    (tcv_obj.poci, tcv_obj.rmw, tcv_obj.roci) = __scalesize__(
+        poci=poci, roci=roci, rmw=rmw
+    )
+
+    return tcv_obj
 
 
 # ----
@@ -271,7 +617,8 @@ def write_tcvstr(tcvit_obj: object) -> str:
 
     # Check that all mandatory TC-vitals record attributes are
     # specified; proceed accordingly.
-    mand_attr_list = ["lat", "lon", "mslp", "tcid", "time_hm", "time_ymd", "vmax"]
+    mand_attr_list = ["lat", "lon", "mslp",
+                      "tcid", "time_hm", "time_ymd", "vmax"]
 
     for mand_attr in mand_attr_list:
         if not parser_interface.object_hasattr(object_in=tcvit_obj, key=mand_attr):
@@ -279,7 +626,7 @@ def write_tcvstr(tcvit_obj: object) -> str:
                 "The input TC-vitals variable object does not contain "
                 f"the mandatory attribute {mand_attr}. Aborting!!!"
             )
-            __error__(msg=msg)
+            raise TCVitalsInterfaceError(msg=msg)
 
         # Build the TC-vitals record object.
         value = parser_interface.object_getattr(object_in=tcvit_obj, key=mand_attr)

@@ -32,10 +32,15 @@ Description
 Functions
 ---------
 
-    __error__(msg=None)
+    __andopts__(key, valid_opts)
 
-        This function is the exception handler for the respective
-        module.
+        This function builds a Python schema dictionary using the And
+        attribute.
+
+    check_opts(key, valid_opts, data, check_and: bool = False)
+
+        This function checks that key and value pair is valid relative
+        to the list of accepted values.
 
     validate_opts(cls_schema, cls_opts)
 
@@ -63,19 +68,19 @@ History
 # ----
 
 # pylint: disable=broad-except
-# pylint: disable=unused-argument
 
 # ----
 
-from schema import Schema
+from typing import Dict, List
 
-from utils.error_interface import msg_except_handle
+from schema import And, Schema
+
 from utils.exceptions_interface import SchemaInterfaceError
 
 # ----
 
 # Define all available attributes.
-__all__ = ["validate_opts"]
+__all__ = ["check_opts", "validate_opts"]
 
 # ----
 
@@ -83,32 +88,114 @@ __author__ = "Henry R. Winterbottom"
 __maintainer__ = "Henry R. Winterbottom"
 __email__ = "henry.winterbottom@noaa.gov"
 
+
 # ----
 
 
-@msg_except_handle(SchemaInterfaceError)
-def __error__(msg: str = None) -> None:
+def __andopts__(key: str, valid_opts: List) -> Dict:
     """
     Description
     -----------
 
-    This function is the exception handler for the respective module.
+    This function builds a Python schema dictionary using the And
+    attribute.
 
     Parameters
     ----------
 
-    msg: str
+    key: str
 
-        A Python string containing a message to accompany the
-        exception.
+        A Python string specifying the key for which to valid the
+        respective value against list of accepted values.
+
+    valid_opts: list
+
+        A Python list containing the accepted values.
+
+    Returns
+    -------
+
+    schema_dict: dict
+
+        A Python dictionary containing the schema to be validated.
 
     """
+
+    schema_dict = {f"{key}": And(str, lambda opt: opt in valid_opts)}
+
+    return schema_dict
 
 
 # ----
 
 
-def validate_opts(cls_schema: dict, cls_opts: dict) -> None:
+def check_opts(key: str, valid_opts: List, data: Dict, check_and: bool = False) -> None:
+    """
+    Description
+    -----------
+
+    This function checks that key and value pair is valid relative to
+    the list of accepted values.
+
+    Parameters
+    ----------
+
+    key: str
+
+        A Python string specifying the key for which to validate the
+        respective value against list of accepted values.
+
+    valid_opts: list
+
+        A Python list containing the accepted values.
+
+    data: dict
+
+        A Python dictionary containing the key and value pair which to
+        validate.
+
+    Keywords
+    --------
+
+    check_and: bool, optional
+
+        A Python boolean valued variable specifying whether to
+        construct the Python schema dictionary using the And
+        attribute; see __andopts__.
+
+    Raises
+    ------
+
+    SchemaInterfaceError:
+
+        * raised if an exception is encountered while validating the
+          schema.
+
+    """
+
+    if check_and:
+        schema_dict = __andopts__(key=key, valid_opts=valid_opts)
+
+    # Build the schema.
+    schema = Schema([schema_dict])
+
+    # Check that the respective key and value pair is valid; proceed
+    # accordingly.
+    try:
+
+        # Validate the schema.
+        schema.validate([data])
+
+    except Exception as errmsg:
+
+        msg = f"Schema validation failed with error {errmsg}. Aborting!!!"
+        raise SchemaInterfaceError(msg=msg) from errmsg
+
+
+# ----
+
+
+def validate_opts(cls_schema: Dict, cls_opts: Dict) -> None:
     """
     Description
     -----------
@@ -149,7 +236,7 @@ def validate_opts(cls_schema: dict, cls_opts: dict) -> None:
         # Validate the schema.
         schema.validate([cls_opts])
 
-    except Exception as error:
+    except Exception as errmsg:
 
-        msg = f"Schema validation failed with error {error}. Aborting!!!"
-        __error__(msg=msg)
+        msg = f"Schema validation failed with error {errmsg}. Aborting!!!"
+        raise SchemaInterfaceError(msg=msg) from errmsg

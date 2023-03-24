@@ -72,12 +72,12 @@ History
 # pylint: disable=broad-except
 # pylint: disable=consider-using-with
 # pylint: disable=raise-missing-from
-# pylint: disable=unused-argument
 
 # ----
 
 import os
 import subprocess
+from typing import List
 
 import requests
 from bs4 import BeautifulSoup
@@ -99,7 +99,6 @@ __email__ = "henry.winterbottom@noaa.gov"
 # ----
 
 logger = Logger()
-
 
 # ----
 
@@ -242,7 +241,7 @@ def get_webfile(
 
         os.chdir(cwd)
 
-    except Exception as error:
+    except Exception as errmsg:
 
         # Proceed accordingly for internet-based file paths that are
         # missing.
@@ -251,7 +250,7 @@ def get_webfile(
 
         if not ignore_missing:
             msg = (
-                f"Collecting of internet path {url} failed with error {error}. "
+                f"Collecting of internet path {url} failed with error {errmsg}. "
                 "Aborting!!!"
             )
             raise CurlInterfaceError(msg=msg)
@@ -260,7 +259,7 @@ def get_webfile(
 # ----
 
 
-def get_weblist(url: str, decode_utf8: bool = False, ext: str = None) -> list:
+def get_weblist(url: str, decode_utf8: bool = False, ext: str = None) -> List:
     """
     Description
     -----------
@@ -326,10 +325,10 @@ def get_weblist(url: str, decode_utf8: bool = False, ext: str = None) -> list:
         for webfile in webfiles:
             weblist.append(webfile)
 
-    except Exception as error:
+    except Exception as errmsg:
         msg = (
             f"Collection of files available at internet path {url} failed "
-            f"with error {error}. Aborting!!!"
+            f"with error {errmsg}. Aborting!!!"
         )
         raise CurlInterfaceError(msg=msg)
 

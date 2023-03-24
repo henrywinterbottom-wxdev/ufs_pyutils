@@ -1,6 +1,6 @@
 [pycodestyle]
 count = False
-ignore = W291, E741, W503
+ignore = E226, E203, W291, E741, W503
 max-line-length = 160
 statistics = True
 exclude = Experimental

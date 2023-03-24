@@ -1,6 +1,6 @@
 # =========================================================================
 
-# Module: confs/tests/test_namelist_interface.py
+# Module: confs/tests/test_jinja2_interface.py
 
 # Author: Henry R. Winterbottom
 
@@ -21,20 +21,20 @@
 Module
 ------
 
-    test_namelist_interface.py
+    test_jinja2_interface.py
 
 Description
 -----------
 
     This module provides unit-tests for the respective
-    namelist_interface module functions.
+    jinja2_interface module functions.
 
 Classes
 -------
 
-    TestNamelistMethods()
+    TestJinja2Methods()
 
-        This is the base-class object for all namelist_interface
+        This is the base-class object for all jinja2_interface
         unit-tests; it is a sub-class of TestCase.
 
 Requirements
@@ -48,12 +48,12 @@ Requirements
 Author(s)
 ---------
 
-    Henry R. Winterbottom; 08 December 2022
+    Henry R. Winterbottom; 28 February 2023
 
 History
 -------
 
-    2022-12-08: Henry Winterbottom -- Initial implementation.
+    2023-02-28: Henry Winterbottom -- Initial implementation.
 
 """
 
@@ -67,7 +67,7 @@ import os
 from unittest import TestCase
 
 import pytest
-from confs import namelist_interface
+from confs import jinja2_interface
 from tools import fileio_interface
 
 # ----
@@ -79,13 +79,13 @@ __email__ = "henry.winterbottom@noaa.gov"
 # ----
 
 
-class TestNamelistMethods(TestCase):
+class TestJinja2Methods(TestCase):
     """
     Description
     -----------
 
-    This is the base-class object for all namelist_interface
-    unit-tests; it is a sub-class of TestCase.
+    This is the base-class object for all jinja2_interface unit-tests;
+    it is a sub-class of TestCase.
 
     """
 
@@ -95,27 +95,21 @@ class TestNamelistMethods(TestCase):
         -----------
 
         This method defines the base-class attributes for all
-        namelist_interface unit-tests.
+        jinja2_interface unit-tests.
 
         """
 
         # Define the base-class attributes.
-        self.nml_test_dict = {
-            "TEST_STRING": "This is a test string.",
-            "TEST_FLOAT1": 10.0,
-            "TEST_FLOAT2": 1.0e6,
-            "TEST_INT": 1,
-            "TEST_COMMA_LIST": "1, 10, 100",
-        }
+        self.jinja2_test_dict = {"NAME1": "ham", "NAME2": "eggs", "NAME3": "spam"}
 
         # Define the file paths required for the test method(s).
         dirpath = os.path.join(os.getcwd(), "tests")
-        self.nml_template = os.path.join(dirpath, "test_files", "namelist.template")
-        self.nml_check = os.path.join(dirpath, "test_files", "namelist.check")
-        self.nml_path = os.path.join(dirpath, "namelist.test")
+        self.jinja2_template = os.path.join(dirpath, "test_files", "jinja2.template")
+        self.jinja2_check = os.path.join(dirpath, "test_files", "jinja2.check")
+        self.jinja2_file = os.path.join(dirpath, "jinja2.test")
 
         # Define the message to accompany any unit-test failures.
-        self.unit_test_msg = "The unit-test for namelist_interface failed."
+        self.unit_test_msg = "The unit-test for jinja2_interface failed."
 
     @pytest.mark.order(100)
     def test_cleanup(self: TestCase) -> None:
@@ -124,7 +118,7 @@ class TestNamelistMethods(TestCase):
         -----------
 
         This method removes the test files used for the respective
-        namelist_interface function unit-tests; it is not an actual
+        jinja2_interface function unit-tests; it is not an actual
         unit-test but is simply used to remove the test files file
         following the completion of the actual (i.e., valid)
         unit-tests; this should be the last test that is executed by
@@ -133,40 +127,41 @@ class TestNamelistMethods(TestCase):
         """
 
         # Define the list of (the) test file(s) to be removed.
-        filelist = [self.nml_path]
+        filelist = [self.jinja2_file]
 
         # Remove the specified files.
         fileio_interface.removefiles(filelist=filelist)
 
     @pytest.mark.order(1)
-    def test_namelist(self: TestCase) -> None:
+    def test_write_from_template(self: TestCase) -> None:
         """
         Description
         -----------
 
-        This method provides a unit-test for the namelist_interface
-        module.
+        This method provides a unit-test for the jinja2_interface
+        module write_from_template function.
 
         """
 
-        # Write the FORTRAN 90 formatted namelist file.
-        namelist = namelist_interface.Namelist()
-        namelist.run(
-            nml_dict=self.nml_test_dict,
-            nml_template=self.nml_template,
-            nml_path=self.nml_path,
+        # Write the Jinja2-formatted file from the Jinja2-formatted
+        # template file.
+        jinja2_interface.write_from_template(
+            tmpl_path=self.jinja2_template,
+            output_file=self.jinja2_file,
+            in_dict=self.jinja2_test_dict,
+            fail_missing=True,
         )
 
         assert True
 
-        # Compare the generated FORTRAN 90 formatted namelist file to
-        # the example FORTRAN 90 formatted namelist file.
-        with open(self.nml_check, "r", encoding="utf-8") as file:
-            nml_check = file.read().rstrip()
-        with open(self.nml_path, "r", encoding="utf-8") as file:
-            nml_path = file.read().rstrip()
+        # Compare the generated Jinja2-formatted file to the example
+        # Jinja2-formatted file.
+        with open(self.jinja2_check, "r", encoding="utf-8") as file:
+            jinja2_check = file.read().rstrip()
+        with open(self.jinja2_check, "r", encoding="utf-8") as file:
+            jinja2_file = file.read().rstrip()
 
-        assert nml_check == nml_path, self.unit_test_msg
+        assert jinja2_check == jinja2_file, self.unit_test_msg
 
 
 # ----

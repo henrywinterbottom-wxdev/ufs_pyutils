@@ -45,14 +45,6 @@ Classes
         This is the base-class object for all YAML file parsing
         interfaces; it is a sub-class of SafeLoader.
 
-Functions
----------
-
-    __error__(msg=None)
-
-        This function is the exception handler for the respective
-        module.
-
 Author(s)
 ---------
 
@@ -69,17 +61,17 @@ History
 
 # pylint: disable=broad-except
 # pylint: disable=too-many-ancestors
-# pylint: disable=unused-argument
+# pylint: disable=too-many-arguments
 
 # ----
 
 import os
 import re
-from typing import Union
+import sys
+from typing import Dict, List, Union
 
 import yaml
 from tools import fileio_interface, parser_interface
-from utils.error_interface import msg_except_handle
 from utils.exceptions_interface import YAMLInterfaceError
 from utils.logger_interface import Logger
 from yaml import SafeLoader
@@ -117,7 +109,7 @@ class YAML:
         # Define the base-class attributes.
         self.logger = Logger()
 
-    def __yaml_obj__(self, attr_dict: dict) -> object:
+    def __yaml_obj__(self, attr_dict: Dict) -> object:
         """
         Description
         -----------
@@ -198,7 +190,7 @@ class YAML:
 
     def concat_yaml(
         self,
-        yaml_file_list: list,
+        yaml_file_list: List,
         yaml_file_out: str,
         fail_nonvalid: bool = True,
         ignore_missing: bool = False,
@@ -280,11 +272,11 @@ class YAML:
                     except Exception:
                         pass
 
-                except ValueError:
+                except ValueError as errmsg:
 
                     if fail_nonvalid:
                         msg = f"{yaml_file} is not a valid YAML file. Aborting!!!"
-                        __error__(msg=msg)
+                        raise YAMLInterfaceError(msg=msg) from errmsg
 
                     if not fail_nonvalid:
                         msg = (
@@ -304,15 +296,92 @@ class YAML:
 
                 if not ignore_missing:
                     msg = f"The file path {yaml_file} does not exist. " "Aborting!!!"
-                    __error__(msg=msg)
+                    raise YAMLInterfaceError(msg=msg)
 
         # Write the resulting composite Python dictionary to
         # YAML-formatted file to contain the concatenated attributes.
         self.write_yaml(yaml_file=yaml_file_out, in_dict=yaml_dict_concat)
 
+    def dict_to_yaml(
+        self,
+        yaml_dict: Dict,
+        default_flow_style: bool = False,
+        indent: int = 4,
+        level: str = None,
+        nspace: int = 0,
+    ) -> None:
+        """
+        Description
+        -----------
+
+        This method writes the contents of the Python diction provided
+        upon entry to a YAML-format in accordance with the keyword
+        arguments specified upon entry.
+
+        Parameters
+        ----------
+
+        yaml_dict: dict
+
+            A Python dictionary containing the attributes to be
+            written to a YAML-format.
+
+        Keywords
+        --------
+
+        default_flow_style: bool, optional
+
+            A Python boolean valued variable; if True upon entry, the
+            contents of the Python dictionary will not be serialized
+            when written to YAML-format; if False upon the entry, the
+            contents of the Python dictionary will be serialized in
+            block style.
+
+        indent: int, optional
+
+            A Python integer specifying the indent with for nest
+            YAML-formatted blocks.
+
+        level: str, optional
+
+            A Python string specifying the logger level to accompany
+            the contents of the YAML-formatted Python dictionary; if
+            NoneType upon entry, the contents will be written to
+            standard out; otherwise the specified (and supported)
+            level of the Logger object (see
+            utils/logger_interface.py).
+
+        nspace: int, optional
+
+            A Python integer specifying the total number of spaces to
+            be used when the Logger object level is used; this is only
+            implemented with the Logger interface is invoked.
+
+        """
+
+        # Dump the contents of the Python dictionary and define a
+        # local object.
+        yaml_dump = yaml.dump(
+            yaml_dict, default_flow_style=default_flow_style, indent=indent
+        )
+
+        # Dump the contents of the Python dictionary to a YAML-format
+        # in accordance with the parameters collected upon entry.
+        if level is None:
+            sys.stdout.write(yaml_dump)
+
+        if level is not None:
+
+            # Dump the contents of the Python dictionary using the
+            # imported Logger object.
+            logger = parser_interface.object_getattr(
+                object_in=Logger(), key=level, force=True
+            )
+            logger(msg=(nspace * "\n" + yaml_dump))
+
     def read_concat_yaml(
         self, yaml_file: str, return_obj: bool = False
-    ) -> Union[dict, object]:
+    ) -> Union[Dict, object]:
         """
         Description
         -----------
@@ -420,7 +489,7 @@ class YAML:
 
     def read_yaml(
         self, yaml_file: str, return_obj: bool = False
-    ) -> Union[dict, object]:
+    ) -> Union[Dict, object]:
         """
         Description
         -----------
@@ -497,7 +566,7 @@ class YAML:
 
         return yaml_return
 
-    def write_tmpl(self, yaml_dict: dict, yaml_path: str, yaml_template: str) -> None:
+    def write_tmpl(self, yaml_dict: Dict, yaml_path: str, yaml_template: str) -> None:
         """
         Description
         -----------
@@ -547,7 +616,7 @@ class YAML:
     def write_yaml(
         self,
         yaml_file: str,
-        in_dict: dict,
+        in_dict: Dict,
         default_flow_style: bool = False,
         append: bool = False,
     ) -> None:
@@ -640,25 +709,3 @@ class YAMLLoader(SafeLoader):
         filename = self.construct_scalar(node)
         with open(filename, "r", encoding="utf-8") as file:
             return yaml.load(file, YAMLLoader)
-
-
-# ----
-
-
-@msg_except_handle(YAMLInterfaceError)
-def __error__(msg: str = None) -> None:
-    """
-    Description
-    -----------
-
-    This function is the exception handler for the respective module.
-
-    Parameters
-    ----------
-
-    msg: str
-
-        A Python string containing a message to accompany the
-        exception.
-
-    """

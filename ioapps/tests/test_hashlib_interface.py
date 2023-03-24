@@ -44,6 +44,7 @@ Requirements
 
 - pytest-order; https://github.com/pytest-dev/pytest-order
 
+
 Author(s)
 ---------
 
@@ -58,14 +59,18 @@ History
 
 # ----
 
-import os
-import pytest
-import subprocess
+# pylint: disable=consider-using-with
 
-from ioapps import hashlib_interface
-from tools import fileio_interface
-from tools import parser_interface
+# ----
+
+import os
+import subprocess
+import unittest
 from unittest import TestCase
+
+import pytest
+from ioapps import hashlib_interface
+from tools import fileio_interface, parser_interface
 
 # ----
 
@@ -103,7 +108,7 @@ class TestHashLibMethods(TestCase):
 
     """
 
-    def setUp(self):
+    def setUp(self: TestCase) -> None:
         """
         Description
         -----------
@@ -120,12 +125,12 @@ class TestHashLibMethods(TestCase):
         # respective checksum/hash levels.
         dirpath = os.getcwd()
         self.hashlib_file = os.path.join(dirpath, "hashlib.file")
-        with open(self.hashlib_file, "w") as f:
-            f.write("This is a hashlib_interface test file.")
+        with open(self.hashlib_file, "w", encoding="utf-8") as file:
+            file.write("This is a hashlib_interface test file.")
 
         # Compute the checksum/hash level for the respective file and
         # build the base-class attribute hash_obj.
-        for hash_type in hash_types_dict.keys():
+        for hash_type in hash_types_dict:
 
             # Define the UNIX-based platform corresponding to the
             # respective checksum/hash algorithm.
@@ -134,10 +139,10 @@ class TestHashLibMethods(TestCase):
             )
 
             # Compute the checksum/hash level for the respective file.
-            cmd = ["{0}".format(algorithm), "{0}".format(self.hashlib_file)]
+            cmd = [f"{algorithm}", f"{self.hashlib_file}"]
 
             self.hashlib_stdout = os.path.join(dirpath, "hashlib.out")
-            stdout = open(self.hashlib_stdout, "w")
+            stdout = open(self.hashlib_stdout, "w", encoding="utf-8")
             proc = subprocess.Popen(cmd, stdout=stdout)
             proc.communicate()
             proc.wait()
@@ -146,20 +151,18 @@ class TestHashLibMethods(TestCase):
             # Collect the checksum/hash level value for the respective
             # file and update the base-class attribute object
             # hash_obj.
-            with open(self.hashlib_stdout, "r") as f:
-                hash_info = f.read().split()
+            with open(self.hashlib_stdout, "r", encoding="utf-8") as file:
+                hash_info = file.read().split()
             hash_index = hash_info[0]
             self.hash_obj = parser_interface.object_setattr(
                 object_in=self.hash_obj, key=hash_type, value=hash_index
             )
 
         # Define the message to accompany any unit-test failures.
-        self.unit_test_msg = (
-            "The unit-test for hashlib_interface function {0} " "failed."
-        )
+        self.unit_test_msg = "The unit-test for hashlib_interface function {0} failed."
 
     @pytest.mark.order(100)
-    def test_cleanup(self):
+    def test_cleanup(self: TestCase) -> None:
         """
         Description
         -----------
@@ -180,7 +183,7 @@ class TestHashLibMethods(TestCase):
         fileio_interface.removefiles(filelist=filelist)
 
     @pytest.mark.order(1)
-    def test_get_hash(self):
+    def test_get_hash(self: TestCase) -> None:
         """
         Description
         -----------

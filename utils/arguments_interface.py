@@ -62,7 +62,6 @@ from dataclasses import dataclass
 from tools import parser_interface
 
 from utils import schema_interface
-from utils.error_interface import msg_except_handle
 from utils.exceptions_interface import ArgumentsInterfaceError
 
 # ----
@@ -79,33 +78,14 @@ class Arguments:
 
     """
 
-    @msg_except_handle(ArgumentsInterfaceError)
-    def __error__(self, msg: str = None) -> None:
-        """
-        Description
-        -----------
-
-        This function is the exception handler for the respective
-        module.
-
-        Keywords
-        --------
-
-        msg: str
-
-            A Python string containing a message to accompany the
-            exception.
-
-        """
-
     def run(self, eval_schema=False, cls_schema=None) -> object:
         """
         Description
         -----------
 
-        This method collects the arguments passed for the command line
-        to the respective caller script and builds a Python object
-        containing the respective arguments.
+        This method collects the arguments passed from the command
+        line to the respective caller script and builds a Python
+        object containing the respective arguments.
 
         The command line arguments may be specified as follows.
 
@@ -159,6 +139,7 @@ class Arguments:
                 # Build the Python dictionary containing the command
                 # line arguments.
                 cls_opts = {}
+
                 for option in vars(options_obj):
                     cls_opts[option] = parser_interface.object_getattr(
                         object_in=options_obj, key=option, force=True
@@ -169,9 +150,9 @@ class Arguments:
                 schema_interface.validate_opts(
                     cls_schema=cls_schema, cls_opts=cls_opts)
 
-            except Exception as error:
+            except Exception as errmsg:
 
-                msg = f"Arguments validation failed with error {error}. Aborting!!!"
-                self.__error__(msg=msg)
+                msg = f"Arguments validation failed with error {errmsg}. Aborting!!!"
+                raise ArgumentsInterfaceError(msg=msg) from errmsg
 
         return options_obj

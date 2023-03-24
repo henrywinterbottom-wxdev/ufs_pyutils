@@ -57,6 +57,11 @@ Classes
         This is the base-class for exceptions encountered within the
         utils/curl_interface module; it is a sub-class of Error.
 
+    EnviroInterfaceError()
+
+        This is the base-class for exceptions encountered within the
+        confs/enviro_interface module; it is a sub-class of Error.
+
     GRIBInterfaceError()
 
         This is the base-class for exceptions encountered within the
@@ -123,7 +128,7 @@ Classes
         This is the base-class for exceptions encountered within the
         ioapps/tcvitalsinterface module; it is a sub-class of Error.
 
-    TimestampsInterfaceError()
+    TimestampInterfaceError()
 
         This is the base-class for exceptions encountered within the
         utils/timestamp_interface module; it is a sub-class of Error.
@@ -137,6 +142,16 @@ Classes
 
         This is the base-class for exceptions encountered within the
         ioapps/wget_interface module; it is a sub-class of Error.
+
+    XMLInterfaceError()
+
+        This is the base-class for exceptions encountered within the
+        confs/xml_interface module; it is a sub-class of Error.
+
+    YAMLInterfaceError()
+
+        This is the base-class for exceptions encountered within the
+        confs/yaml_interface module; it is a sub-class of Error.
 
 Author(s)
 ---------
@@ -163,6 +178,7 @@ __all__ = [
     "Boto3InterfaceError",
     "ContainerInterfaceError",
     "CurlInterfaceError",
+    "EnviroInterfaceError",
     "GRIBInterfaceError",
     "HashLibInterfaceError",
     "Jinja2InterfaceError",
@@ -176,9 +192,10 @@ __all__ = [
     "SubprocessInterfaceError",
     "TarFileInterfaceError",
     "TCVitalsInterfaceError",
-    "TimestampsInterfaceError",
+    "TimestampInterfaceError",
     "URLInterfaceError",
     "WgetInterfaceError",
+    "XMLInterfaceError",
     "YAMLInterfaceError"
 ]
 
@@ -200,7 +217,6 @@ class ArgumentsInterfaceError(Error):
     utils/arguments_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
@@ -255,6 +271,18 @@ class CurlInterfaceError(Error):
 
     """
 
+# ----
+
+
+class EnviroInterfaceError(Error):
+    """
+    Description
+    -----------
+
+    This is the base-class for exceptions encountered within the
+    confs/enviro_interface module; it is a sub-class of Error.
+
+    """
 
 # ----
 
@@ -268,7 +296,6 @@ class GRIBInterfaceError(Error):
     ioapps/grib_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
@@ -429,7 +456,7 @@ class TCVitalsInterfaceError(Error):
 # ----
 
 
-class TimestampsInterfaceError(Error):
+class TimestampInterfaceError(Error):
     """
     Description
     -----------
@@ -462,6 +489,19 @@ class WgetInterfaceError(Error):
 
     This is the base-class for exceptions encountered within the
     ioapps/wget_interface module; it is a sub-class of Error.
+
+    """
+
+# ----
+
+
+class XMLInterfaceError(Error):
+    """
+    Description
+    -----------
+
+    This is the base-class for exceptions encountered within the
+    confs/xml_interface module; it is a sub-class of Error.
 
     """
 

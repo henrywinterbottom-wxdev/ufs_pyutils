@@ -40,7 +40,12 @@ Globals
     GLOBAL: str
 
         Global timestamp format; this is the format from which all
-        others should be defined/determined.
+        others should be defined/determined; format is, assuming the
+        POSIX convention, %Y%m%d%H%M%S.
+
+    H: str
+
+        A timestamp format, assuming the POSIX convention, of %H.
 
     INFO: str
 
@@ -51,6 +56,20 @@ Globals
 
         A timestamp format, assuming the POSIX convention, of
         %Y-%m-%dT%H%M%SZ.
+
+    Ymd: str
+
+        A timestamp format, assuming the POSIX convention, of %Y%m%d.
+
+    YmdH: str
+
+        A timestamp format, assuming the POSIX convention, of
+        %Y%m%d%H.
+
+    YmdTHM: str
+
+        A timestamp format, assuming the POSIX convention, of
+        %Y%m%dT%H%M.
 
     YmdTHMS: str
 
@@ -64,11 +83,6 @@ Globals
 
 Functions
 ---------
-
-    __error__(msg=None)
-
-        This function is the exception handler for the respective
-        module.
 
     check_frmt(datestr, in_frmttyp = GLOBAL, out_frmttyp = GLOBAL)
 
@@ -89,14 +103,13 @@ History
 
 # ----
 
-# pylint: disable=unused-argument
+# pylint: disable=invalid-name
 
 # ----
 
 from tools import datetime_interface
 
-from utils.error_interface import msg_except_handle
-from utils.exceptions_interface import TimestampsInterfaceError
+from utils.exceptions_interface import TimestampInterfaceError
 
 # ----
 
@@ -110,32 +123,14 @@ __email__ = "henry.winterbottom@noaa.gov"
 # should be defined/determined.
 GENERAL = "%Y-%m-%d_%H:%M:%S"
 GLOBAL = "%Y%m%d%H%M%S"
+H = "%H"
 INFO = "%H:%M:%S UTC %d %B %Y"
 Y_m_dTHMSZ = "%Y-%m-%dT%H:%M:%SZ"
+Ymd = "%Y%m%d"
+YmdH = "%Y%m%d%H"
+YmdTHM = "%Y%m%dT%H%M"
 YmdTHMS = "%Y%m%dT%H%M%S"
 YmdTHMZ = "%Y%m%dT%H%MZ"
-
-# ----
-
-
-@msg_except_handle(TimestampsInterfaceError)
-def __error__(msg: str = None) -> None:
-    """
-    Description
-    -----------
-
-    This function is the exception handler for the respective module.
-
-    Parameters
-    ----------
-
-    msg: str
-
-        A Python string containing a message to accompany the
-        exception.
-
-    """
-
 
 # ----
 
@@ -193,4 +188,4 @@ def check_frmt(
             f"The timestamp string {datestr} does not match the format "
             f"{out_frmttyp}. Aborting!!!"
         )
-        __error__(msg=msg)
+        raise TimestampInterfaceError(msg=msg)

@@ -1,0 +1,1 @@
+Hello {{ NAME3 }}! These are my friends {{ NAME1 }} and {{ NAME2 }}.

@@ -44,6 +44,7 @@ Requirements
 
 - pytest-order; https://github.com/pytest-dev/pytest-order
 
+
 Author(s)
 ---------
 
@@ -58,14 +59,18 @@ History
 
 # ----
 
-import numpy
-import os
-import pytest
+# pylint: disable=too-many-instance-attributes
 
-from ioapps import netcdf4_interface
-from tools import fileio_interface
-from tools import parser_interface
+# ----
+
+import os
+import unittest
 from unittest import TestCase
+
+import numpy
+import pytest
+from ioapps import netcdf4_interface
+from tools import fileio_interface, parser_interface
 
 # ----
 
@@ -86,7 +91,7 @@ class TestNetCDF4Methods(TestCase):
 
     """
 
-    def setUp(self):
+    def setUp(self: TestCase) -> None:
         """
         Description
         -----------
@@ -123,9 +128,9 @@ class TestNetCDF4Methods(TestCase):
             }
         }
 
-        for ncvar in ncvar_dict.keys():
-            dict_in = dict()
-            for item in ncvar_dict[ncvar].keys():
+        for (ncvar, _) in ncvar_dict.items():
+            dict_in = {}
+            for (item, _) in ncvar_dict[ncvar].items():
                 value = parser_interface.dict_key_value(
                     dict_in=ncvar_dict[ncvar], key=item, no_split=True
                 )
@@ -150,12 +155,10 @@ class TestNetCDF4Methods(TestCase):
             )
 
         # Define the message to accompany any unit-test failures.
-        self.unit_test_msg = (
-            "The unit-test for netcdf4_interface function {0} " "failed."
-        )
+        self.unit_test_msg = "The unit-test for netcdf4_interface function {0} failed."
 
     @pytest.mark.order(100)
-    def test_cleanup(self):
+    def test_cleanup(self: TestCase) -> None:
         """
         Description
         -----------
@@ -177,7 +180,7 @@ class TestNetCDF4Methods(TestCase):
         fileio_interface.removefiles(filelist=filelist)
 
     @pytest.mark.order(2)
-    def test_nccheck(self):
+    def test_nccheck(self: TestCase) -> None:
         """
         Description
         -----------
@@ -188,13 +191,12 @@ class TestNetCDF4Methods(TestCase):
         """
 
         # Check that the netCDF file path is a netCDF-formatted file.
-        nccheck = netcdf4_interface.nccheck(
-            ncfile=self.ncfile, ncfrmt=self.ncfrmt)
+        nccheck = netcdf4_interface.nccheck(ncfile=self.ncfile, ncfrmt=self.ncfrmt)
 
         self.assertTrue(nccheck, msg=self.unit_test_msg.format("nccheck"))
 
     @pytest.mark.order(3)
-    def test_ncreaddim(self):
+    def test_ncreaddim(self: TestCase) -> None:
         """
         Description
         -----------
@@ -214,7 +216,7 @@ class TestNetCDF4Methods(TestCase):
         )
 
     @pytest.mark.order(3)
-    def test_ncreadvar(self):
+    def test_ncreadvar(self: TestCase) -> None:
         """
         Description
         -----------
@@ -233,11 +235,11 @@ class TestNetCDF4Methods(TestCase):
         )
 
         assert all(
-            [a == b for (a, b) in zip(list(self.ncvar), list(ncvar))]
+            a == b for (a, b) in zip(list(self.ncvar), list(ncvar))
         ), self.unit_test_msg.format("ncreadvar")
 
     @pytest.mark.order(3)
-    def test_ncvarexist(self):
+    def test_ncvarexist(self: TestCase) -> None:
         """
         Description
         -----------
@@ -253,18 +255,16 @@ class TestNetCDF4Methods(TestCase):
             ncfile=self.ncfile, ncvarname=self.ncvarname, ncfrmt=self.ncfrmt
         )
 
-        self.assertTrue(ncvarexist, msg=(
-            self.unit_test_msg.format("ncvarexist")))
+        self.assertTrue(ncvarexist, msg=(self.unit_test_msg.format("ncvarexist")))
 
         ncvarexist = netcdf4_interface.ncvarexist(
             ncfile=self.ncfile, ncvarname="dummy_test_var", ncfrmt=self.ncfrmt
         )
 
-        self.assertTrue(not ncvarexist, msg=(
-            self.unit_test_msg.format("ncvarexist")))
+        self.assertTrue(not ncvarexist, msg=(self.unit_test_msg.format("ncvarexist")))
 
     @pytest.mark.order(1)
-    def test_ncwrite(self):
+    def test_ncwrite(self: TestCase) -> None:
         """
         Description
         -----------
@@ -287,11 +287,7 @@ class TestNetCDF4Methods(TestCase):
         # Check that the netCDF-formatted file exists.
         exist = fileio_interface.fileexist(path=self.ncfile)
         self.assertTrue(
-            exist,
-            msg=(
-                "The netCDF-formatted file {0} does " "not exist.".format(
-                    self.ncfile)
-            ),
+            exist, msg=(f"The netCDF-formatted file {self.ncfile} does not exist.")
         )
 
 

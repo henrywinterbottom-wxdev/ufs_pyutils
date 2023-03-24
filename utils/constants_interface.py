@@ -32,6 +32,15 @@ Description
 Globals
 -------
 
+    hPa2Pa: float
+
+        Conversion value for transforming pressure units of
+        hectoPascal to Pascal.
+
+    kn2m: float
+
+        Conversion value for transforming nautical miles to meters.
+
     kts2mps: float
 
         Conversion value for transforming nautical miles per hour
@@ -66,6 +75,13 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
+# Conversion value for transforming pressure units of hectoPascal to
+# Pascal.
+hPa2Pa = (units.hectopascal).to(units.pascal)
+
+# Conversion value for transforming nautical miles to meters.
+kn2m = (units.imperial.nmi).to(units.meter)
+
 # Conversion value for transforming nautical miles per hour (knots) to
 # meters per second.
 kts2mps = (units.imperial.kn).to(units.meter / units.second) * (
@@ -74,4 +90,5 @@ kts2mps = (units.imperial.kn).to(units.meter / units.second) * (
 
 # Conversion value for transforming meters per second to nautical
 # miles per hour (knots).
-mps2kts = (units.meter / units.second).to(units.imperial.kn) * units.imperial.kn
+mps2kts = (units.meter / units.second).to(units.imperial.kn) * \
+    units.imperial.kn

@@ -36,16 +36,6 @@ Functions
 
         This function defines the calling application stack frame.
 
-    get_app_path(app)
-
-        This function collects the path for the specified application;
-        if the path cannot be determined, NoneType is returned.
-
-    sleep(seconds=0)
-
-        This function allows specific calling applications to suspend
-        execution for a specified number of seconds.
-
     app_path(app)
 
         This function invokes the POSIX UNIX command function to retrieve
@@ -55,6 +45,21 @@ Functions
 
         This function changes the ownership credentials for the
         specified file path.
+
+    get_app_path(app)
+
+        This function collects the path for the specified application;
+        if the path cannot be determined, NoneType is returned.
+
+    get_pid()
+
+        This function returns the current process integer
+        identification.
+
+    sleep(seconds=0)
+
+        This function allows specific calling applications to suspend
+        execution for a specified number of seconds.
 
     task_exit()
 
@@ -80,22 +85,27 @@ History
 
 # ----
 
+# pylint: disable=consider-using-with
+# pylint: disable=redefined-outer-name
 # pylint: disable=unused-variable
 
 # ----
 
 import inspect
+import os
 import shutil
 import subprocess
 import sys
 import time
+from typing import List
 
 from utils.logger_interface import Logger
 
 # ----
 
 # Define all available functions.
-__all__ = ["app_path", "chown", "task_exit", "user"]
+__all__ = ["app_path", "chown", "get_app_path", "get_pid",
+           "sleep", "task_exit", "user"]
 
 # ----
 
@@ -110,7 +120,7 @@ __email__ = "henry.winterbottom@noaa.gov"
 # ----
 
 
-def _get_stack() -> list:
+def _get_stack() -> List:
     """
     Description
     -----------
@@ -130,6 +140,7 @@ def _get_stack() -> list:
     stack = inspect.stack()
 
     return stack
+
 
 # ----
 
@@ -164,10 +175,7 @@ def app_path(app: str) -> str:
 
     # Query the run-time environment in order to collect the path for
     # the application name specified upon entry.
-    cmd = ['command',
-           '-V',
-           app
-           ]
+    cmd = ["command", "-V", app]
 
     proc = subprocess.Popen(cmd, stderr=subprocess.PIPE,
                             stdout=subprocess.PIPE)
@@ -181,6 +189,7 @@ def app_path(app: str) -> str:
         path = None
 
     return path
+
 
 # ----
 
@@ -256,6 +265,31 @@ def get_app_path(app: str) -> str:
 
     return app_path
 
+# ----
+
+
+def get_pid() -> int:
+    """
+    Description
+    -----------
+
+    This function returns the current process integer identification.
+
+    Returns
+    -------
+
+    pid: int
+
+        A Python integer specifying the current process integer
+        identification.
+
+    """
+
+    # Collect the current process integer identifier.
+    pid = os.getpid()
+
+    return pid
+
 
 # ----
 
@@ -306,6 +340,7 @@ def task_exit() -> None:
     logger.warn(msg=msg)
 
     sys.exit(0)
+
 
 # ----
 

@@ -4,6 +4,7 @@
 
 ![Dependencies](https://img.shields.io/badge/dependencies-astropy_boto3_bs4_croniter_lxml_netcdf4_numpy_pyyaml_schema_xmltodict-orange)
 
+[![Build Tests](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/buildtest.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/buildtest.yaml)
 [![Unit Tests](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/unittests.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/unittests.yaml)
 [![Python Coding Standards](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/pycodestyle.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/pycodestyle.yaml)
 [![Container Builds](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/containers.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/containers.yaml)
@@ -31,7 +32,7 @@ This repository utilizes several sub-modules from various sources. To
 obtain the entire system, do as follows.
 
 ~~~
-user@host:$ git clone --recursive https://github.com/HenryWinterbottom-NOAA/ufs_pyutils
+user@host:$ git clone https://github.com/HenryWinterbottom-NOAA/ufs_pyutils
 ~~~
 
 # Dependencies
@@ -44,7 +45,7 @@ installation attributes are provided in the table below.
 | Dependency Package | Installation Instructions |
 | :-------------: | :-------------: | 
 | [`astropy`](https://github.com/astropy/astropy) | <div align="left">`pip install astropy==5.2`</div> | 
-| [`boto3`](https://github.com/boto/boto3) | <div align="left">`conda install -c anaconda boto3==1.24.28`</div> | 
+| [`boto3`](https://github.com/boto/boto3) | <div align="left">`pip boto3==1.24.28`</div> | 
 | [`bs4`](https://github.com/waylan/beautifulsoup) | <div align="left">`pip install bs4==0.0.1`</div> | 
 | [`croniter`](https://github.com/kiorky/croniter) | <div align="left">`pip install croniter==1.3.8`</div> |
 | [`lxml`](https://github.com/lxml/lxml) | <div align="left">`pip install lxml==4.9.2`</div> |
@@ -56,6 +57,19 @@ installation attributes are provided in the table below.
 
 </div>
 
+# Installing Package Dependencies
+
+In order to install the respective Python packages upon which
+`ufs_pyutils` is dependent, do as follow.
+
+~~~
+user@host:$ cd ufs_pyutils
+user@host:$ /path/to/pip install update
+user@host:$ /path/to/pip install -r /path/to/ufs_pyutils/requirements.txt
+~~~
+
+For additional information using `pip` and `requirements.txt` type files, see [here](https://pip.pypa.io/en/stable/reference/requirements-file-format/).
+
 # Building and Installing
 
 In order to install via the Python setup applications, do as follows.
@@ -66,7 +80,7 @@ user@host:$ python setup.py build
 user@host:$ python setup.py install
 ~~~
 
-For additional information and options for building Python packages, see [here](https://docs.python.org/3.5/distutils/setupscript.html)
+For additional information and options for building Python packages, see [here](https://docs.python.org/3.5/distutils/setupscript.html).
 
 A Docker image exist containing the applications in this repository and can be collected as follows.
 

@@ -41,7 +41,7 @@ Classes
 Author(s)
 ---------
 
-    Henry R. Winterbottom; 03 Deceember 2022
+    Henry R. Winterbottom; 03 December 2022
 
 History
 -------
@@ -54,10 +54,10 @@ History
 
 # pylint: disable=consider-iterating-dictionary
 # pylint: disable=consider-using-dict-items
-# pylint: disable=undefined-variable
 
 # ----
 
+import unittest
 from unittest import TestCase
 
 from tools import datetime_interface, parser_interface
@@ -81,7 +81,7 @@ class TestDateTimeMethods(TestCase):
 
     """
 
-    def setUp(self):
+    def setUp(self: TestCase) -> None:
         """
         Description
         -----------
@@ -92,11 +92,9 @@ class TestDateTimeMethods(TestCase):
         """
 
         # Define the message to accompany any unit-test failures.
-        self.unit_test_msg = (
-            "The unit-test for datetime_interface function {0} " "failed."
-        )
+        self.unit_test_msg = "The unit-test for datetime_interface function {0} failed."
 
-    def test_datestrcomps(self):
+    def test_datestrcomps(self: TestCase) -> None:
         """
         Description
         -----------
@@ -139,15 +137,14 @@ class TestDateTimeMethods(TestCase):
             result = parser_interface.dict_key_value(
                 dict_in=test_dict, key=key, force=True, no_split=True
             )
-            value = parser_interface.object_getattr(
-                object_in=date_comps_obj, key=key)
+            value = parser_interface.object_getattr(object_in=date_comps_obj, key=key)
 
             assert result == value, (
                 self.unit_test_msg.format("datestrcomps")
                 + f"; date string component {key} should be {result}."
             )
 
-    def test_datestrfrmt(self):
+    def test_datestrfrmt(self: TestCase) -> None:
         """
         Description
         -----------
@@ -186,7 +183,7 @@ class TestDateTimeMethods(TestCase):
                 + f"; date string of format {frmttyp} should be {result}."
             )
 
-    def test_datestrupdate(self):
+    def test_datestrupdate(self: TestCase) -> None:
         """
         Description
         -----------
@@ -217,7 +214,7 @@ class TestDateTimeMethods(TestCase):
             + f"; the updated date string should be {result}."
         )
 
-    def test_elapsed_seconds(self):
+    def test_elapsed_seconds(self: TestCase) -> None:
         """
         Description
         -----------
