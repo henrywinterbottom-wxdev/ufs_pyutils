@@ -95,10 +95,9 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     # Read the XML-formatted file.
     with open(xml_path, "r", encoding="utf-8") as file:
-        xml_contents = file.read()
+        xml_contents = file.read().replace("&", "ENTITY")
 
-    entities = [entity for entity in xml_contents if "&" in entity]
-    print(entities)
+    print(xml_contents)
     quit()
 
     # Define the XML parser object.
