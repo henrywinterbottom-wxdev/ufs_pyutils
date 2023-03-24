@@ -106,7 +106,7 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     xml_dict = xmltodict.parse(xml_str)
 
-    print(json.dumps(xml_dict).replace("__ENTITY__": "&"))
+    print(json.dumps(xml_dict).replace("__ENTITY__", "&"))
     quit()
 
     for (item, value) in {"__ENTITY__": "&"}.items():
