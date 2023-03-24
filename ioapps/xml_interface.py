@@ -32,6 +32,7 @@ from tools import fileio_interface
 
 from lxml import etree
 from bs4 import BeautifulSoup
+from xml.dom import minidom
 
 import xmltodict
 
