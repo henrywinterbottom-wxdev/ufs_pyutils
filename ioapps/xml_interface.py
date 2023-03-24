@@ -123,8 +123,10 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     xml_dict2 = xml_dict
 
-    shared_items = {
-        k: xml_dict1[k] for k in xml_dict1 if k not in xml_dict2}  # and xml_dict1[k] == xml_dict2[k]}
+    shared_items = deepdiff.DeepDiff(xml_dict1, xml_dict2)
+
+    # shared_items = {
+    #    k: xml_dict1[k] for k in xml_dict1 if k not in xml_dict2}  # and xml_dict1[k] == xml_dict2[k]}
 
     print(shared_items)
     quit()
