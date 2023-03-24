@@ -101,12 +101,11 @@ def read_xml(xml_path: str, remove_comments: bool = False,
 
     # Read the XML-formatted file.
     with open(xml_path, "r", encoding="utf-8") as file:
-        xml_contents = file.read().split()
+        xml_contents = file.read()
 
     xml_contents_out = xml_contents
     for (key, value) in XML_SPECIAL_CHAR_DICT.items():
-        for (idx, item) in enumerate(xml_contents):
-            xml_contents_out[idx] = item.replace(key, value)
+        xml_contents_out = xml_contents.replace(key, value)
 
     print(xml_contents_out)
 
