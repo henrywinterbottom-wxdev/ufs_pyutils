@@ -209,7 +209,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
             xml_str_out = xml_str_in.replace(key, value)
 
         # , Loader=SafeLoader)
-        xml_dict = xmltodict.parser(xml_str_out, parser)
+        xml_dict = xmltodict.parse(xml_str_out)
 
         print(type(xml_dict))
         quit()
