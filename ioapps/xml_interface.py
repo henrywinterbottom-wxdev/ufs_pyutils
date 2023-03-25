@@ -18,14 +18,47 @@
 # =========================================================================
 
 """
-pass
+Module
+------
+
+    xml_interface.py
+
+Description
+-----------
+
+    This module contains functions to read and write Extensible Markup
+    Language (XML) formatted files.
+
+Functions
+---------
+
+    read_xml(xml_path)
+
+        This function parses an XML-formatted file and returns the
+        contents of the file formatted as a Python dictionary.
+
+Requirements
+------------
+
+- lxml; https://github.com/lxml/lxml
+
+- xmltodict; https://github.com/martinblech/xmltodict
+
+Author(s)
+---------
+
+    Henry R. Winterbottom; 24 March 2023
+
+History
+-------
+
+    2023-03-24: Henry Winterbottom -- Initial implementation.
 
 """
 
 # ----
 
 import json
-
 from typing import Dict
 from xml.dom import minidom
 
@@ -33,6 +66,22 @@ import xmltodict
 from lxml import etree
 from tools import fileio_interface
 from utils.exceptions_interface import XMLInterfaceError
+from utils.logger_interface import Logger
+
+# ----
+
+# Define all available functions.
+__all__ = ["read_xml"]
+
+# ----
+
+logger = Logger()
+
+# ----
+
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -41,14 +90,13 @@ XML_CHAR_DICT = {"__ENTITY__": "&"}
 # ----
 
 
-def read_xml(
-        xml_path: str, remove_comments: bool = False) -> Dict:
+def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
     """
     Description
     -----------
 
     This function parses an XML-formatted file and returns the
-    contents of the file formatted as a Python Dictionary.
+    contents of the file formatted as a Python dictionary.
 
     Parameters
     ----------
