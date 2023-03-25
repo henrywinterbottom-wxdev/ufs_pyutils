@@ -243,7 +243,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         # xml_dict = parser_interface.update_dict(default_dict=xml_dict,
         #                                        base_dict=XML_CHAR_DICT)
 
-        print(xml_dict)
+        # print(xml_dict)
 
 #        for (key, value) in XML_CHAR_DICT.items():
 #            xml_str_out = xml_str_in.replace(key, value)
@@ -264,7 +264,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
 #        quit()
 
         # print(yaml_dict)
-        quit()
+        # quit()
 
     except Exception as errmsg:
         msg = (
