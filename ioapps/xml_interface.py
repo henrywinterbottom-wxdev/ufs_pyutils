@@ -255,7 +255,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     # TEST
 
-    tree = etree.fromstring(s)
+    tree = etree.fromstring(xml_str)
 
     print(tree)
     quit()
