@@ -200,17 +200,14 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
 
     # Update (e.g., replace) any special character strings.
     try:
-        xml_str_in = json.dumps(xml_dict).strip("\n")
+
+        # xml_str_in = json.dumps(xml_dict).strip("\n")
         for (key, value) in XML_CHAR_DICT.items():
             xml_str_out = xml_str_in.replace(key, value)
 
-        # Update the Python dictionary containing the XML-formatted
-        # input file attributes.
-        xml_dict = json.loads(xml_str_out)
+        yaml_dict = xmltodict.parse(xml_str_out)
 
-        for item in xml_dict:
-            print(item)
-
+        print(yaml_dict)
         quit()
 
     except Exception as errmsg:
