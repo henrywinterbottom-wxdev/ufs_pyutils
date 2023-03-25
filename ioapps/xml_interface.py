@@ -252,24 +252,11 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     """
 
-    from lxml import etree
-
-    s = """<?xml version="1.0" encoding="UTF-8"?> <tmx version="1.4a"/>"""
-
-    tree = etree.fromstring(s.encode("utf-8"))
-    header = etree.SubElement(tree, 'header', {'adminlang': 'EN'})
-    body = etree.SubElement(tree, 'body')
-
-    print(etree.tostring(tree, encoding="UTF-8",
-                         xml_declaration=True,
-                         pretty_print=True,
-                         doctype='<!DOCTYPE tmx SYSTEM "tmx14a.dtd">'))
-
-    quit()
-
     xml_str = xmltodict.unparse(xml_dict)
 
-    xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
+    xml_str = "<!DOCTYPE workflow SYSTEM '/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd'>"
+    xml_str = xml_str + \
+        minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
 
     for (key, value) in XML_SSYMS_DICT.items():
         msg = f"Replacing XML-formatted string symbol {key} with {value}."
@@ -280,12 +267,12 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     # TEST
     # dtd = etree.DTD(file="/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd")
 
-    dtdfile = "/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd"
-
-    tree = etree.fromstring(xml_str)
-    print(etree.tostring(tree, encoding="utf-8",
-                         xml_declaration=True,
-                         doctype=f"<!DOCTYPE workflow2 SYSTEM '{dtd}' >"))
+#    dtdfile = "/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd"
+#
+#    tree = etree.fromstring(xml_str)
+#    print(etree.tostring(tree, encoding="utf-8",
+#                         xml_declaration=True,
+#                         doctype=f"<!DOCTYPE workflow2 SYSTEM '{dtd}' >"))
 
     # print(tree)
     quit()
