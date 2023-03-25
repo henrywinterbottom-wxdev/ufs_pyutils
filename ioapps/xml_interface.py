@@ -234,4 +234,6 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
 
+    xml_str = [line.replace("&amp;", "&") for line in xml_str]
+
     return xml_str
