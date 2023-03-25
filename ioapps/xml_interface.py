@@ -252,9 +252,9 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     """
 
-#    <!DOCTYPE workflow SYSTEM '/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd'>
+    doc_str = "<!DOCTYPE workflow SYSTEM '/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd'>"
 
-    xml_str = xmltodict.unparse(xml_dict)
+    xml_str = doc_str + xmltodict.unparse(xml_dict)
     xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
 
     for (key, value) in XML_SSYMS_DICT.items():
