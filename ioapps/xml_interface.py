@@ -58,7 +58,7 @@ History
 
 # ----
 
-import xml.etree.cElementTree as ElementTree
+import xml.etree.ElementInclude as ElementInclude
 
 import json
 from typing import Dict
@@ -263,11 +263,17 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
+    print(ElementInclude.include(elem=xml_str,
+          base_url="/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd"))
+
+    quit()
+
     # TEST
     # dtd = etree.DTD(file="/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd")
 
 #    dtdfile = "/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd"
 #
+    print
     tree = etree.fromstring(xml_str.encode(), base_url=doc_str)
 
     print(tree)
