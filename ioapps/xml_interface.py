@@ -208,7 +208,12 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         for (key, value) in XML_CHAR_DICT.items():
             xml_str_out = xml_str_in.replace(key, value)
 
-        xml_dict = xmltodict.parse(xml_str_out)
+        parser = etree.XMLParser(resolve_entities=False)
+        root = etree.fromstring(xml_str_out, parser)
+
+        print(root)
+        quit()
+
         print(xml_dict)
 
 #        yaml_dict = xmltodict.parse(xml_str_out)
