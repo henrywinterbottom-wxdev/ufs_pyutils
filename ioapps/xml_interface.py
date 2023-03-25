@@ -203,15 +203,14 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
     # Update (e.g., replace) any special character strings.
     try:
 
-        xml_str_in = yaml.safe_dump(xml_dict)
+        xml_str_in = xmltodict.parse(xml_dict)
         xml_str_out = xml_str_in
         for (key, value) in XML_CHAR_DICT.items():
             xml_str_out = xml_str_in.replace(key, value)
 
-        parser = etree.XMLParser(resolve_entities=True)
-        root = etree.fromstring(xml_str_out, parser)
+        print(xml_str_out)
+        quit()
 
-        print(etree.tostring(root))
 
 #        yaml_dict = xmltodict.parse(xml_str_out)
 #        quit()
