@@ -88,8 +88,15 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
-XML_CHAR_DICT = {"__ENTITY__": "&",
-                 }
+# Define the substitution value Python dictionary for reading
+# XML-formatted files.
+XML_SCHAR_DICT = {"__ENTITY__": "&",
+                  }
+
+# Define the Python dictionary containing the special symbols (keys)
+# and their substitution values (values).
+XML_SSYMS_DICT = {"&amp;", "&",
+                  }
 
 # ----
 
@@ -158,6 +165,9 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         msg = f"The XML-formatted file path {xml_path} does not exist. Aborting!!!"
         raise XMLInterfaceError(msg=msg)
 
+    msg = f"Reading XML-formatted file path {xml_path}."
+    logger.info(msg=msg)
+
     # Read the XML-formatted file; proceed accordingly.
     try:
         with open(xml_path, "r", encoding="utf-8") as file:
@@ -174,12 +184,12 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
     # accordingly.
     try:
         xml_contents_out = xml_contents_in
-        for (key, value) in XML_CHAR_DICT.items():
+        for (key, value) in XML_SCHAR_DICT.items():
             xml_contents_out = xml_contents_in.replace(value, key)
 
     except Exception as errmsg:
         msg = (
-            f"Replacing special characters {XML_CHAR_DICT.items()[1]} "
+            f"Replacing special characters {XML_SCHAR_DICT.items()[1]} "
             f"failed with error {errmsg}. Aborting!!!"
         )
         raise XMLInterfaceError(msg=msg) from errmsg
@@ -210,7 +220,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
 
         xml_dict = xmltodict.parse(xml_str)
 
-        for (key, value) in XML_CHAR_DICT.items():
+        for (key, value) in XML_SCHAR_DICT.items():
             xml_dict = parser_interface.dict_replace_value(
                 in_dict=xml_dict, old=f"{key}", new=f"{value}")
 
@@ -235,7 +245,10 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
 
-    for (key, value) in XML_CHAR_DICT.items():
+    for (key, value) in XML_SSYMS_DICT.items():
+        msg = f"Replacing string {key} with {value}."
+        logger.info(msg=msg)
+
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
     return xml_str
