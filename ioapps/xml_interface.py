@@ -238,6 +238,15 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
 # ----
 
 
+def write_xml(xml_path: str, xml_str: str):
+    """
+
+    """
+
+
+# ----
+
+
 def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     """
 
@@ -255,6 +264,13 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     # TEST
     # dtd = etree.DTD(file="/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd")
+
+    dtdfile = "/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd"
+
+    tree = etree.fromstring(xml_str)
+    print(etree.tostring(tree, encoding="utf-8",
+                         xml_declaration=True,
+                         doctype=f"<!DOCTYPE workflow2 SYSTEM {dtd} >"))
 
     # print(tree)
     quit()
