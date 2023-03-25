@@ -273,4 +273,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         )
         raise XMLInterfaceError(msg=msg) from errmsg
 
+    print(type(xml_dict))
+    quit()
+
     return xml_dict
