@@ -212,7 +212,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         for (key, value) in XML_CHAR_DICT.items():
             print(key, value)
             xml_dict = parser_interface.dict_replace_value(
-                in_dict=xml_dict, old=key, new=value)
+                in_dict=xml_dict, old=str(key), new=str(value))
 
     except Exception as errmsg:
         msg = (
