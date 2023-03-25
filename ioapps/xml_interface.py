@@ -95,7 +95,7 @@ XML_SCHAR_DICT = {"__ENTITY__": "&",
 
 # Define the Python dictionary containing the special symbols (keys)
 # and their substitution values (values).
-XML_SSYMS_DICT = {"&amp;", "&",
+XML_SSYMS_DICT = {"&amp;": "&",
                   }
 
 # ----
