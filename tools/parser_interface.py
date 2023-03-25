@@ -635,6 +635,10 @@ def dict_replace_value(in_dict: Dict, old: str, new: str) -> Dict:
     # Parse the Python dictionary and proceed accordingly.
     out_dict = {}
 
+    print(type(old), type(new))
+    print(old, new)
+    quit()
+
     for (key, value) in in_dict.items():
 
         # Update any Python dictionary instances.
@@ -1160,7 +1164,8 @@ def match_list(
     # Define the local lists to be used for the matching application.
     lower_list = [word for word in in_list if word.islower()]
     upper_list = [word for word in in_list if word.isupper()]
-    mixed_list = [word for word in in_list if not word.islower() and not word.isupper()]
+    mixed_list = [word for word in in_list if not word.islower()
+                  and not word.isupper()]
     match_chk = False
 
     # If appropriate, seek exact matches; proceed accordingly.
