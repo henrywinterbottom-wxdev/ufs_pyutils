@@ -210,7 +210,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
 
         parser = etree.XMLParser(resolve_entities=False)
         xml_str = minidom.parseString(
-            etree.tostring(etree.fromstring(xml_str_out, parser))).toprettyxml(indent=5 * " ")
+            etree.tostring(etree.fromstring(str(xml_str_out), parser))).toprettyxml(indent=5 * " ")
 
         # , Loader=SafeLoader)
         # xml_dict = xmltodict.parse(xml_str_out)
