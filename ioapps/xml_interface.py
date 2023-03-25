@@ -254,9 +254,8 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
     # TEST
-    parser = etree.XMLParser(
-        remove_comments=remove_comments, resolve_entities=False)
-    tree = etree.fromstring(xml_str)
+    parser = etree.XMLParser(resolve_entities=False)
+    tree = etree.fromstring(xml_str, parser)
 
     print(tree)
     quit()
