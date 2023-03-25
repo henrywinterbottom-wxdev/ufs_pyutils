@@ -208,7 +208,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         for (key, value) in XML_CHAR_DICT.items():
             xml_str_out = xml_str_in.replace(key, value)
 
-        xml_dict = yaml.load(xml_str_out)
+        xml_dict = yaml.load(xml_str_out, Loader=SafeLoader, anchor=None)
 
         print(xml_dict)
         quit()
