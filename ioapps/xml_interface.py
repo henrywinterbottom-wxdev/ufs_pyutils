@@ -89,7 +89,6 @@ __email__ = "henry.winterbottom@noaa.gov"
 # ----
 
 XML_CHAR_DICT = {"__ENTITY__": "&",
-                 "&amp": "&",
                  }
 
 # ----
