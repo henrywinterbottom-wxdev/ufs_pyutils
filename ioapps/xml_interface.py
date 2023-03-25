@@ -208,11 +208,13 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         for (key, value) in XML_CHAR_DICT.items():
             xml_str_out = xml_str_in.replace(key, value)
 
-        yaml_dict = xmltodict.parse(xml_str_out)
-        quit()
+        print(xml_str_out)
+
+#        yaml_dict = xmltodict.parse(xml_str_out)
+#        quit()
 
         # print(yaml_dict)
-        # quit()
+        quit()
 
     except Exception as errmsg:
         msg = (
