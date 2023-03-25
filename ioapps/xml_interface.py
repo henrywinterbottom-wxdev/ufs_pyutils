@@ -256,7 +256,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     s = """<?xml version="1.0" encoding="UTF-8"?> <tmx version="1.4a"/>"""
 
-    tree = etree.fromstring(s.encode())
+    tree = etree.fromstring(s.encode("utf-8"))
     header = etree.SubElement(tree, 'header', {'adminlang': 'EN'})
     body = etree.SubElement(tree, 'body')
 
