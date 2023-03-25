@@ -205,10 +205,11 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
 
         xml_str_in = xmltodict.unparse(xml_dict)
         xml_str_out = xml_str_in
-        for (key, value) in XML_CHAR_DICT.items():
-            xml_str_out = xml_str_in.replace(key, value)
+        # for (key, value) in XML_CHAR_DICT.items():
+        #   xml_str_out = xml_str_in.replace(key, value)
 
-        xml_string = xml_str_out.toprettyxml(indent=5 * " ")
+        xml_string = minidom.parseString(
+            xml_str_out).toprettyxml(indent=5 * " ")
 
         # parser = etree.XMLParser(resolve_entities=True)
         # xml_str = minidom.parseString(
