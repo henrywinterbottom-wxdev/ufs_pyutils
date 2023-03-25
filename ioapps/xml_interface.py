@@ -203,7 +203,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
     # Update (e.g., replace) any special character strings.
     try:
 
-        xml_str_in = yaml.load(xml_dict)
+        xml_str_in = yaml.load(xml_dict, Loader=NoAliasLoader)
         xml_str_out = xml_str_in
         # for (key, value) in XML_CHAR_DICT.items():
         #    xml_str_out = xml_str_in.replace(key, value)
