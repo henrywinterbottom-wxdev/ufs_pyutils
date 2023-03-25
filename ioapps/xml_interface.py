@@ -208,6 +208,11 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         # input file attributes.
         xml_dict = json.loads(xml_str_out)
 
+        for item in xml_dict:
+            print(item)
+
+        quit()
+
     except Exception as errmsg:
         msg = (
             f"Defining a Python dictionary from the contents of XML-formatted "
