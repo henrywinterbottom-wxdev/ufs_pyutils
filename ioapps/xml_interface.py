@@ -208,9 +208,9 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         # for (key, value) in XML_CHAR_DICT.items():
         #   xml_str_out = xml_str_in.replace(key, value)
 
-        xml_string = minidom.parseString(
-            xml_str_out).toprettyxml(indent=5 * " ")
-        print(xml_string)
+        xml_str_in = minidom.parseString(
+            xml_str_in).toprettyxml(indent=5 * " ")
+        print(xml_str_in)
 
         # parser = etree.XMLParser(resolve_entities=True)
         # xml_str = minidom.parseString(
