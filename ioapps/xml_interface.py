@@ -252,6 +252,22 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     """
 
+    from lxml import etree
+
+    s = """<?xml version="1.0" encoding="UTF-8"?>
+    <tmx version="1.4a"/>"""
+
+    tree = etree.fromstring(s)
+    header = etree.SubElement(tree, 'header', {'adminlang': 'EN'})
+    body = etree.SubElement(tree, 'body')
+
+    print etree.tostring(tree, encoding="UTF-8",
+                         xml_declaration=True,
+                         pretty_print=True,
+                         doctype='<!DOCTYPE tmx SYSTEM "tmx14a.dtd">')
+
+    quit()
+
     xml_str = xmltodict.unparse(xml_dict)
 
     xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
