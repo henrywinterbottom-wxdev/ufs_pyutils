@@ -208,7 +208,8 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         for (key, value) in XML_CHAR_DICT.items():
             xml_str_out = xml_str_in.replace(key, value)
 
-        print(xml_str_out)
+        from pprint import pprint
+        pprint(xml_str_out)
         quit()
 
 
