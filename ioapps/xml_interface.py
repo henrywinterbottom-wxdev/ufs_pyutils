@@ -70,7 +70,6 @@ from tools import fileio_interface
 from utils.exceptions_interface import XMLInterfaceError
 from utils.logger_interface import Logger
 
-from tools import parser_interface
 
 # ----
 
@@ -92,6 +91,32 @@ __email__ = "henry.winterbottom@noaa.gov"
 XML_CHAR_DICT = {"__ENTITY__": "&"}
 
 # ----
+
+
+def dict_replace_value(d: dict, old: str, new: str) -> dict:
+    x = {}
+    for k, v in d.items():
+        if isinstance(v, dict):
+            v = dict_replace_value(v, old, new)
+        elif isinstance(v, list):
+            v = list_replace_value(v, old, new)
+        elif isinstance(v, str):
+            v = v.replace(old, new)
+        x[k] = v
+    return x
+
+
+def list_replace_value(l: list, old: str, new: str) -> list:
+    x = []
+    for e in l:
+        if isinstance(e, list):
+            e = list_replace_value(e, old, new)
+        elif isinstance(e, dict):
+            e = dict_replace_value(e, old, new)
+        elif isinstance(e, str):
+            e = e.replace(old, new)
+        x.append(e)
+    return x
 
 
 def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
@@ -212,8 +237,11 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         xml_str_out = xml_str_in
 
         xml_dict = xmltodict.parse(xml_str_in)
-        xml_dict = parser_interface.update_dict(default_dict=xml_dict,
-                                                base_dict=XML_CHAR_DICT)
+
+        xml_dict = dict_replace_value(xml_dict, "__ENTITY__", "&")
+
+        # xml_dict = parser_interface.update_dict(default_dict=xml_dict,
+        #                                        base_dict=XML_CHAR_DICT)
 
         print(xml_dict)
 
