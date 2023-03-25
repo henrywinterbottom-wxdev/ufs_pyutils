@@ -210,7 +210,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
 
         xml_dict = yaml.load(xml_str_out, Loader=SafeLoader)
 
-        print(xml_dict)
+        print(type(xml_dict))
         quit()
 
         print(xml_dict)
