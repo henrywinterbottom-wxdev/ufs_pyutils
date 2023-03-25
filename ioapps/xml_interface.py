@@ -209,7 +209,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
             xml_str_out = xml_str_in.replace(key, value)
 
         parser = etree.XMLParser(resolve_entities=True)
-        root = etree.fromstring(xml_string, parser)
+        root = etree.fromstring(xml_str_out, parser)
 
         print(etree.tostring(root))
 
