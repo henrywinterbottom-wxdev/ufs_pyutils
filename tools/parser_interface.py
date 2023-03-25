@@ -635,10 +635,6 @@ def dict_replace_value(in_dict: Dict, old: str, new: str) -> Dict:
     # Parse the Python dictionary and proceed accordingly.
     out_dict = {}
 
-    print(type(old), type(new))
-    print(old, new)
-    quit()
-
     for (key, value) in in_dict.items():
 
         # Update any Python dictionary instances.
@@ -1585,7 +1581,8 @@ def unique_list(in_list: List) -> List:
 
     """
     out_list = []
-    out_dict = collections.OrderedDict.fromkeys(x for x in in_list if x not in out_list)
+    out_dict = collections.OrderedDict.fromkeys(
+        x for x in in_list if x not in out_list)
 
     out_list = []
     for key in sorted(out_dict.keys()):
