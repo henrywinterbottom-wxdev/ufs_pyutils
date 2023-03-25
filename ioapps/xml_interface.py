@@ -205,7 +205,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
             xml_str_out = xml_str_in.replace(key, value)
 
         from pprint import pprint
-        pprint(xml_str_out)
+        pprint(xml_str_out.strip("'"))
         quit()
 
         # Update the Python dictionary containing the XML-formatted
