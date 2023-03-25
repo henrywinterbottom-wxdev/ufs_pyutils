@@ -254,8 +254,8 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     from lxml import etree
 
-    s = """<?xml version="1.0" encoding="UTF-8"?>
-    <tmx version="1.4a"/>"""
+    s = bytes("""<?xml version="1.0" encoding="UTF-8"?>
+    <tmx version="1.4a"/>""")
 
     tree = etree.fromstring(s)
     header = etree.SubElement(tree, 'header', {'adminlang': 'EN'})
