@@ -88,7 +88,9 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
-XML_CHAR_DICT = {"__ENTITY__": "&"}
+XML_CHAR_DICT = {"__ENTITY__": "&",
+                 "&amp": "&",
+                 }
 
 # ----
 
@@ -233,8 +235,8 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     xml_str = xmltodict.unparse(xml_dict)
 
     xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
-    xml_str = xml_str.replace("&amp;", "&")
 
-    # xml_str = [line.replace("&amp;", "&") for line in xml_str].split()
+    for (key, value) in XML_CHAR_DICT.items():
+        xml_str = xml_str.replace(f"{key}", f"{value}")
 
     return xml_str
