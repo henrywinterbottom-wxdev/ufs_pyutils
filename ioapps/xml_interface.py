@@ -208,13 +208,17 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         for (key, value) in XML_CHAR_DICT.items():
             xml_str_out = xml_str_in.replace(key, value)
 
+        parser = etree.XMLParser(resolve_entities=False)
+        xml_str = minidom.parseString(
+            etree.tostring(etree.fromstring(xml_str_out, parser))).toprettyxml(indent=5 * " ")
+
         # , Loader=SafeLoader)
-        xml_dict = xmltodict.parse(xml_str_out)
+        # xml_dict = xmltodict.parse(xml_str_out)
 
-        print(type(xml_dict))
-        quit()
+        # print(type(xml_dict))
+        # quit()
 
-        print(xml_dict)
+        # print(xml_dict)
 
 #        yaml_dict = xmltodict.parse(xml_str_out)
 #        quit()
