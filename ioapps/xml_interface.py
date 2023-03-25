@@ -261,10 +261,10 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     header = etree.SubElement(tree, 'header', {'adminlang': 'EN'})
     body = etree.SubElement(tree, 'body')
 
-    print etree.tostring(tree, encoding="UTF-8",
+    print(etree.tostring(tree, encoding="UTF-8",
                          xml_declaration=True,
                          pretty_print=True,
-                         doctype='<!DOCTYPE tmx SYSTEM "tmx14a.dtd">')
+                         doctype='<!DOCTYPE tmx SYSTEM "tmx14a.dtd">'))
 
     quit()
 
