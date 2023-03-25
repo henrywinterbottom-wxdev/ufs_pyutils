@@ -210,6 +210,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         xml_dict = xmltodict.parse(xml_str)
 
         for (key, value) in XML_CHAR_DICT.items():
+            print(key, value)
             xml_dict = parser_interface.dict_replace_value(
                 in_dict=xml_dict, old=key, new=value)
 
