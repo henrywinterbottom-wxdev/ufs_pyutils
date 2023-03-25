@@ -221,3 +221,17 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         raise XMLInterfaceError(msg=msg) from errmsg
 
     return xml_dict
+
+# ----
+
+
+def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
+    """
+
+    """
+
+    xml_str = xmltodict.unparse(xml_dict)
+
+    xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
+
+    return xml_str
