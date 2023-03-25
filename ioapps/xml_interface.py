@@ -208,8 +208,12 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
             xml_str_in).toprettyxml(indent=5 * " ")
 
         xml_str_out = xml_str_in
-        for (key, value) in XML_CHAR_DICT.items():
-            xml_str_out = xml_str_in.replace(key, value)
+
+        xml_dict = xmltodict.parse(xml_str_in)
+        print(xml_dict)
+
+#        for (key, value) in XML_CHAR_DICT.items():
+#            xml_str_out = xml_str_in.replace(key, value)
 
         # parser = etree.XMLParser(resolve_entities=True)
         # xml_str = minidom.parseString(
@@ -223,8 +227,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
 
         # print(xml_dict)
 
-        xml_dict = xmltodict.parse(xml_str_out)
-        print(xml_dict)
+
 #        quit()
 
         # print(yaml_dict)
