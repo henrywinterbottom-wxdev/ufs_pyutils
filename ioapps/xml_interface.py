@@ -61,6 +61,7 @@ History
 import json
 from typing import Dict
 from xml.dom import minidom
+import yaml
 
 import xmltodict
 from lxml import etree
@@ -201,14 +202,17 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
     # Update (e.g., replace) any special character strings.
     try:
 
-        # xml_str_in = json.dumps(xml_dict).strip("\n")
+        xml_str_in = yaml.dumps(xml_dict)
         for (key, value) in XML_CHAR_DICT.items():
             xml_str_out = xml_str_in.replace(key, value)
 
-        yaml_dict = xmltodict.parse(xml_str_out)
-
-        print(yaml_dict)
+        print(xml_str_out)
         quit()
+
+        # yaml_dict = xmltodict.parse(xml_str_out)
+
+        # print(yaml_dict)
+        # quit()
 
     except Exception as errmsg:
         msg = (
