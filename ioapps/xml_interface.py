@@ -92,6 +92,8 @@ XML_CHAR_DICT = {"__ENTITY__": "&"}
 
 # ----
 
+# START -- MOVE TO parser_interface
+
 
 def dict_replace_value(d: dict, old: str, new: str) -> dict:
     x = {}
@@ -117,6 +119,8 @@ def list_replace_value(l: list, old: str, new: str) -> list:
             e = e.replace(old, new)
         x.append(e)
     return x
+
+# STOP -- MOVE TO parser_interface
 
 
 def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
