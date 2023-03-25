@@ -66,7 +66,7 @@ from yaml import SafeLoader
 
 import xmltodict
 from lxml import etree
-from tools import fileio_interface
+from tools import fileio_interface, parser_interface
 from utils.exceptions_interface import XMLInterfaceError
 from utils.logger_interface import Logger
 
@@ -91,36 +91,6 @@ __email__ = "henry.winterbottom@noaa.gov"
 XML_CHAR_DICT = {"__ENTITY__": "&"}
 
 # ----
-
-# START -- MOVE TO parser_interface
-
-
-def dict_replace_value(d: dict, old: str, new: str) -> dict:
-    x = {}
-    for k, v in d.items():
-        if isinstance(v, dict):
-            v = dict_replace_value(v, old, new)
-        elif isinstance(v, list):
-            v = list_replace_value(v, old, new)
-        elif isinstance(v, str):
-            v = v.replace(old, new)
-        x[k] = v
-    return x
-
-
-def list_replace_value(l: list, old: str, new: str) -> list:
-    x = []
-    for e in l:
-        if isinstance(e, list):
-            e = list_replace_value(e, old, new)
-        elif isinstance(e, dict):
-            e = dict_replace_value(e, old, new)
-        elif isinstance(e, str):
-            e = e.replace(old, new)
-        x.append(e)
-    return x
-
-# STOP -- MOVE TO parser_interface
 
 
 def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
@@ -234,41 +204,14 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
     # Update (e.g., replace) any special character strings.
     try:
 
-        xml_str_in = xmltodict.unparse(xml_dict)
-        xml_str_in = minidom.parseString(
-            xml_str_in).toprettyxml(indent=5 * " ")
+        xml_str = xmltodict.unparse(xml_dict)
+        xml_str = minidom.parseString(xml_str).toprettyxml(indent=5 * " ")
 
-        xml_str_out = xml_str_in
+        xml_dict = xmltodict.parse(xml_str)
 
-        xml_dict = xmltodict.parse(xml_str_in)
-
-        xml_dict = dict_replace_value(xml_dict, "__ENTITY__", "&")
-
-        # xml_dict = parser_interface.update_dict(default_dict=xml_dict,
-        #                                        base_dict=XML_CHAR_DICT)
-
-        # print(xml_dict)
-
-#        for (key, value) in XML_CHAR_DICT.items():
-#            xml_str_out = xml_str_in.replace(key, value)
-
-        # parser = etree.XMLParser(resolve_entities=True)
-        # xml_str = minidom.parseString(
-        #    etree.tostring(etree.fromstring(xml_str_out.encode(), parser))).toprettyxml(indent=5 * " ")
-
-        # , Loader=SafeLoader)
-        # xml_dict = xmltodict.parse(xml_str_out)
-
-        # print(type(xml_dict))
-        # quit()
-
-        # print(xml_dict)
-
-
-#        quit()
-
-        # print(yaml_dict)
-        # quit()
+        for (key, value) in XML_CHAR_DICT.items():
+            xml_dict = parser_interface.dict_replace_value(
+                in_dict=xml_dict, old=key, new=value)
 
     except Exception as errmsg:
         msg = (
