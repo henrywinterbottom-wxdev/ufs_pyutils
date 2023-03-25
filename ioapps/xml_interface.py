@@ -268,7 +268,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
 #    dtdfile = "/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd"
 #
-    tree = etree.fromstring(xml_str)
+    tree = etree.fromstring(xml_str.encode())
     print(etree.tostring(tree, encoding="utf-8",
                          xml_declaration=True,
                          doctype=f"<!DOCTYPE workflow2 SYSTEM '{dtd}' >"))
