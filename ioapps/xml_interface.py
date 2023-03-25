@@ -255,8 +255,6 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     doc_str = "<!DOCTYPE workflow SYSTEM '/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd'>"
 
     xml_str = xmltodict.unparse(xml_dict)
-    print(xml_str)
-    quit()
     xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
 
     for (key, value) in XML_SSYMS_DICT.items():
@@ -265,9 +263,6 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
-    print(xml_str)
-    quit()
-
     # TEST
     # dtd = etree.DTD(file="/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd")
 
@@ -275,7 +270,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 #
     tree = etree.fromstring(xml_str.encode())
     print(etree.tostring(tree, encoding="utf-8",
-                         xml_declaration=True))
+                         xml_declaration=True, doctype=doc_str))
 
     # print(tree)
     quit()
