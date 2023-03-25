@@ -140,6 +140,8 @@ TCV_34QUAD_DICT = OrderedDict(
     }
 )
 
+# ----
+
 
 def __scalegeo__(lat: str, lon: str) -> Tuple[float, float]:
     """
@@ -629,7 +631,8 @@ def write_tcvstr(tcvit_obj: object) -> str:
             raise TCVitalsInterfaceError(msg=msg)
 
         # Build the TC-vitals record object.
-        value = parser_interface.object_getattr(object_in=tcvit_obj, key=mand_attr)
+        value = parser_interface.object_getattr(
+            object_in=tcvit_obj, key=mand_attr)
         tcvobj = parser_interface.object_setattr(
             object_in=tcvobj, key=mand_attr, value=value
         )
