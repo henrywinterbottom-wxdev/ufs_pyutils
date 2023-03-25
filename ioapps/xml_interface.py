@@ -270,7 +270,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     tree = etree.fromstring(xml_str)
     print(etree.tostring(tree, encoding="utf-8",
                          xml_declaration=True,
-                         doctype=f"<!DOCTYPE workflow2 SYSTEM {dtd} >"))
+                         doctype=f"<!DOCTYPE workflow2 SYSTEM '{dtd}' >"))
 
     # print(tree)
     quit()
