@@ -858,7 +858,7 @@ def list_replace_value(in_list: List, old: str, new: str) -> List:
     for item in in_list:
 
         # Update any Python list instances.
-        if isinstance(item, in_list):
+        if isinstance(item, list):
             item = list_replace_value(item, old, new)
 
         # Update any Python dictionary instances.
