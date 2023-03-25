@@ -70,6 +70,8 @@ from tools import fileio_interface
 from utils.exceptions_interface import XMLInterfaceError
 from utils.logger_interface import Logger
 
+from tools import parser_interface
+
 # ----
 
 # Define all available functions.
@@ -210,6 +212,9 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         xml_str_out = xml_str_in
 
         xml_dict = xmltodict.parse(xml_str_in)
+        xml_dict = parser_interface.update_dict(default_dict=xml_dict,
+                                                base_dict=XML_CHAR_DICT)
+
         print(xml_dict)
 
 #        for (key, value) in XML_CHAR_DICT.items():
