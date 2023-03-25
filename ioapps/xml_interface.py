@@ -204,12 +204,12 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
     try:
 
         xml_str_in = yaml.safe_dump(xml_dict)
-        for (key, value) in XML_CHAR_DICT.items():
-            xml_str_out = xml_str_in.replace(key, value)
+        xml_str_out = xml_str_in
+        # for (key, value) in XML_CHAR_DICT.items():
+        #    xml_str_out = xml_str_in.replace(key, value)
 
-        xml_dict = json.loads(xml_str_out)
-
-        # yaml_dict = xmltodict.parse(xml_str_out)
+        yaml_dict = xmltodict.parse(xml_str_out)
+        quit()
 
         # print(yaml_dict)
         # quit()
