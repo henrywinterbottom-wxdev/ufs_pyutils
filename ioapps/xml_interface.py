@@ -254,10 +254,9 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
     # TEST
-    parser = etree.XMLParser(resolve_entities=True)
-    tree = etree.fromstring(xml_str, parser)
+    # dtd = etree.DTD(file="/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd")
 
-    print(tree)
+    # print(tree)
     quit()
 
     return xml_str
