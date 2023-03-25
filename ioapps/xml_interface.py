@@ -270,7 +270,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 #
     tree = etree.fromstring(xml_str.encode())
     print(etree.tostring(tree, encoding="utf-8",
-                         xml_declaration=True)
+                         xml_declaration=True))
 
     # print(tree)
     quit()
