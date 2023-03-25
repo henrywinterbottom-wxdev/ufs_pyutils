@@ -263,8 +263,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
-    print(ElementInclude.include(elem=xml_str,
-          base_url="/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd"))
+    print(etree.XMLParser(load_dtd=True, no_network=False))
 
     quit()
 
@@ -273,8 +272,8 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
 #    dtdfile = "/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd"
 #
-    print
-    tree = etree.fromstring(xml_str.encode(), base_url=doc_str)
+    # print
+    # tree = etree.fromstring(xml_str.encode(), base_url=doc_str)
 
     print(tree)
     quit()
