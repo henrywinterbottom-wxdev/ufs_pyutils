@@ -204,10 +204,6 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         for (key, value) in XML_CHAR_DICT.items():
             xml_str_out = xml_str_in.replace(key, value)
 
-        from pprint import pprint
-        pprint(xml_str_out.strip("'"))
-        quit()
-
         # Update the Python dictionary containing the XML-formatted
         # input file attributes.
         xml_dict = json.loads(xml_str_out)
