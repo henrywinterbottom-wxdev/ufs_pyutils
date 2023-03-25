@@ -58,6 +58,11 @@ Functions
         generator containing the merged Python dictionary relative to
         the checks within the function.
 
+    dict_replace_value(in_dict, old, new)
+
+        This function replaces strings within a (nested) Python
+        dictionary and returns the updated (nested) Python dictionary.
+
     enviro_get(envvar)
 
         This function retrieves the environment variable corresponding
@@ -77,6 +82,12 @@ Functions
 
         This function parses a list and returns a list of values in
         accordance with the specified data type.
+
+    list_replace_value(in_list, old, new)
+
+        This function replaces strings within a Python list and
+        returns the updated Python list; this function adapted from
+        https://tinyurl.com/list-value-replace.
 
     match_list(in_list, match_string, exact=False):
 
@@ -189,7 +200,7 @@ import os
 import sys
 import types
 from json.decoder import JSONDecodeError
-from typing import Any, Dict, Generator, List, Union
+from typing import Any, Dict, Generator, List, Tuple, Union
 
 import numpy
 from utils.exceptions_interface import ParserInterfaceError
@@ -202,10 +213,12 @@ __all__ = [
     "dict_key_remove",
     "dict_key_value",
     "dict_merge",
+    "dict_replace_value",
     "enviro_get",
     "enviro_set",
     "find_commonprefix",
     "list_get_type",
+    "list_replace_value",
     "match_list",
     "object_append",
     "object_compare",
@@ -325,6 +338,7 @@ def dict_formatter(in_dict: Dict) -> Dict:
     out_dict = sorted_by_keys(dct=in_dict)
 
     return out_dict
+
 
 # ----
 
@@ -579,6 +593,70 @@ def dict_merge(dict1: Dict, dict2: Dict) -> Generator[Dict, Dict, Dict]:
 # ----
 
 
+def dict_replace_value(in_dict: Dict, old: str, new: str) -> Dict:
+    """
+    Description
+    -----------
+
+    This function replaces strings within a (nested) Python dictionary
+    and returns the updated (nested) Python dictionary; this function
+    adapted from https://tinyurl.com/dict-value-replace.
+
+    Parameters
+    ----------
+
+    in_dict: dict
+
+        A (nested) Python dictionary containing Python strings to be
+        replaced/updated.
+
+    old: str
+
+        A Python string value specifying the Python string instance to
+        be replaced.
+
+    new: str
+
+        A Python string value specifying the Python string to replace
+        the value specified by the `old` attribute.
+
+    Returns
+    -------
+
+    out_dict: dict
+
+        A (nested) Python dictionary updated in accordance within the
+        attributes specified by the `old` and `new` attributes;
+        otherwise this Python dictionary is identical to that defined
+        by `in_dict`.
+
+    """
+
+    # Parse the Python dictionary and proceed accordingly.
+    out_dict = {}
+
+    for (key, value) in in_dict.items():
+
+        # Update any Python dictionary instances.
+        if isinstance(value, dict):
+            value = dict_replace_value(value, old, new)
+
+        # Update any Python list instances.
+        elif isinstance(value, list):
+            value = list_replace_value(value, old, new)
+
+        # Update any remaining Python type instances.
+        elif isinstance(value, str):
+            value = value.replace(old, new)
+
+        out_dict[key] = value
+
+    return out_dict
+
+
+# ----
+
+
 def enviro_get(envvar: str) -> Union[bool, float, int, str]:
     """
     Description
@@ -731,6 +809,69 @@ def list_get_type(in_list: List, dtype: str) -> List:
         var_list.append(numpy.nan)
 
     return var_list
+
+
+# ----
+
+
+def list_replace_value(in_list: List, old: str, new: str) -> List:
+    """
+    Description
+    -----------
+
+    This function replaces strings within a Python list and returns
+    the updated Python list; this function adapted from
+    https://tinyurl.com/list-value-replace.
+
+    Parameters
+    ----------
+
+    in_list: dict
+
+        A Python list containing Python strings to be
+        replaced/updated.
+
+    old: str
+
+        A Python string value specifying the Python string instance to
+        be replaced.
+
+    new: str
+
+        A Python string value specifying the Python string to replace
+        the value specified by the `old` attribute.
+
+    Returns
+    -------
+
+    out_list: list
+
+        A Python list updated in accordance within the attributes
+        specified by the `old` and `new` attributes; otherwise this
+        Python list is identical to that defined by `in_list`.
+
+    """
+
+    # Parse the Python dictionary and proceed accordingly.
+    out_list = []
+
+    for item in in_list:
+
+        # Update any Python list instances.
+        if isinstance(item, in_list):
+            item = list_replace_value(item, old, new)
+
+        # Update any Python dictionary instances.
+        elif isinstance(item, dict):
+            item = dict_replace_value(item, old, new)
+
+        # Update any Python string instances.
+        elif isinstance(item, str):
+            item = item.replace(old, new)
+
+        out_list.append(item)
+
+    return out_list
 
 
 # ----
@@ -962,7 +1103,9 @@ def object_getattr(
 # ----
 
 
-def match_list(in_list: List, match_string: str, exact: bool = False) -> (bool, str):
+def match_list(
+    in_list: List, match_string: str, exact: bool = False
+) -> Tuple[bool, str]:
     """
     Description
     -----------
@@ -1017,8 +1160,7 @@ def match_list(in_list: List, match_string: str, exact: bool = False) -> (bool, 
     # Define the local lists to be used for the matching application.
     lower_list = [word for word in in_list if word.islower()]
     upper_list = [word for word in in_list if word.isupper()]
-    mixed_list = [word for word in in_list if not word.islower()
-                  and not word.isupper()]
+    mixed_list = [word for word in in_list if not word.islower() and not word.isupper()]
     match_chk = False
 
     # If appropriate, seek exact matches; proceed accordingly.
@@ -1438,8 +1580,7 @@ def unique_list(in_list: List) -> List:
 
     """
     out_list = []
-    out_dict = collections.OrderedDict.fromkeys(
-        x for x in in_list if x not in out_list)
+    out_dict = collections.OrderedDict.fromkeys(x for x in in_list if x not in out_list)
 
     out_list = []
     for key in sorted(out_dict.keys()):
