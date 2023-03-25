@@ -200,7 +200,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
 
     # Update (e.g., replace) any special character strings.
     try:
-        xml_str_in = json.dumps(xml_dict).replace("\n", str())
+        xml_str_in = "".join(json.dumps(xml_dict).split("\\n"))
         for (key, value) in XML_CHAR_DICT.items():
             xml_str_out = xml_str_in.replace(key, value)
 
