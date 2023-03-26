@@ -280,8 +280,6 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     doc_str = "<!DOCTYPE workflow SYSTEM '/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd'>"
 
     xml_str = xmltodict.unparse(xml_dict)
-    print(xml_str)
-    quit()
 
     xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
 
@@ -291,10 +289,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
-    xml_str = doc_str + xml_str.replace('<?xml version="1.0"?>', "")
-
-    print(xml_str)
-    quit()
+    xml_str = doc_str + xml_str.replace('<?xml version="1.0" ?>', "")
 
     bs = BeautifulSoup(xml_str, "xml")
 
