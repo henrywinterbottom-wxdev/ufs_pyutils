@@ -292,7 +292,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     from io import StringIO
 
-    xml_str = doc_str + StringIO(bs.encode_contents())
+    xml_str = doc_str + BytesIO(bs.encode_contents())
     print(xml_str)
     quit()
 
