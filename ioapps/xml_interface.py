@@ -290,21 +290,15 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     bs = BeautifulSoup(xml_str, "xml")
 
-    bs = bs.encode_contents()
-
-    print(bs)
-    quit()
+    xml_str = bs.encode_contents()
 
     parser = etree.XMLParser(load_dtd=True)
     parser.resolvers.add(DTDResolver())
 
     # xml = '<!DOCTYPE doc SYSTEM "DTD.dtd"><doc>&myentity;</doc>'
 
-    xml_str = '<!DOCTYPE workflow SYSTEM "DTD.dtd">' + \
-        xml_str.replace('<?xml version="1.0"?>', "")
-
-    print(xml_str)
-    quit()
+    # xml_str = '<!DOCTYPE workflow SYSTEM "DTD.dtd">' + \
+    #    xml_str.replace('<?xml version="1.0"?>', "")
 
     tree = etree.parse(StringIO(xml_str), parser)
     root = tree.getroot()
