@@ -281,6 +281,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     xml_str = xmltodict.unparse(xml_dict)
 
     print(xml_str)
+    quit()
 
     xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
 
