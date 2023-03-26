@@ -297,7 +297,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
         xml_str = xml_str.replace(f"{key}", f"{value}")  # IS THIS NEEDED?
 
     xml_str = doc_str + \
-        xml_str.replace('<?xml version="1.0" ?>', "").xml_str.replace(
+        xml_str.replace('<?xml version="1.0" ?>', "").replace(
             '<?xml version="1.0"?>', "")
 
     print(xml_str)
