@@ -290,7 +290,8 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     bs = BeautifulSoup(xml_str, "xml")
 
-    xml_str = bs.encode_contents().encode()
+    xml_str = bs.encode_contents()
+    xml_str = xml_str.encode("utf-8")
 
     parser = etree.XMLParser(load_dtd=True)
     parser.resolvers.add(DTDResolver())
