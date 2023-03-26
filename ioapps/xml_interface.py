@@ -109,9 +109,8 @@ XML_SSYMS_DICT = {"&amp;": "&",
 
 class DTDResolver(etree.Resolver):
     def resolve(self, url, id, context):
-        # print("Resolving URL '%s'" % url)
         return self.resolve_string(
-            '<!ENTITY entity "[resolved text: %s]">' % url, context)
+            '<!ENTITY MAXTRIES "[resolved text: %s]">' % url, context)
 
 
 # class DTDResolver(etree.Resolver):
