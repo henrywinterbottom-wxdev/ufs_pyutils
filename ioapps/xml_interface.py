@@ -286,7 +286,8 @@ def write_xml(xml_dict: Dict, xml_path: str, doc_name: str, dtd_path: str, inden
     xml_str = etree.tostring(tree, xml_declaration=True,
                              doctype=doctype)
 
-    xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ", newl=""))
+    xml_str = minidom.parseString(xml_str).toprettyxml(
+        indent=indent*" ", newl="")
 
     print(xml_str)
     quit()
@@ -297,17 +298,17 @@ def write_xml(xml_dict: Dict, xml_path: str, doc_name: str, dtd_path: str, inden
 
     #    xml_str = xml_str.replace(f"{key}", f"{value}")  # IS THIS NEEDED?
 
-    xml_str=doc_str + \
+    xml_str = doc_str + \
         xml_str.replace('<?xml version="1.0" ?>', "").replace(
             '<?xml version="1.0"?>', "")
 
-    xml_str='<?xml version="1.0" ?>\n' + xml_str
+    xml_str = '<?xml version="1.0" ?>\n' + xml_str
 
 #    bs = BeautifulSoup(xml_str, "xml")
 
 #    xml_str = BytesIO(bs.encode_contents())
 
-    parser=etree.XMLParser(load_dtd = True, resolve_entities = True)
+    parser = etree.XMLParser(load_dtd=True, resolve_entities=True)
     # parser.resolvers.add(DTDResolver())
 
     # xml = '<!DOCTYPE doc SYSTEM "DTD.dtd"><doc>&myentity;</doc>'
@@ -316,9 +317,9 @@ def write_xml(xml_dict: Dict, xml_path: str, doc_name: str, dtd_path: str, inden
     #    xml_str.replace('<?xml version="1.0"?>', "")
 
     # tree = etree.parse(BytesIO(xml_str), parser)
-    tree=etree.XML(xml_str, parser = parser)
-    xml_str=etree.tostring(tree, xml_declaration = True,
-                             doctype = doc_str)
+    tree = etree.XML(xml_str, parser=parser)
+    xml_str = etree.tostring(tree, xml_declaration=True,
+                             doctype=doc_str)
 
     print(minidom.parseString(xml_str).toprettyxml(indent=indent*" ", newl=""))
     quit()
