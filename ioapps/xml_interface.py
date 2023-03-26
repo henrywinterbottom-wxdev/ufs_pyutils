@@ -60,7 +60,7 @@ History
 
 import xml.etree.ElementInclude as ElementInclude
 
-from io import BytesIO, StringIO
+from io import BytesIO
 
 import json
 from typing import Dict
@@ -290,10 +290,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     bs = BeautifulSoup(xml_str, "xml")
 
-    print(StringIO(bs))
-    quit()
-
-    xml_str = doc_str + bs.encode("utf-8")
+    xml_str = doc_str + StringIO(bs.encode_contents())
     print(xml_str)
     quit()
 
