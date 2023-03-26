@@ -264,37 +264,31 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
 # ----
 
 
-def write_xml(xml_path: str, xml_str: str):
-    """
-
-    """
-
-
 # ----
 
 
-def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
+def write_xml(xml_dict: Dict, xml_path: str, doc_name: str, dtd_path: str, indent: int = 5):
     """
 
     """
 
-    def find_line(string, fp):
-        """ """
-        for (idx, line) in enumerate(fp):
-            if string in line.rstrip():
-                return idx
+    # Build the XML-formatted document string; this includes the path
+    # to the DTD-formatted file.
+    doc_str = f"<!DOCTYPE {doc_name} SYSTEM '{dtd_path}'>"
 
-    doc_str = "<!DOCTYPE workflow SYSTEM '/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd'>"
-
+    # Build the XML-formatted string from the Python dictionary
+    # `xml_dict` specified upon entry; proceed accordingly.
     xml_str = xmltodict.unparse(xml_dict)
-
     xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
 
-    for (key, value) in XML_SSYMS_DICT.items():
-        msg = f"Replacing XML-formatted string symbol {key} with {value}."
-        logger.info(msg=msg)
+    print(xml_str)
+    quit()
 
-        xml_str = xml_str.replace(f"{key}", f"{value}")  # IS THIS NEEDED?
+    # for (key, value) in XML_SSYMS_DICT.items():
+    #    msg = f"Replacing XML-formatted string symbol {key} with {value}."
+    #    logger.info(msg=msg)
+
+    #    xml_str = xml_str.replace(f"{key}", f"{value}")  # IS THIS NEEDED?
 
     xml_str = doc_str + \
         xml_str.replace('<?xml version="1.0" ?>', "").replace(
