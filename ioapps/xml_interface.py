@@ -282,14 +282,14 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
 
-    print(xml_str)
-    quit()
-
     for (key, value) in XML_SSYMS_DICT.items():
         msg = f"Replacing XML-formatted string symbol {key} with {value}."
         logger.info(msg=msg)
 
         xml_str = xml_str.replace(f"{key}", f"{value}")
+
+    print(xml_str)
+    quit()
 
     xml_str = doc_str + xml_str.replace('<?xml version="1.0" ?>', "")
 
