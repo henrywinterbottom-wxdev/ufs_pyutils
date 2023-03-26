@@ -62,6 +62,8 @@ import xml.etree.ElementInclude as ElementInclude
 
 from io import BytesIO, StringIO
 
+import sys
+
 import json
 from typing import Dict
 from xml.dom import minidom
@@ -295,7 +297,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
         xml_str = xml_str.replace(f"{key}", f"{value}")  # IS THIS NEEDED?
 
     linenum = find_line(string="<?xml version=", fp=xml_str)
-    print(next(linenum))
+    print(map(sys.stdout.write, linenum))
     quit()
 
     print(xml_str)
