@@ -291,6 +291,8 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     # xml = '<!DOCTYPE doc SYSTEM "DTD.dtd"><doc>&myentity;</doc>'
 
+    xml_str = '<!DOCTYPE workflow SYSTEM "DTD.dtd">' + xml_str
+
     tree = etree.parse(StringIO(xml_str), parser)
     root = tree.getroot()
     print(root.text)
