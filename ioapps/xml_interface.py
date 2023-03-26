@@ -88,21 +88,15 @@ History
 
 # ----
 
-import json
-import sys
-import xml.etree.ElementInclude as ElementInclude
-from io import BytesIO, StringIO
+
 from typing import Dict
 from xml.dom import minidom
 
 import xmltodict
-import yaml
-from bs4 import BeautifulSoup
 from lxml import etree
 from tools import fileio_interface, parser_interface
 from utils.exceptions_interface import XMLInterfaceError
 from utils.logger_interface import Logger
-from yaml import SafeLoader
 
 # ----
 
@@ -363,7 +357,8 @@ def write_xml(
         tree = etree.XML(xml_str, parser=parser)
 
         xml_str = etree.tostring(tree, xml_declaration=True, doctype=doctype)
-        xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent * " ", newl="")
+        xml_str = minidom.parseString(xml_str).toprettyxml(
+            indent=indent * " ", newl="")
 
         msg = f"Writing XML-formatted file path {xml_path}."
         logger.info(msg=msg)
