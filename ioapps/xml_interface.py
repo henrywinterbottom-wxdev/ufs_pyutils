@@ -109,26 +109,6 @@ XML_SSYMS_DICT = {"&amp;": "&",
 # ----
 
 
-class DTDResolver(etree.Resolver):
-    def resolve(self, url, id, context):
-        return self.resolve_string(
-            '<!ENTITY MAXTRIES "[resolved text: %s]">' % url, context)
-
-
-# class DTDResolver(etree.Resolver):
-#    """
-
-
-#    """
-
-#    def resolve(self: etree.Resolver, url: str, id, context):
-#        """ """
-
-#        return self.resolve_string('<!ENTITY MAXTRIES "[resolved text: %s]">' % url, context)
-
-# ----
-
-
 def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
     """
     Description
@@ -260,9 +240,6 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         raise XMLInterfaceError(msg=msg) from errmsg
 
     return xml_dict
-
-# ----
-
 
 # ----
 
