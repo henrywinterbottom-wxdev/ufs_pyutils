@@ -274,12 +274,17 @@ def write_xml(xml_dict: Dict, xml_path: str, doc_name: str, dtd_path: str, inden
 
     # Build the XML-formatted document string; this includes the path
     # to the DTD-formatted file.
-    doc_str = f"<!DOCTYPE {doc_name} SYSTEM '{dtd_path}'>"
+    doctype = f"<!DOCTYPE {doc_name} SYSTEM '{dtd_path}'>"
 
     # Build the XML-formatted string from the Python dictionary
     # `xml_dict` specified upon entry; proceed accordingly.
     xml_str = xmltodict.unparse(xml_dict)
     xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
+
+    parser = etree.XMLParser(load_dtd=True, resolve_entities=True)
+    tree = etree.XML(xml_str, parser=parser)
+    xml_str = etree.tostring(tree, xml_declaration=True,
+                             doctype=doctype)
 
     print(xml_str)
     quit()
