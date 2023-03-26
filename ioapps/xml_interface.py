@@ -109,9 +109,9 @@ XML_SSYMS_DICT = {"&amp;": "&",
 
 class DTDResolver(etree.Resolver):
     def resolve(self, url, id, context):
-        print("Resolving URL '%s'" % url)
+        # print("Resolving URL '%s'" % url)
         return self.resolve_string(
-            '<!ENTITY MAXTRIES "[resolved text: %s]">' % url, context)
+            '<!ENTITY entity "[resolved text: %s]">' % url, context)
 
 
 # class DTDResolver(etree.Resolver):
@@ -300,7 +300,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     # xml_str = '<!DOCTYPE workflow SYSTEM "DTD.dtd">' + \
     #    xml_str.replace('<?xml version="1.0"?>', "")
 
-    tree = etree.parse(xml_str, parser)
+    tree = etree.parse(xml_str.encode("utf-8"), parser)
     root = tree.getroot()
     print(root.text)
 
