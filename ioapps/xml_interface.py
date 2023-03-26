@@ -281,7 +281,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     def find_line(string, fp):
         """ """
         for (idx, line) in enumerate(fp):
-            if str(string) in str(line):
+            if string in line.rstrip():
                 return idx
 
     doc_str = "<!DOCTYPE workflow SYSTEM '/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd'>"
