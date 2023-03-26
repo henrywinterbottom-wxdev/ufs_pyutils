@@ -277,7 +277,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
-    parser = etree.XMLParser(load_dtd=True)
+    parser = etree.XMLParser(load_dtd=True, no_network=True)
     parser.resolvers.add(DTDResolver())
 
     tree = etree.parse(xml_str, parser)
