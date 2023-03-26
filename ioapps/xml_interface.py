@@ -294,7 +294,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     xml_str = BytesIO(bs.encode_contents())
 
-    parser = etree.XMLParser(load_dtd=True, resolve_entities=True)
+    parser = etree.XMLParser(load_dtd=True, resolve_entities=False)
     # parser.resolvers.add(DTDResolver())
 
     # xml = '<!DOCTYPE doc SYSTEM "DTD.dtd"><doc>&myentity;</doc>'
