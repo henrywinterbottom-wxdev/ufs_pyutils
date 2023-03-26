@@ -277,10 +277,10 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
-    parser = etree.XMLParser(load_dtd=True, no_network=True)
+    parser = etree.XMLParser(load_dtd=True)
     parser.resolvers.add(DTDResolver())
 
-    xml = '<!DOCTYPE workflow SYSTEM "DTD.dtd"><doc>"&MAXTRIES;"></doc>'
+    xml = '<!DOCTYPE workflow SYSTEM "DTD.dtd"><workflow>"&MAXTRIES;"></workflow>'
 
     tree = etree.parse(xml, parser)
     quit()
