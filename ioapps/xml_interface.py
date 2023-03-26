@@ -297,7 +297,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
         xml_str = xml_str.replace(f"{key}", f"{value}")  # IS THIS NEEDED?
 
     linenum = find_line(string="<?xml version=", fp=xml_str)
-    print(str(linenum))
+    print(list(linenum))
     quit()
 
     print(xml_str)
