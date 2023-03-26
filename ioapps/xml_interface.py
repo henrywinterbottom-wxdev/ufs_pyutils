@@ -88,6 +88,10 @@ History
 
 # ----
 
+# pylint: disable=c-extension-no-member
+
+# ----
+
 from typing import Dict
 from xml.dom import minidom
 
