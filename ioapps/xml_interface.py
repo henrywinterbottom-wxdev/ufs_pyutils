@@ -60,7 +60,7 @@ History
 
 import xml.etree.ElementInclude as ElementInclude
 
-import StringIO
+from io import StringIO
 
 import json
 from typing import Dict
