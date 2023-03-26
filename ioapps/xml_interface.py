@@ -302,9 +302,6 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     tree = etree.parse(BytesIO(xml_str), parser)
     root = tree.getroot()
-    print(root.text)
-
-    quit()
 
     # parser = etree.XMLParser(load_dtd=True, no_network=False)
 
@@ -314,8 +311,8 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 #    dtdfile = "/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd"
 #
     # print
-    tree = etree.fromstring(
-        xml_str, parser=parser, base_url='/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd')
+#    tree = etree.fromstring(
+#        xml_str, parser=parser, base_url='/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd')
 
     print(etree.tostring(tree, encoding="utf-8", parser=parser,
                          xml_declaration=True, doctype=doc_str))
