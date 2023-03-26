@@ -290,7 +290,9 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     bs = BeautifulSoup(xml_str, "xml")
 
-    xml_str = bs.encode_contents()
+    xml_str = doc_str + BytesIO(bs.encode_contents())
+    print(xml_str)
+    quit()
 
     parser = etree.XMLParser(load_dtd=True)
     parser.resolvers.add(DTDResolver())
@@ -305,13 +307,6 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     print(etree.tostring(tree))
     quit()
 
-    # parser = etree.XMLParser(load_dtd=True, no_network=False)
-
-    # TEST
-    # dtd = etree.DTD(file="/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd")
-
-#    dtdfile = "/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd"
-#
     # print
 #    tree = etree.fromstring(
 #        xml_str, parser=parser, base_url='/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd')
