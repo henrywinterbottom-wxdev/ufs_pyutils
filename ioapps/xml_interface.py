@@ -37,6 +37,36 @@ Functions
         This function parses an XML-formatted file and returns the
         contents of the file formatted as a Python dictionary.
 
+    write_xml(xml_path, xml_dict, doc_name:, dtd_path, indent = 5)
+
+        This function writes a XML-formatted file `xml_path`
+        containing the attributes within the Python dictionary
+        `xml_dict` and the attributes defined by `doc_name` and
+        `dtd_path`.
+
+Example
+-------
+
+    The following example describes the document type/name and entity
+    attribute resolutions.
+
+    <!DOCTYPE doc_name SYSTEM dtd_path>
+
+    In the above example, `doc_name` is the name of the XML-document;
+    note that this may be different than the XML-formatted file path
+    `xml_path. For example, a name of `workflow` would result in the
+    string constructed as follows.
+
+    <!DOCTYPE workflow SYSTEM dtd_path>
+
+    The `dtd_path` attributes is a string specifying the full-path to
+    the file path containing the entities and their corresponding
+    values. For the example above, a `dtd_path` value of
+    /path/to/dtd/file would result in the string constructed as
+    follows.
+
+    <!DOCTYPE workflow SYSTEM "/path/to/dtd/file">
+
 Requirements
 ------------
 
@@ -58,26 +88,21 @@ History
 
 # ----
 
-import xml.etree.ElementInclude as ElementInclude
-
-from io import BytesIO, StringIO
-
-import sys
-
 import json
+import sys
+import xml.etree.ElementInclude as ElementInclude
+from io import BytesIO, StringIO
 from typing import Dict
 from xml.dom import minidom
-import yaml
-from yaml import SafeLoader
-
-from bs4 import BeautifulSoup
 
 import xmltodict
+import yaml
+from bs4 import BeautifulSoup
 from lxml import etree
 from tools import fileio_interface, parser_interface
 from utils.exceptions_interface import XMLInterfaceError
 from utils.logger_interface import Logger
-
+from yaml import SafeLoader
 
 # ----
 
@@ -98,13 +123,15 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # Define the substitution value Python dictionary for reading
 # XML-formatted files.
-XML_SCHAR_DICT = {"__ENTITY__": "&",
-                  }
+XML_SCHAR_DICT = {
+    "__ENTITY__": "&",
+}
 
 # Define the Python dictionary containing the special symbols (keys)
 # and their substitution values (values).
-XML_SSYMS_DICT = {"&amp;": "&",
-                  }
+XML_SSYMS_DICT = {
+    "&amp;": "&",
+}
 
 # ----
 
@@ -173,10 +200,10 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
         msg = f"The XML-formatted file path {xml_path} does not exist. Aborting!!!"
         raise XMLInterfaceError(msg=msg)
 
+    # Read the XML-formatted file; proceed accordingly.
     msg = f"Reading XML-formatted file path {xml_path}."
     logger.info(msg=msg)
 
-    # Read the XML-formatted file; proceed accordingly.
     try:
         with open(xml_path, "r", encoding="utf-8") as file:
             xml_contents_in = file.read()
@@ -230,7 +257,8 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
 
         for (key, value) in XML_SCHAR_DICT.items():
             xml_dict = parser_interface.dict_replace_value(
-                in_dict=xml_dict, old=f"{key}", new=f"{value}")
+                in_dict=xml_dict, old=f"{key}", new=f"{value}"
+            )
 
     except Exception as errmsg:
         msg = (
@@ -241,12 +269,64 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
 
     return xml_dict
 
+
 # ----
 
 
-def write_xml(xml_dict: Dict, xml_path: str, doc_name: str, dtd_path: str,
-              indent: int = 5) -> None:
+def write_xml(
+    xml_path: str, xml_dict: Dict, doc_name: str, dtd_path: str, indent: int = 5
+) -> None:
     """
+    Description
+    -----------
+
+    This function writes a XML-formatted file `xml_path` containing
+    the attributes within the Python dictionary `xml_dict` and the
+    attributes defined by `doc_name` and `dtd_path`.
+
+    Parameters
+    ----------
+
+    xml_path: str
+
+        A Python string specifying the path to the XML-formatted file
+        to be written.
+
+    xml_dict: dict
+
+        A Python dictionary containing the XML-attributes to be
+        written to file path `xml_path`.
+
+    doc_name: str
+
+        A Python string defining the XML-formatted document name; see
+        the example in the module documentation (above).
+
+    dtd_path: str
+
+        A Python string specifying the path to the document type
+        definition (DTD) formatted file; this file contains the
+        reference attributes to be resolved within the final
+        XML-formatted file path; additional information regarding
+        DTD-formatted files can be found here
+        https://tinyurl.com/xml-dtd-example.
+
+    Keywords
+    --------
+
+    indent: int, optional
+
+        A Python integer specifying the total number of spaces for
+        indenting when formatting the output XML-formatted file path
+        `xml_path`.
+
+    Raises
+    ------
+
+    XMLInterfaceError:
+
+        * raised if an exception is encountered while building the
+          output XML-formatted file path `xml_path`.
 
     """
 
@@ -257,7 +337,7 @@ def write_xml(xml_dict: Dict, xml_path: str, doc_name: str, dtd_path: str,
     # Build the XML-formatted string from the Python dictionary
     # `xml_dict` specified upon entry; proceed accordingly.
     xml_str = xmltodict.unparse(xml_dict)
-    xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent*" ")
+    xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent * " ")
 
     for (key, value) in XML_SSYMS_DICT.items():
         msg = f"Replacing XML-formatted string symbol {key} with {value}."
@@ -267,26 +347,33 @@ def write_xml(xml_dict: Dict, xml_path: str, doc_name: str, dtd_path: str,
     # Update the script acccordingly; this step is necessary due to
     # the order of operations related to parsing Python dictionaries
     # and constructing XML-formatted files.
-    xml_str = doctype + \
-        xml_str.replace('<?xml version="1.0" ?>', "").replace(
-            '<?xml version="1.0"?>', "")
+    xml_str = doctype + xml_str.replace('<?xml version="1.0" ?>', "").replace(
+        '<?xml version="1.0"?>', ""
+    )
     xml_str = '<?xml version="1.0" ?>\n' + xml_str
 
     # Parse the XML-formatted file attributes; update (e.g., resolve)
-    # the XML entities and write the XML-formatted file.
+    # the XML entities and write the XML-formatted file; proceed
+    # accordingly.
     msg = "Parsing the XML-formatted attributes and resolving entities."
     logger.info(msg=msg)
 
-    parser = etree.XMLParser(load_dtd=True, resolve_entities=True)
-    tree = etree.XML(xml_str, parser=parser)
+    try:
+        parser = etree.XMLParser(load_dtd=True, resolve_entities=True)
+        tree = etree.XML(xml_str, parser=parser)
 
-    xml_str = etree.tostring(tree, xml_declaration=True,
-                             doctype=doctype)
-    xml_str = minidom.parseString(xml_str).toprettyxml(
-        indent=indent*" ", newl="")
+        xml_str = etree.tostring(tree, xml_declaration=True, doctype=doctype)
+        xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent * " ", newl="")
 
-    msg = f"Writing XML-formatted file path {xml_path}."
-    logger.info(msg=msg)
+        msg = f"Writing XML-formatted file path {xml_path}."
+        logger.info(msg=msg)
 
-    with open(xml_path, "w", encoding="utf-8") as file:
-        file.write(xml_str)
+        with open(xml_path, "w", encoding="utf-8") as file:
+            file.write(xml_str)
+
+    except Exception as errmsg:
+        msg = (
+            f"Writing XML-formatted file path {xml_path} failed with "
+            f"error {errmsg}. Aborting!!!"
+        )
+        raise XMLInterfaceError(msg=msg) from errmsg
