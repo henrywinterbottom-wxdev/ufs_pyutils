@@ -286,7 +286,7 @@ def write_xml(xml_dict: Dict, xml_path: str, doc_name: str, dtd_path: str, inden
         logger.info(msg=msg)
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
-    xml_str = doc_str + \
+    xml_str = doctype + \
         xml_str.replace('<?xml version="1.0" ?>', "").replace(
             '<?xml version="1.0"?>', "")
 
