@@ -112,7 +112,6 @@ class DTDResolver(etree.Resolver):
     def resolve(self: etree.Resolver, dtd_path: str, id: int, context: str):
         """ """
 
-        print("HERE", dtd_path, context, id)
         return self.resolve_string(dtd_path, context)
 
 # ----
@@ -281,7 +280,9 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     parser = etree.XMLParser(load_dtd=True, no_network=False)
     parser.resolvers.add(DTDResolver())
 
-    tree = etree.parse(xml_str, parser)
+    xml = '<!DOCTYPE workflow SYSTEM "DTD.dtd"><task name="gfsgetic" cycledefs="gfs" maxtries="&MAXTRIES;"></task>'
+
+    tree = etree.parse(xml, parser)
     quit()
 
     root = tree.getroot()
