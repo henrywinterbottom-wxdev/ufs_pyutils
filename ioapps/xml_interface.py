@@ -281,6 +281,8 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     def find_line(string, fp):
         """ """
         for (idx, line) in enumerate(fp):
+            print(line)
+
             if string in line:
                 return idx
 
