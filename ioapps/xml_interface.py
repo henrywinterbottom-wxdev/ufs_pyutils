@@ -316,7 +316,8 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     # tree = etree.parse(BytesIO(xml_str), parser)
     tree = etree.XML(xml_str, parser=parser)
-    xml_str = etree.tostring(tree, xml_declaration=True, doctype=doc_str)
+    xml_str = etree.tostring(tree, xml_declaration=True,
+                             doctype=doc_str).replace("\n", "")
 
     print(minidom.parseString(xml_str).toprettyxml(indent=indent*" "))
     quit()
