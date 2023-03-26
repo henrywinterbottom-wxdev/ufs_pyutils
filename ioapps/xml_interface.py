@@ -289,7 +289,10 @@ def write_xml(xml_dict: Dict, xml_path: str, doc_name: str, dtd_path: str, inden
     xml_str = minidom.parseString(xml_str).toprettyxml(
         indent=indent*" ", newl="")
 
-    print(xml_str)
+    with open(xml_path, "w", encoding="utf-8") as file:
+        file.write(xml_str)
+
+    # print(xml_str)
     quit()
 
     # for (key, value) in XML_SSYMS_DICT.items():
