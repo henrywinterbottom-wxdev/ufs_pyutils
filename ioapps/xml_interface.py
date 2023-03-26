@@ -88,7 +88,6 @@ History
 
 # ----
 
-
 from typing import Dict
 from xml.dom import minidom
 
@@ -101,7 +100,7 @@ from utils.logger_interface import Logger
 # ----
 
 # Define all available functions.
-__all__ = ["read_xml"]
+__all__ = ["read_xml", "write_xml"]
 
 # ----
 
