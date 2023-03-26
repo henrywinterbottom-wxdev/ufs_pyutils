@@ -294,6 +294,9 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     xml_str = BytesIO(bs.encode_contents())
 
+    print(xml_str)
+    quit()
+
     parser = etree.XMLParser(load_dtd=True)
     parser.resolvers.add(DTDResolver())
 
