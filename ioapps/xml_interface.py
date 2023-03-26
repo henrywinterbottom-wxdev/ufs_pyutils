@@ -301,7 +301,8 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     #    xml_str.replace('<?xml version="1.0"?>', "")
 
     tree = etree.parse(BytesIO(xml_str), parser)
-    root = tree.getroot()
+    print(etree.tostring(tree))
+    quit()
 
     # parser = etree.XMLParser(load_dtd=True, no_network=False)
 
