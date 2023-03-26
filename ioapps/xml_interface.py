@@ -300,7 +300,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
         xml_str.replace('<?xml version="1.0" ?>', "").replace(
             '<?xml version="1.0"?>', "")
 
-    xml_str = '<?xml version="1.0" ?>' + xml_str
+    xml_str = '<?xml version="1.0" ?>\n' + xml_str
 
 #    bs = BeautifulSoup(xml_str, "xml")
 
