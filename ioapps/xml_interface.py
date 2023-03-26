@@ -360,8 +360,7 @@ def write_xml(
         tree = etree.XML(xml_str, parser=parser)
 
         xml_str = etree.tostring(tree, xml_declaration=True, doctype=doctype)
-        xml_str = minidom.parseString(xml_str).toprettyxml(
-            indent=indent * " ", newl="")
+        xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent * " ", newl="")
 
         msg = f"Writing XML-formatted file path {xml_path}."
         logger.info(msg=msg)
