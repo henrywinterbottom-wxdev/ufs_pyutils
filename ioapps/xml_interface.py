@@ -323,8 +323,8 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 #    tree = etree.fromstring(
 #        xml_str, parser=parser, base_url='/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd')
 
-    print(etree.tostring(tree, encoding="utf-8",
-          xml_declaration=True, doctype=doc_str))
+    print(minidom.parseString(etree.tostring(tree, encoding="utf-8",
+                                             xml_declaration=True, doctype=doc_str)).toprettyxml(indent=indent*" "))
 
     # print(tree)
     quit()
