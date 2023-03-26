@@ -300,6 +300,8 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
         xml_str.replace('<?xml version="1.0" ?>', "").replace(
             '<?xml version="1.0"?>', "")
 
+    xml_str = '<?xml version="1.0" ?>' + xml_str
+
     print(xml_str)
     quit()
 
