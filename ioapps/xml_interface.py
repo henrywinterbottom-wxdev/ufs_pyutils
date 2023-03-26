@@ -104,15 +104,22 @@ XML_SSYMS_DICT = {"&amp;": "&",
 
 
 class DTDResolver(etree.Resolver):
-    """
+    def resolve(self, url, id, context):
+        print("Resolving URL '%s'" % url)
+        return self.resolve_string(
+            '<!ENTITY myentity "[resolved text: %s]">' % url, context)
 
 
-    """
+# class DTDResolver(etree.Resolver):
+#    """
 
-    def resolve(self: etree.Resolver, url: str, id, context):
-        """ """
 
-        return self.resolve_string('<!ENTITY MAXTRIES "[resolved text: %s]">' % url, context)
+#    """
+
+#    def resolve(self: etree.Resolver, url: str, id, context):
+#        """ """
+
+#        return self.resolve_string('<!ENTITY MAXTRIES "[resolved text: %s]">' % url, context)
 
 # ----
 
@@ -280,7 +287,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     parser = etree.XMLParser(load_dtd=True)
     parser.resolvers.add(DTDResolver())
 
-    xml = '<!DOCTYPE doc SYSTEM "DTD.dtd"><doc>"&MAXTRIES;"></doc>'
+    xml = '<!DOCTYPE doc SYSTEM "DTD.dtd"><doc>&myentity;</doc>'
 
     tree = etree.parse(xml, parser)
     quit()
