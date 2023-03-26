@@ -286,7 +286,7 @@ def write_xml(xml_dict: Dict, xml_path: str, doc_name: str, dtd_path: str, inden
         logger.info(msg=msg)
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
-    parser = etree.XMLParser(load_dtd=True, resolve_entities=True)
+    parser = etree.XMLParser(load_dtd=True, resolve_entities=False)
     tree = etree.XML(xml_str, parser=parser)
     xml_str = etree.tostring(tree, xml_declaration=True,
                              doctype=doctype)
