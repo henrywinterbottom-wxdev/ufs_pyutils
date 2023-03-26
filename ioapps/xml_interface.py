@@ -60,6 +60,8 @@ History
 
 import xml.etree.ElementInclude as ElementInclude
 
+import StringIO
+
 import json
 from typing import Dict
 from xml.dom import minidom
@@ -289,7 +291,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     xml = '<!DOCTYPE doc SYSTEM "DTD.dtd"><doc>&myentity;</doc>'
 
-    tree = etree.parse(xml, parser)
+    tree = etree.parse(StringIO(xml), parser)
     quit()
 
     root = tree.getroot()
