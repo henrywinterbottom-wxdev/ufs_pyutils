@@ -68,6 +68,8 @@ from xml.dom import minidom
 import yaml
 from yaml import SafeLoader
 
+from bs4 import BeautifulSoup
+
 import xmltodict
 from lxml import etree
 from tools import fileio_interface, parser_interface
@@ -285,6 +287,13 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
         logger.info(msg=msg)
 
         xml_str = xml_str.replace(f"{key}", f"{value}")
+
+    bs = BeautifulSoup(xml_str, "xml")
+
+    bs = bs.encode_contents()
+
+    print(bs)
+    quit()
 
     parser = etree.XMLParser(load_dtd=True)
     parser.resolvers.add(DTDResolver())
