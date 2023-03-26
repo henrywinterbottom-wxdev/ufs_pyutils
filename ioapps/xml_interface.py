@@ -295,8 +295,6 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     # root = tree.getroot()
     # print(root.text)
 
-    quit()
-
     # parser = etree.XMLParser(load_dtd=True, no_network=False)
 
     # TEST
