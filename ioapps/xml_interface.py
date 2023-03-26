@@ -302,9 +302,9 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     xml_str = '<?xml version="1.0" ?>' + xml_str
 
-    bs = BeautifulSoup(xml_str, "xml")
+#    bs = BeautifulSoup(xml_str, "xml")
 
-    xml_str = BytesIO(bs.encode_contents())
+#    xml_str = BytesIO(bs.encode_contents())
 
     parser = etree.XMLParser(load_dtd=True, resolve_entities=False)
     # parser.resolvers.add(DTDResolver())
