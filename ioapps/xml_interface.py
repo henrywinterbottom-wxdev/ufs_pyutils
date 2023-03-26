@@ -276,6 +276,12 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     """
 
+    def find_line(string, fp):
+        """ """
+        for line in fp:
+            if string in line:
+                yield line
+
     doc_str = "<!DOCTYPE workflow SYSTEM '/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd'>"
 
     xml_str = xmltodict.unparse(xml_dict)
@@ -286,7 +292,11 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
         msg = f"Replacing XML-formatted string symbol {key} with {value}."
         logger.info(msg=msg)
 
-        xml_str = xml_str.replace(f"{key}", f"{value}")
+        xml_str = xml_str.replace(f"{key}", f"{value}")  # IS THIS NEEDED?
+
+    linenum = find_line(string="<?xml version=", fp=xml_str)
+    print(linenum)
+    quit()
 
     print(xml_str)
     quit()
