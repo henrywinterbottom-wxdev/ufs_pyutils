@@ -103,6 +103,20 @@ XML_SSYMS_DICT = {"&amp;": "&",
 # ----
 
 
+class DTDResolver(etree.Resolver):
+    """
+
+
+    """
+
+    def resolve(self: etree.Resolver, dtd_path: str, xml_str: str):
+        """ """
+
+        print(self.resolve_string(dtd_path), xml_str)
+
+# ----
+
+
 def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
     """
     Description
@@ -263,7 +277,16 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
-    parser = etree.XMLParser(load_dtd=True, no_network=False)
+    parser = etree.XMLParser(load_dtd=True)
+    parser.resolvers.add(DTDResolver())
+
+    tree = etree.parse(xml_str, parser)
+    root = tree.getroot()
+    print(root.text)
+
+    quit()
+
+    # parser = etree.XMLParser(load_dtd=True, no_network=False)
 
     # TEST
     # dtd = etree.DTD(file="/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd")
