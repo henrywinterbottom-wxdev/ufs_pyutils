@@ -294,6 +294,9 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     xml_str = '<!DOCTYPE workflow SYSTEM "DTD.dtd">' + \
         xml_str.replace('<?xml version="1.0"?>', "")
 
+    print(xml_str)
+    quit()
+
     tree = etree.parse(StringIO(xml_str), parser)
     root = tree.getroot()
     print(root.text)
