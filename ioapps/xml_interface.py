@@ -109,10 +109,10 @@ class DTDResolver(etree.Resolver):
 
     """
 
-    def resolve(self: etree.Resolver, dtd_path: str, id: int, context: str):
+    def resolve(self: etree.Resolver, url: str, id, context):
         """ """
 
-        return self.resolve_string(dtd_path, context)
+        return self.resolve_string('<!ENTITY MAXTRIES "[resolved text: %s]">' % url, context)
 
 # ----
 
@@ -280,7 +280,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
     parser = etree.XMLParser(load_dtd=True)
     parser.resolvers.add(DTDResolver())
 
-    xml = '<!DOCTYPE workflow SYSTEM "DTD.dtd"><workflow>"&MAXTRIES;"></workflow>'
+    xml = '<!DOCTYPE doc SYSTEM "DTD.dtd"><doc>"&MAXTRIES;"></doc>'
 
     tree = etree.parse(xml, parser)
     quit()
