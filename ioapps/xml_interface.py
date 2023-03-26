@@ -267,7 +267,8 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
 # ----
 
 
-def write_xml(xml_dict: Dict, xml_path: str, doc_name: str, dtd_path: str, indent: int = 5):
+def write_xml(xml_dict: Dict, xml_path: str, doc_name: str, dtd_path: str,
+              indent: int = 5) -> None:
     """
 
     """
@@ -286,69 +287,29 @@ def write_xml(xml_dict: Dict, xml_path: str, doc_name: str, dtd_path: str, inden
         logger.info(msg=msg)
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
+    # Update the script acccordingly; this step is necessary due to
+    # the order of operations related to parsing Python dictionaries
+    # and constructing XML-formatted files.
     xml_str = doctype + \
         xml_str.replace('<?xml version="1.0" ?>', "").replace(
             '<?xml version="1.0"?>', "")
-
     xml_str = '<?xml version="1.0" ?>\n' + xml_str
+
+    # Parse the XML-formatted file attributes; update (e.g., resolve)
+    # the XML entities and write the XML-formatted file.
+    msg = "Parsing the XML-formatted attributes and resolving entities."
+    logger.info(msg=msg)
 
     parser = etree.XMLParser(load_dtd=True, resolve_entities=True)
     tree = etree.XML(xml_str, parser=parser)
+
     xml_str = etree.tostring(tree, xml_declaration=True,
                              doctype=doctype)
-
     xml_str = minidom.parseString(xml_str).toprettyxml(
         indent=indent*" ", newl="")
 
+    msg = f"Writing XML-formatted file path {xml_path}."
+    logger.info(msg=msg)
+
     with open(xml_path, "w", encoding="utf-8") as file:
         file.write(xml_str)
-
-    # print(xml_str)
-    quit()
-
-    # for (key, value) in XML_SSYMS_DICT.items():
-    #    msg = f"Replacing XML-formatted string symbol {key} with {value}."
-    #    logger.info(msg=msg)
-
-    #    xml_str = xml_str.replace(f"{key}", f"{value}")  # IS THIS NEEDED?
-
-    xml_str = doc_str + \
-        xml_str.replace('<?xml version="1.0" ?>', "").replace(
-            '<?xml version="1.0"?>', "")
-
-    xml_str = '<?xml version="1.0" ?>\n' + xml_str
-
-#    bs = BeautifulSoup(xml_str, "xml")
-
-#    xml_str = BytesIO(bs.encode_contents())
-
-    parser = etree.XMLParser(load_dtd=True, resolve_entities=True)
-    # parser.resolvers.add(DTDResolver())
-
-    # xml = '<!DOCTYPE doc SYSTEM "DTD.dtd"><doc>&myentity;</doc>'
-
-    # xml_str = '<!DOCTYPE workflow SYSTEM "DTD.dtd">' + \
-    #    xml_str.replace('<?xml version="1.0"?>', "")
-
-    # tree = etree.parse(BytesIO(xml_str), parser)
-    tree = etree.XML(xml_str, parser=parser)
-    xml_str = etree.tostring(tree, xml_declaration=True,
-                             doctype=doc_str)
-
-    print(minidom.parseString(xml_str).toprettyxml(indent=indent*" ", newl=""))
-    quit()
-
-    # print(etree.tostring(tree))
-    # quit()
-
-    # print
-#    tree = etree.fromstring(
-#        xml_str, parser=parser, base_url='/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd')
-
-    # print(minidom.parseString(xml_str) encoding="utf-8",
-    #                                          xml_declaration=True, doctype=doc_str))).prettyxml(indent=indent*" "))
-
-    # print(tree)
-    quit()
-
-    return xml_str
