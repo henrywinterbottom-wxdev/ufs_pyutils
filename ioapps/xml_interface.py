@@ -316,7 +316,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     # tree = etree.parse(BytesIO(xml_str), parser)
     tree = etree.XML(xml_str, parser=parser)
-    xml_str = etree.tostring(tree)
+    xml_str = etree.tostring(tree, xml_declaration=True, doctype=doc_str)
     print(xml_str)
     quit()
     # print(etree.tostring(tree))
@@ -326,8 +326,8 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 #    tree = etree.fromstring(
 #        xml_str, parser=parser, base_url='/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd')
 
-    print(minidom.parseString((etree.tostring(tree, encoding="utf-8",
-                                              xml_declaration=True))).prettyxml(indent=indent*" "))
+    # print(minidom.parseString(xml_str) encoding="utf-8",
+    #                                          xml_declaration=True, doctype=doc_str))).prettyxml(indent=indent*" "))
 
     # print(tree)
     quit()
