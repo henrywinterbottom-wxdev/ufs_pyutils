@@ -290,6 +290,8 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     bs = BeautifulSoup(xml_str, "xml")
 
+    from io import StringIO
+
     xml_str = doc_str + StringIO(bs.encode_contents())
     print(xml_str)
     quit()
