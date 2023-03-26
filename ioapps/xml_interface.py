@@ -288,14 +288,11 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
-    xml_str = doc_str + xml_str
+    xml_str = doc_str + xml_str.replace('<?xml version="1.0"?>', "")
 
     bs = BeautifulSoup(xml_str, "xml")
 
-    xml_str = StringIO(BytesIO(bs.encode_contents()))
-
-    print(xml_str)
-    quit()
+    xml_str = BytesIO(bs.encode_contents())
 
     parser = etree.XMLParser(load_dtd=True)
     parser.resolvers.add(DTDResolver())
