@@ -280,9 +280,9 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
     def find_line(string, fp):
         """ """
-        for line in fp:
+        for (idx, line) in enumerate(fp):
             if string in line:
-                yield line
+                return idx
 
     doc_str = "<!DOCTYPE workflow SYSTEM '/ufs_engines/rocoto/tools/rocoto_tools/DTD.dtd'>"
 
@@ -297,10 +297,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
         xml_str = xml_str.replace(f"{key}", f"{value}")  # IS THIS NEEDED?
 
     linenum = find_line(string="<?xml version=", fp=xml_str)
-    print(list(linenum))
-    quit()
-
-    print(xml_str)
+    print(linenum)
     quit()
 
     xml_str = doc_str + xml_str.replace('<?xml version="1.0" ?>', "")
