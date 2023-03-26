@@ -288,7 +288,7 @@ def write_xml_str(xml_dict: Dict, indent: int = 5) -> str:
 
         xml_str = xml_str.replace(f"{key}", f"{value}")
 
-    bs = BeautifulSoup(xml_str, "xml")
+    bs = BeautifulSoup(xml_str, "xml", encode="utf-8")
 
     xml_str = doc_str + bs.encode("utf-8")
     print(xml_str)
