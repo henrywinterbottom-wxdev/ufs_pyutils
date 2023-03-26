@@ -112,7 +112,7 @@ class DTDResolver(etree.Resolver):
     def resolve(self: etree.Resolver, dtd_path: str, id: int, context: str):
         """ """
 
-        print(self.resolve_string(dtd_path), context)
+        print(self.resolve_string(dtd_path, context))
 
 # ----
 
