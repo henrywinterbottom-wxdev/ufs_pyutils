@@ -276,30 +276,14 @@ def dict_formatter(in_dict: Dict) -> Dict:
         new_dct = collections.OrderedDict()
         for key, value in sorted(dct.items(), key=lambda key: key):
 
-            # Check the Python version and proceed accordingly.
-            if sys.version_info < (3, 0, 0):
-                if isinstance(value, str):
-                    value = value.encode("ascii", "ignore")
-                if isinstance(key, str):
-                    key = key.encode("ascii", "ignore")
-
             # Write the key and value pair for the output dictionary.
             if isinstance(value, dict):
                 new_dct[key] = sorted_by_keys(value)
             else:
 
-                # Check the Python version and proceed accordingly.
-                if sys.version_info < (3, 0, 0):
-                    if isinstance(key, str):
-                        key = key.encode("ascii", "ignore")
-
-                    if isinstance(value, str):
-                        value = value.encode("ascii", "ignore")
-
-                test_value = value
-
                 # Check if the key and value pair is a boolean type
                 # argument and proceed accordingly.
+                test_value = value
                 if isinstance(test_value, bool):
                     if test_value:
                         value = True
@@ -316,6 +300,7 @@ def dict_formatter(in_dict: Dict) -> Dict:
                             value = float(test_value)
                         else:
                             value = int(test_value)
+
                     except ValueError:
                         if test_value.lower() == "none":
                             value = None
