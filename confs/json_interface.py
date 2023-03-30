@@ -62,6 +62,12 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 import json
 from typing import Dict
 
@@ -76,12 +82,6 @@ __all__ = ["read_json", "write_json"]
 # ----
 
 logger = Logger()
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -106,7 +106,7 @@ def read_json(json_file: str) -> Dict:
     Returns
     -------
 
-    json_dict: dict
+    json_dict: Dict
 
         A Python dictionary containing all attributes contained within
         the ingested JSON file.
@@ -116,7 +116,7 @@ def read_json(json_file: str) -> Dict:
 
     JSONInterfaceError:
 
-        * raised is an exception is encountered while reading from the
+        - raised is an exception is encountered while reading from the
           JSON-formatted file specified upon entry.
 
     """
@@ -156,7 +156,7 @@ def write_json(json_file: str, in_dict: Dict, indent: int = 4) -> None:
         A Python string containing the full-path to the JSON file to
         be written.
 
-    in_dict: dict
+    in_dict: Dict
 
         A Python dictionary containing the attributes to be written to
         the JSON file.
@@ -174,7 +174,7 @@ def write_json(json_file: str, in_dict: Dict, indent: int = 4) -> None:
 
     JSONInterfaceError:
 
-        * raised is an exception is encountered while writing to the
+        - raised is an exception is encountered while writing to the
           JSON-formatted file specified upon entry.
 
     """
