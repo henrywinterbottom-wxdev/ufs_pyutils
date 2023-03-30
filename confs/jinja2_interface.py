@@ -88,8 +88,14 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 import os
-from typing import Dict, List, Union
+from typing import Dict, List, Tuple
 
 from jinja2 import Environment, FileSystemLoader, meta
 from utils.exceptions_interface import Jinja2InterfaceError
@@ -103,12 +109,6 @@ __all__ = ["write_from_template", "write_jinja2"]
 # ----
 
 logger = Logger()
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -132,7 +132,7 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
         A Python string defining the path to the Jinja2-formatted
         template file.
 
-    in_dict: dict
+    in_dict: Dict
 
         A Python dictionary containing the Jinja2 template key and
         value pairs.
@@ -142,7 +142,7 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
 
     Jinja2InterfaceError:
 
-        * raised if variables within the Jinja2-formatted template
+        - raised if variables within the Jinja2-formatted template
           file have not been specified within the Python dictionary
           containing the Jinja2-formatted file template variable key
           and value pairs (in_dict).
@@ -180,7 +180,7 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
                 start = item.index(start_str)
                 stop = item.index(stop_str)
 
-                string = (item[start+len(start_str):stop].rstrip()).lstrip()
+                string = (item[start + len(start_str) : stop].rstrip()).lstrip()
                 variables.append(string)
 
     # Build the list of attribute variables.
@@ -290,7 +290,7 @@ def _get_template(tmpl_path: str) -> object:
 # ----
 
 
-def _get_template_file_attrs(tmpl_path: str) -> Union[str, str]:
+def _get_template_file_attrs(tmpl_path: str) -> Tuple[str, str]:
     """
     Description
     -----------
@@ -321,8 +321,7 @@ def _get_template_file_attrs(tmpl_path: str) -> Union[str, str]:
     """
 
     # Collect the Jinja2-formatted template file attributes.
-    (dirname, basename) = [os.path.dirname(
-        tmpl_path), os.path.basename(tmpl_path)]
+    (dirname, basename) = [os.path.dirname(tmpl_path), os.path.basename(tmpl_path)]
 
     return (dirname, basename)
 
@@ -349,7 +348,7 @@ def _get_template_vars(tmpl_path: str) -> List:
     Returns
     -------
 
-    variables: list
+    variables: List
 
         A Python list of Jinja2-formatted template file variables.
 
@@ -391,7 +390,7 @@ def write_from_template(
         A Python string containing the full-path to the
         Jinja2-formatted file to be written.
 
-    in_dict: dict
+    in_dict: Dict
 
         A Python dictionary containing the Jinja2-formatted file
         template variable key and value pairs.
@@ -412,7 +411,7 @@ def write_from_template(
 
     Jinja2InterfaceError:
 
-        * raised if an exception is encountered while writing the
+        - raised if an exception is encountered while writing the
           Jinja2-formatted file.
 
     """
@@ -456,7 +455,7 @@ def write_jinja2(jinja2_file: str, in_dict: Dict) -> None:
         A Python string containing the full-path to the
         Jinja2-formatted file to be written.
 
-    in_dict: dict
+    in_dict: Dict
 
         A Python dictionary containing the attributes to be written to
         the Jinja2 file.
@@ -466,7 +465,7 @@ def write_jinja2(jinja2_file: str, in_dict: Dict) -> None:
 
     Jinja2InterfaceError:
 
-        * raised if an exception is encountered while writing the
+        - raised if an exception is encountered while writing the
           Jinja2-formatted file.
 
     """
