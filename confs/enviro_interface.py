@@ -52,17 +52,17 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 import os
 
 from tools import parser_interface
 from utils.exceptions_interface import EnviroInterfaceError
 from utils.logger_interface import Logger
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -91,7 +91,7 @@ def enviro_to_obj() -> object:
 
     EnviroInterfaceError:
 
-        * raised if an exception is encountered while parsing the
+        - raised if an exception is encountered while parsing the
           environment and/or building the Python object.
 
     """
