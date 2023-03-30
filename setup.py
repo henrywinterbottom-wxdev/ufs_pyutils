@@ -53,6 +53,12 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 from setuptools import setup
 
 # ----
@@ -83,11 +89,15 @@ install_requires = [
     "boto3==1.24.28",
     "bs4==0.0.1",
     "croniter==1.3.8",
+    "jinja2==3.1.2",
+    "lxml==4.9.2",
     "netcdf4==1.6.2",
     "numpy==1.22.4",
     "pytest==7.2.0",
     "pytest-order==1.0.1",
     "pyyaml==6.0",
+    "schema==0.7.5",
+    "xmltodict==0.13.0"
 ]
 
 # ----
