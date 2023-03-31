@@ -44,7 +44,6 @@ Requirements
 
 - pytest-order; https://github.com/pytest-dev/pytest-order
 
-
 Author(s)
 ---------
 
@@ -63,6 +62,12 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 import os
 import subprocess
 import unittest
@@ -71,12 +76,6 @@ from unittest import TestCase
 import pytest
 from ioapps import hashlib_interface
 from tools import fileio_interface, parser_interface
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -211,7 +210,8 @@ class TestHashLibMethods(TestCase):
                 object_in=self.hash_obj, key=hash_level
             )
 
-            assert hash_index == unix_index, self.unit_test_msg.format("get_hash")
+            assert hash_index == unix_index, self.unit_test_msg.format(
+                "get_hash")
 
 
 # ----

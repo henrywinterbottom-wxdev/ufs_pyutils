@@ -44,7 +44,6 @@ Requirements
 
 - pytest-order; https://github.com/pytest-dev/pytest-order
 
-
 Author(s)
 ---------
 
@@ -63,6 +62,12 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 import os
 import unittest
 from unittest import TestCase
@@ -70,12 +75,6 @@ from unittest import TestCase
 import pytest
 from ioapps import tarfile_interface
 from tools import fileio_interface
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -148,13 +147,14 @@ class TesTarFileMethods(TestCase):
         -----------
 
         This method provides a unit-test for the tarfile_interface
-        read_tarfile fnuction.
+        read_tarfile function.
 
         """
 
         # Read the tarball file and extract the respective member
         # files.
-        tarfile_interface.read_tarfile(path=self.dirpath, tarball_path=self.tarball)
+        tarfile_interface.read_tarfile(
+            path=self.dirpath, tarball_path=self.tarball)
 
         assert True
 
@@ -163,7 +163,8 @@ class TesTarFileMethods(TestCase):
 
             exist = fileio_interface.fileexist(path=filename)
 
-            self.assertTrue(exist, msg=(self.unit_test_msg.format("read_tarfile")))
+            self.assertTrue(exist, msg=(
+                self.unit_test_msg.format("read_tarfile")))
 
     @pytest.mark.order(1)
     def test_write_tarfile(self: TestCase) -> None:
@@ -172,7 +173,7 @@ class TesTarFileMethods(TestCase):
         -----------
 
         This method provides a unit-test for the tarfile_interface
-        write_tarfile fnuction.
+        write_tarfile function.
 
         """
 
@@ -186,7 +187,8 @@ class TesTarFileMethods(TestCase):
         # Check that the tarball file exists (i.e., was created).
         exist = fileio_interface.fileexist(path=self.tarball)
 
-        self.assertTrue(exist, msg=(self.unit_test_msg.format("write_tarfile")))
+        self.assertTrue(exist, msg=(
+            self.unit_test_msg.format("write_tarfile")))
 
         # Remove the member files.
         fileio_interface.removefiles(filelist=self.filelist)

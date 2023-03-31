@@ -44,7 +44,6 @@ Requirements
 
 - pytest-order; https://github.com/pytest-dev/pytest-order
 
-
 Author(s)
 ---------
 
@@ -61,6 +60,13 @@ History
 
 # pylint: disable=too-many-instance-attributes
 
+
+# ----
+
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
 # ----
 
 import os
@@ -71,12 +77,6 @@ import numpy
 import pytest
 from ioapps import netcdf4_interface
 from tools import fileio_interface, parser_interface
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -130,6 +130,7 @@ class TestNetCDF4Methods(TestCase):
 
         for (ncvar, _) in ncvar_dict.items():
             dict_in = {}
+
             for (item, _) in ncvar_dict[ncvar].items():
                 value = parser_interface.dict_key_value(
                     dict_in=ncvar_dict[ncvar], key=item, no_split=True
@@ -191,7 +192,8 @@ class TestNetCDF4Methods(TestCase):
         """
 
         # Check that the netCDF file path is a netCDF-formatted file.
-        nccheck = netcdf4_interface.nccheck(ncfile=self.ncfile, ncfrmt=self.ncfrmt)
+        nccheck = netcdf4_interface.nccheck(
+            ncfile=self.ncfile, ncfrmt=self.ncfrmt)
 
         self.assertTrue(nccheck, msg=self.unit_test_msg.format("nccheck"))
 
@@ -255,13 +257,15 @@ class TestNetCDF4Methods(TestCase):
             ncfile=self.ncfile, ncvarname=self.ncvarname, ncfrmt=self.ncfrmt
         )
 
-        self.assertTrue(ncvarexist, msg=(self.unit_test_msg.format("ncvarexist")))
+        self.assertTrue(ncvarexist, msg=(
+            self.unit_test_msg.format("ncvarexist")))
 
         ncvarexist = netcdf4_interface.ncvarexist(
             ncfile=self.ncfile, ncvarname="dummy_test_var", ncfrmt=self.ncfrmt
         )
 
-        self.assertTrue(not ncvarexist, msg=(self.unit_test_msg.format("ncvarexist")))
+        self.assertTrue(not ncvarexist, msg=(
+            self.unit_test_msg.format("ncvarexist")))
 
     @pytest.mark.order(1)
     def test_ncwrite(self: TestCase) -> None:
@@ -287,7 +291,8 @@ class TestNetCDF4Methods(TestCase):
         # Check that the netCDF-formatted file exists.
         exist = fileio_interface.fileexist(path=self.ncfile)
         self.assertTrue(
-            exist, msg=(f"The netCDF-formatted file {self.ncfile} does not exist.")
+            exist, msg=(
+                f"The netCDF-formatted file {self.ncfile} does not exist.")
         )
 
 
