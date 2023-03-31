@@ -354,9 +354,6 @@ def run(
     multi_prog_conf: str = None,
 ) -> int:
 
-    # CHECK ARGUMENT FORMAT (e.g., `True`, etc.,)
-
-    # UPDATE unittest formats.
     """Description
     -----------
 
