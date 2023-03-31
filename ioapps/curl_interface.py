@@ -36,16 +36,16 @@ Functions
     _check_curl_env()
 
         This function checks whether the run-time environment contains
-        the curl application executable; if not, a CurlError will be
-        thrown; if so, the path to the curl executable will be defined
-        and returned.
+        the curl application executable; if not, a CurlInterfaceError
+        exception will be raised; if so, the path to the curl
+        executable will be defined and returned.
 
-    get_webfile(url, path, decode_utf8=False, ignore_missing=False)
+    get_webfile(url, path, ignore_missing=False)
 
         This function collects the specified URL path using the
         respective platform curl application executable.
 
-    get_weblist(url, decode_utf8=False, ext=None):
+    get_weblist(url, ext=None):
 
         This function collects a list of files beneath the specified
         URL.
@@ -71,7 +71,12 @@ History
 
 # pylint: disable=broad-except
 # pylint: disable=consider-using-with
-# pylint: disable=raise-missing-from
+
+# ----
+
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -92,12 +97,6 @@ __all__ = ["get_webfile", "get_weblist"]
 
 # ----
 
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
-
-# ----
-
 logger = Logger()
 
 # ----
@@ -109,9 +108,9 @@ def _check_curl_env() -> str:
     -----------
 
     This function checks whether the run-time environment contains the
-    curl application executable; if not, an CurlError will be thrown;
-    if so, the path to the curl executable will be defined and
-    returned.
+    curl application executable; if not, an CurlInterfaceError
+    exception will be raised; if so, the path to the curl executable
+    will be defined and returned.
 
     Returns
     -------
@@ -126,7 +125,7 @@ def _check_curl_env() -> str:
 
     CurlInterfaceError:
 
-        * raised if the curl application executable path cannot be
+        - raised if the curl application executable path cannot be
           determined.
 
     """
@@ -184,15 +183,15 @@ def get_webfile(
     ignore_missing: bool, optional
 
         A Python boolean valued variable specifying whether to ignore
-        missing files (True) or raise CurlInterfaceError for missing
-        files (False).
+        missing files (`True`) or raise a CurlInterfaceError exception
+        for missing files (`False`).
 
     Raises
     ------
 
     CurlInterfaceError:
 
-        * raised if an exception is raised related to a missing URL
+        - raised if an exception is raised related to a missing URL
           path is encountered.
 
     """
@@ -253,13 +252,13 @@ def get_webfile(
                 f"Collecting of internet path {url} failed with error {errmsg}. "
                 "Aborting!!!"
             )
-            raise CurlInterfaceError(msg=msg)
+            raise CurlInterfaceError(msg=msg) from errmsg
 
 
 # ----
 
 
-def get_weblist(url: str, decode_utf8: bool = False, ext: str = None) -> List:
+def get_weblist(url: str, ext: str = None) -> List:
     """
     Description
     -----------
@@ -277,11 +276,6 @@ def get_weblist(url: str, decode_utf8: bool = False, ext: str = None) -> List:
     Keywords
     --------
 
-    decode_utf8: bool, optional
-
-        A Python boolean valued variable specifying whether to decode
-        UTF-8 encoded bytes.
-
     ext: str, optional
 
         A Python string specifying the web filename extension; if
@@ -290,7 +284,7 @@ def get_weblist(url: str, decode_utf8: bool = False, ext: str = None) -> List:
     Returns
     -------
 
-    weblist: list
+    weblist: List
 
         A Python list containing the files beneath the specified URL.
 
@@ -299,9 +293,8 @@ def get_weblist(url: str, decode_utf8: bool = False, ext: str = None) -> List:
 
     CurlInterfaceError:
 
-        * raised if an Exception is encountered; the respective error
-          message accompanys the message string passed to the
-          CurlError class.
+        - raised if an Exception is encountered while attempting to
+          compile a list of files beneath the specified URL.
 
     """
 
@@ -330,6 +323,6 @@ def get_weblist(url: str, decode_utf8: bool = False, ext: str = None) -> List:
             f"Collection of files available at internet path {url} failed "
             f"with error {errmsg}. Aborting!!!"
         )
-        raise CurlInterfaceError(msg=msg)
+        raise CurlInterfaceError(msg=msg) from errmsg
 
     return weblist
