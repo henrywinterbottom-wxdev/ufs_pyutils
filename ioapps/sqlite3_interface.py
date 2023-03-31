@@ -101,8 +101,13 @@ History
 
 # pylint: disable=broad-except
 # pylint: disable=inconsistent-return-statements
-# pylint: disable=raise-missing-from
 # pylint: disable=too-many-locals
+
+# ----
+
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -124,12 +129,6 @@ __all__ = [
     "read_tablenames",
     "write_table",
 ]
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -184,7 +183,7 @@ def _database_commit(connect: object) -> None:
 # ----
 
 
-def _database_connect(path: str) -> Tuple:
+def _database_connect(path: str) -> Tuple[object, object]:
     """
     Description
     -----------
@@ -217,7 +216,7 @@ def _database_connect(path: str) -> Tuple:
 
     SQLite3InterfaceError:
 
-        * raised if an exception is encountered while initializing the
+        - raised if an exception is encountered while initializing the
           SQLite3 database path.
 
     """
@@ -233,7 +232,7 @@ def _database_connect(path: str) -> Tuple:
             f"Initializing the SQLite3 database path {path} failed "
             f"with error {errmsg}. Aborting!!!"
         )
-        raise SQLite3InterfaceError(msg=msg)
+        raise SQLite3InterfaceError(msg=msg) from errmsg
 
     return (connect, cursor)
 
@@ -275,7 +274,7 @@ def _database_execute(
     Returns
     -------
 
-    table: dict
+    table: Dict
 
         A Python dictionary containing the contents of the SQLite3
         database table; this is returned only if is_read is True upon
@@ -286,7 +285,7 @@ def _database_execute(
 
     SQLite3InterfaceError:
 
-        * raised if an exception is encountered while executing the
+        - raised if an exception is encountered while executing the
           SQLite3 statement.
 
     """
@@ -312,7 +311,7 @@ def _database_execute(
             f"Executing SQLite3 statement {exec_str} failed with error "
             f"{errmsg}. Aborting!!!"
         )
-        raise SQLite3InterfaceError(msg=msg)
+        raise SQLite3InterfaceError(msg=msg) from errmsg
 
 
 # ----
@@ -379,7 +378,7 @@ def create_table(path: str, table_name: str, table_dict: Dict) -> None:
         A Python string specifying the name for the SQLite3 database
         table.
 
-    table_dict: dict
+    table_dict: Dict
 
         A Python dictionary containing the SQLite3 database table
         attributes; the dictionary keys are the respective SQLite3
@@ -392,7 +391,7 @@ def create_table(path: str, table_name: str, table_dict: Dict) -> None:
 
     SQLite3InterfaceError:
 
-        * raised if an exception is encountered while creating the
+        - raised if an exception is encountered while creating the
           specified SQLite3 database table in the specified path.
 
     """
@@ -452,7 +451,7 @@ def create_table(path: str, table_name: str, table_dict: Dict) -> None:
                 f"Creating SQLite3 database table {table_name} for database path "
                 f"{path} failed with error {errmsg}. Aborting!!!"
             )
-            raise SQLite3InterfaceError(msg=msg)
+            raise SQLite3InterfaceError(msg=msg) from errmsg
 
     # If the SQLite3 database exists proceed accordingly.
     except sqlite3.OperationalError:
@@ -499,7 +498,7 @@ def delete_row(path: str, table_name: str, rmcond: str) -> None:
 
     SQLite3InterfaceError:
 
-        * raised if an exception is encountered while attempting to
+        - raised if an exception is encountered while attempting to
           apply the removal condition for the SQLite3 database table
           within the specified database file path.
 
@@ -531,7 +530,7 @@ def delete_row(path: str, table_name: str, rmcond: str) -> None:
             f"Deleting database file path {path} table {table_name} using removal "
             f"condition {rmcond} failed with error {errmsg}. Aborting!!!"
         )
-        raise SQLite3InterfaceError(msg=msg)
+        raise SQLite3InterfaceError(msg=msg) from errmsg
 
 
 # ----
@@ -561,7 +560,7 @@ def read_columns(path: str, table_name: str) -> List:
     Returns
     -------
 
-    columns: list
+    columns: List
 
         A Python list of the column names within the specified SQLite3
         database table.
@@ -571,7 +570,7 @@ def read_columns(path: str, table_name: str) -> List:
 
     SQLite3InterfaceError:
 
-        * raised if an exception is encountered while attempting to
+        - raised if an exception is encountered while attempting to
           collect column names from the SQLite3 database table names.
 
     """
@@ -597,7 +596,7 @@ def read_columns(path: str, table_name: str) -> List:
             f"The query of SQLite3 database file {path} for table {table_name} "
             f"column names failed with error {errmsg}. Aborting!!!"
         )
-        raise SQLite3InterfaceError(msg=msg)
+        raise SQLite3InterfaceError(msg=msg) from errmsg
 
     return columns
 
@@ -628,7 +627,7 @@ def read_table(path: str, table_name: str) -> Dict:
     Returns
     -------
 
-    table_dict: dict
+    table_dict: Dict
 
         A Python dictionary containing an enumerated list of the
         SQLite3 database table contents.
@@ -638,9 +637,9 @@ def read_table(path: str, table_name: str) -> Dict:
 
     SQLite3InterfaceError:
 
-        * raised if the SQLite3 database path does not exist.
+        - raised if the SQLite3 database path does not exist.
 
-        * raised an exception is encountered while reading the
+        - raised an exception is encountered while reading the
           specified SQLite3 database table.
 
     """
@@ -679,7 +678,7 @@ def read_table(path: str, table_name: str) -> Dict:
             f"database file path {path} failed with error {errmsg}. "
             "Aborting!!!"
         )
-        raise SQLite3InterfaceError(msg=msg)
+        raise SQLite3InterfaceError(msg=msg) from errmsg
 
     return table_dict
 
@@ -718,7 +717,7 @@ def read_tablenames(path: str, format_list: bool = False) -> List:
     Returns
     -------
 
-    tablenames: list
+    tablenames: List
 
         A Python list of table names contained within the respective
         SQLite3 database path.
@@ -778,7 +777,7 @@ def write_table(path: str, table_name: str, row_dict: Dict) -> None:
         A Python string specifying the existing table name within the
         SQLite3 database file.
 
-    row_dict: dict
+    row_dict: Dict
 
         A Python dictionary containing the variable fields to be
         written to the SQLite3 database table.
@@ -788,7 +787,7 @@ def write_table(path: str, table_name: str, row_dict: Dict) -> None:
 
     SQLite3InterfaceError:
 
-        * raised if the database file path does not exist upon entry.
+        - raised if the database file path does not exist upon entry.
 
     """
 
@@ -855,4 +854,4 @@ def write_table(path: str, table_name: str, row_dict: Dict) -> None:
             f"SQLite3 database file path {path} failed with error "
             f"{errmsg}. Aborting!!!"
         )
-        raise SQLite3InterfaceError(msg=msg)
+        raise SQLite3InterfaceError(msg=msg) from errmsg
