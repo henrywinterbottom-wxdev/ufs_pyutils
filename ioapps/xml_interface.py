@@ -92,6 +92,12 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 from typing import Dict
 from xml.dom import minidom
 
@@ -109,12 +115,6 @@ __all__ = ["read_xml", "write_xml"]
 # ----
 
 logger = Logger()
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -161,7 +161,7 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
     Returns
     -------
 
-    xml_dict: dict
+    xml_dict: Dict
 
         A Python dictionary containing the contents of the
         XML-formatted file path `xml_path`.
@@ -171,21 +171,21 @@ def read_xml(xml_path: str, remove_comments: bool = False) -> Dict:
 
     XMLInterfaceError:
 
-        * raised if the XML-formatted file path does not exist.
+        - raised if the XML-formatted file path does not exist.
 
-        * raised if an exception is encountered while reading the
+        - raised if an exception is encountered while reading the
           XML-formatted file path.
 
-        * raised if an exception is encountered while replacing any
+        - raised if an exception is encountered while replacing any
           defined special characters in the XML-formatted file path
           contents.
 
-        * raised if an exception is encountered while parsing and
+        - raised if an exception is encountered while parsing and
           defining the Python dictionary containing the contents of
           the XML-formatted file path specified upon entry
           (`xml_path`).
 
-        * raised if an exception is encountered while creating a
+        - raised if an exception is encountered while creating a
           Python dictionary from the formatted contents of the
           XML-formatted file path specified upon entry (`xml_path`).
 
@@ -289,7 +289,7 @@ def write_xml(
         A Python string specifying the path to the XML-formatted file
         to be written.
 
-    xml_dict: dict
+    xml_dict: Dict
 
         A Python dictionary containing the XML-attributes to be
         written to file path `xml_path`.
@@ -322,7 +322,7 @@ def write_xml(
 
     XMLInterfaceError:
 
-        * raised if an exception is encountered while building the
+        - raised if an exception is encountered while building the
           output XML-formatted file path `xml_path`.
 
     """
