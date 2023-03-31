@@ -57,16 +57,16 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 import unittest
 from unittest import TestCase
 
 from tools import datetime_interface, parser_interface
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -137,7 +137,8 @@ class TestDateTimeMethods(TestCase):
             result = parser_interface.dict_key_value(
                 dict_in=test_dict, key=key, force=True, no_split=True
             )
-            value = parser_interface.object_getattr(object_in=date_comps_obj, key=key)
+            value = parser_interface.object_getattr(
+                object_in=date_comps_obj, key=key)
 
             assert result == value, (
                 self.unit_test_msg.format("datestrcomps")
