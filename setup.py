@@ -97,7 +97,7 @@ install_requires = [
     "pytest-order==1.0.1",
     "pyyaml==6.0",
     "schema==0.7.5",
-    "xmltodict==0.13.0"
+    "xmltodict==0.13.0",
 ]
 
 # ----
