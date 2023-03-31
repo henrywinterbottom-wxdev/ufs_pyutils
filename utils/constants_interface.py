@@ -65,13 +65,13 @@ History
 
 # ----
 
-from astropy import units
-
-# ----
-
 __author__ = "Henry R. Winterbottom"
 __maintainer__ = "Henry R. Winterbottom"
 __email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
+from astropy import units
 
 # ----
 
@@ -90,5 +90,4 @@ kts2mps = (units.imperial.kn).to(units.meter / units.second) * (
 
 # Conversion value for transforming meters per second to nautical
 # miles per hour (knots).
-mps2kts = (units.meter / units.second).to(units.imperial.kn) * \
-    units.imperial.kn
+mps2kts = (units.meter / units.second).to(units.imperial.kn) * units.imperial.kn

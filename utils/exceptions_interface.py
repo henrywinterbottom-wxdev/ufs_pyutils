@@ -31,124 +31,129 @@ Description
 Classes
 -------
 
-    ArgumentsInterfaceError()
+    ArgumentsInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         utils/arguments_interface module; it is a sub-class of Error.
 
-    AWSCLIInterfaceError()
+    AWSCLIInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         utils/awscli_interface module; it is a sub-class of Error.
 
-    Boto3InterfaceError()
+    Boto3InterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         utils/boto3_interface module; it is a sub-class of Error.
 
-    ContainerInterfaceError()
+    ContainerInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         execute/container_interface module; it is a sub-class of
         Error.
 
-    CurlInterfaceError()
+    CurlInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         utils/curl_interface module; it is a sub-class of Error.
 
-    EnviroInterfaceError()
+    EnviroInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         confs/enviro_interface module; it is a sub-class of Error.
 
-    GRIBInterfaceError()
+    GRIBInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         utils/grib_interface module; it is a sub-class of Error.
 
-    HashLibInterfaceError()
+    HashLibInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         utils/hashlib_interface module; it is a sub-class of Error.
 
-    Jinja2InterfaceError()
+    Jinja2InterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
-        confs/jinja2_interface module; it is a sub-class of Error.    
+        confs/jinja2_interface module; it is a sub-class of Error.
 
-    JSONInterfaceError()
+    JSONInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
-        confs/json_interface module; it is a sub-class of Error.     
+        confs/json_interface module; it is a sub-class of Error.
 
-    NamelistInterfaceError()
+    NamelistInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         confs/namelist_interface module; it is a sub-class of Error.
 
-    NetCDF4InterfaceError()
+    NetCDF4InterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         utils/netcdf4_interface module; it is a sub-class of Error.
 
-    NOAAHPSSInterfaceError()
+    NOAAHPSSInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         utils/noaahpss_interface module; it is a sub-class of Error.
 
-    ParserInterfaceError()
+    ParserInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         tools/parser_interface module; it is a sub-class of Error.
 
-    SchemaInterfaceError()
+    SchemaInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         utils/schema_interface module; it is a sub-class of Error.
 
-    SQLite3InterfaceError()
+    SQLite3InterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         ioapps/sqlite3_interface module; it is a sub-class of Error.
 
-    SubprocessInterfaceError()
+    SubprocessInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         execute/subprocess_interface module; it is a sub-class of
         Error.
 
-    TarFileInterfaceError()
+    TarFileInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         ioapps/tarfile_interface module; it is a sub-class of Error.
 
-    TCVitalsInterfaceError()
+    TCVitalsInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         ioapps/tcvitalsinterface module; it is a sub-class of Error.
 
-    TimestampInterfaceError()
+    TimestampInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         utils/timestamp_interface module; it is a sub-class of Error.
 
-    URLInterfaceError()
+    URLInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         ioapps/url_interface module; it is a sub-class of Error.
 
-    WgetInterfaceError()
+    UFSLoggerError(msg)
+
+        This is the base-class for exceptions encountered within the
+        scripts/ufs_logger.py application; is it a sub-class of Error.
+
+    WgetInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         ioapps/wget_interface module; it is a sub-class of Error.
 
-    XMLInterfaceError()
+    XMLInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         confs/xml_interface module; it is a sub-class of Error.
 
-    YAMLInterfaceError()
+    YAMLInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
         confs/yaml_interface module; it is a sub-class of Error.
@@ -164,6 +169,12 @@ History
     2022-12-28: Henry Winterbottom -- Initial implementation.
 
 """
+
+# ----
+
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -193,17 +204,12 @@ __all__ = [
     "TarFileInterfaceError",
     "TCVitalsInterfaceError",
     "TimestampInterfaceError",
+    "UFSLoggerError",
     "URLInterfaceError",
     "WgetInterfaceError",
     "XMLInterfaceError",
-    "YAMLInterfaceError"
+    "YAMLInterfaceError",
 ]
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -230,7 +236,6 @@ class AWSCLIInterfaceError(Error):
     ioapps/awscli_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
@@ -463,6 +468,19 @@ class TimestampInterfaceError(Error):
 
     This is the base-class for exceptions encountered within the
     utils/timestamp_interface module; it is a sub-class of Error.
+
+    """
+
+# ----
+
+
+class UFSLoggerError(Error):
+    """
+    Description
+    -----------
+
+    This is the base-class for exceptions encountered within the
+    scripts/ufs_logger.py application; is it a sub-class of Error.
 
     """
 

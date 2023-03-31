@@ -54,17 +54,15 @@ History
 
 # ----
 
-
-import logging
-import sys
-from importlib import reload
-
-# ----
-
 __author__ = "Henry R. Winterbottom"
 __maintainer__ = "Henry R. Winterbottom"
 __email__ = "henry.winterbottom@noaa.gov"
 
+# ----
+
+import logging
+import sys
+from importlib import reload
 
 # ----
 
@@ -78,7 +76,7 @@ class Logger:
 
     """
 
-    def __init__(self):
+    def __init__(self: object):
         """
         Description
         -----------
@@ -104,7 +102,7 @@ class Logger:
             "RESET": "\x1b[0m",
         }
 
-    def __level__(self, level: str) -> object:
+    def __level__(self: object, level: str) -> object:
         """
         Description
         -----------
@@ -141,7 +139,7 @@ class Logger:
 
         return level_obj
 
-    def __format__(self, level: str) -> object:
+    def __format__(self: object, level: str) -> object:
         """
         Description
         -----------
@@ -174,7 +172,7 @@ class Logger:
 
         return format_str
 
-    def __reset__(self) -> None:
+    def __reset__(self: object) -> None:
         """
         Description
         -----------
@@ -191,7 +189,7 @@ class Logger:
         logging.shutdown()
         reload(logging)
 
-    def __write__(self, level: str, msg: str = None) -> None:
+    def __write__(self: object, level: str, msg: str = None) -> None:
         """
         Description
         -----------
@@ -235,21 +233,21 @@ class Logger:
         getattr(log, f"{level}")(msg)
 
     # The base-class logger CRITICAL level interface.
-    def critical(self, msg: str) -> None:
+    def critical(self: object, msg: str) -> None:
         self.__write__(level="critical", msg=msg)
 
     # The base-class logger DEBUG level interface.
-    def debug(self, msg: str) -> None:
+    def debug(self: object, msg: str) -> None:
         self.__write__(level="debug", msg=msg)
 
     # The base-class logger ERROR level interface.
-    def error(self, msg: str) -> None:
+    def error(self: object, msg: str) -> None:
         self.__write__(level="error", msg=msg)
 
     # The base-class logger INFO level interface.
-    def info(self, msg: str) -> None:
+    def info(self: object, msg: str) -> None:
         self.__write__(level="info", msg=msg)
 
     # The base-class logger WARNING level interface.
-    def warn(self, msg: str) -> None:
+    def warn(self: object, msg: str) -> None:
         self.__write__(level="warning", msg=msg)

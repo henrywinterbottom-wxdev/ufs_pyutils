@@ -45,7 +45,7 @@ Functions
     get_timestamp(grib_file, grib_var = None)
 
         This function parses a GRIB-formatted file and returns the
-        unique time-stamp elements; if a variable name (grib_var) is
+        unique time-stamp elements; if a variable name (`grib_var`) is
         specified, the unique time-stamp elements correspond only to
         those GRIB records corresponding to the respective variable.
 
@@ -58,7 +58,7 @@ Functions
                tmp_out_path = None):
 
        This function parses a GRIB-formatted (version 1 or 2) file and
-       collects the user specified variables (parse_str) and
+       collects the user specified variables (`parse_str`) and
        defines/constructs a new GRIB-formatted (version 1 or 2) file;
        the new GRIB-formatted (version 1 or 2) file is a concatenated
        file created from individual files for each user specified GRIB
@@ -75,7 +75,7 @@ Functions
         This function remaps the variables within the respective WMO
         GRIB version 2 formatted file to a grid projection specified
         by the user in the remap_obj parameter; the remapped file is
-        named <gribfile>.remap.
+        named <`gribfile`>.remap.
 
 Requirements
 ------------
@@ -109,18 +109,18 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 import os
 import subprocess
 from typing import List
 
 from tools import system_interface
 from utils.exceptions_interface import GRIBInterfaceError
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -141,8 +141,8 @@ def _get_app_path(app: str) -> str:
     Description
     -----------
 
-    This function checks whether the requested application path has
-    been loaded; if not, a GRIBError will be thrown.
+    This function checks whether the requested application path
+    exists.
 
     Parameters
     ----------
@@ -166,7 +166,7 @@ def _get_app_path(app: str) -> str:
 
     GRIBInterfaceError:
 
-        * raised if the cnvgrib executable path cannot be determined
+        - raised if the cnvgrib executable path cannot be determined
           for the run-time platform.
 
     """
@@ -213,8 +213,7 @@ def cnvgribg21(in_grib_file: str, out_grib_file: str) -> None:
     cnvgrib = _get_app_path(app="cnvgrib")
     cmd = [f"{cnvgrib}", "-g21", in_grib_file, out_grib_file]
 
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     proc.communicate()
     proc.wait()
 
@@ -228,7 +227,7 @@ def get_timestamp(grib_file: str, grib_var: str = None) -> List:
     -----------
 
     This function parses a GRIB-formatted file and returns the unique
-    time-stamp elements; if a variable name (grib_var) is specified,
+    time-stamp elements; if a variable name (`grib_var`) is specified,
     the unique time-stamp elements correspond only to those GRIB
     records corresponding to the respective variable.
 
@@ -251,7 +250,7 @@ def get_timestamp(grib_file: str, grib_var: str = None) -> List:
     Returns
     -------
 
-    timestamp_list: list
+    timestamp_list: List
 
         A Python list containing the unique time-stamp elements
         collected from the GRIB records.
@@ -321,8 +320,8 @@ def grbindex(in_grib_file: str, out_gribidx_file: str, is_grib2: bool = False) -
         grbindex_exe = _get_app_path(app="grbindex")
 
     cmd = [f"{grbindex_exe}", f"{in_grib_file}", f"{out_gribidx_file}"]
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
+
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     proc.communicate()
     proc.wait()
 
@@ -342,7 +341,7 @@ def parse_file(
     -----------
 
     This function parses a GRIB-formatted (version 1 or 2) file and
-    collects the user specified variables (parse_str) and
+    collects the user specified variables (`parse_str`) and
     defines/constructs a new GRIB-formatted (version 1 or 2) file; the
     new GRIB-formatted (version 1 or 2) file is a concatenated file
     created from individual files for each user specified GRIB
@@ -375,7 +374,7 @@ def parse_file(
 
         A Python boolean valued variable specifying whether to parse
         the respective input GRIB-formatted version 2 file using the
-        wgrib2 applications.
+        `wgrib2` applications.
 
     tmp_out_path: str, optional
 
@@ -406,8 +405,7 @@ def parse_file(
     if is_grib2:
         cmd = [f"{parse_str}", "-grib", out_grib_file]
         cmd = cmd_base + cmd
-        proc = subprocess.Popen(
-            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         proc.communicate()
         proc.wait()
 
@@ -454,7 +452,7 @@ def read_file(grib_file: str, is_4yr: bool = True) -> List:
     Returns
     -------
 
-    wgrib_out: list
+    wgrib_out: List
 
          A Python list containing the GRIB records from the parsed
          GRIB-formatted file.
@@ -470,8 +468,7 @@ def read_file(grib_file: str, is_4yr: bool = True) -> List:
         cmd.append("-4yr")
     cmd.append(grib_file)
 
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (wgrib_out, _) = proc.communicate()
     proc.wait()
     wgrib_out = wgrib_out.decode("utf-8")
@@ -490,7 +487,7 @@ def wgrib2_remap(remap_obj: object, gribfile: str) -> str:
     This function remaps the variables within the respective WMO GRIB
     version 2 formatted file to a grid projection specified by the
     user in the remap_obj parameter; the remapped file is named
-    <gribfile>.remap.
+    <`gribfile`>.remap.
 
     Parameters
     ----------

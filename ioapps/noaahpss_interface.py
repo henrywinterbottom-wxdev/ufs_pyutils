@@ -36,20 +36,21 @@ Functions
     _check_hpss_env()
 
         This function checks whether the HPSS environment has been
-        loaded; if not, a NOAAHPSSInterfaceError will be thrown; if so, the
-        paths to the htar and hsi executables will be defined
-        respectively as the base-class attributes htar and hsi.
+        loaded; if not, a NOAAHPSSInterfaceError exception will be
+        raised; if so, the paths to the `htar` and `hsi` executables
+        will be defined respectively as the base-class attributes
+        `htar` and `hsi`.
 
     check_filepath(tarball_path, filename, include_slash=True)
 
         This function extracts the contents of a user specified
-        tarball into memory and checks whether the respective
-        user-specified filename exists within the archive; a boolean
-        value is returned specifying the result of the search.
+        tarball into memory and checks whether the specified filename
+        exists within the archive; a boolean value is returned
+        specifying the result of the search.
 
     get_hpssfile(hpss_filepath)
 
-        This function attempts to collect a user specified NOAA HPSS
+        This function attempts to collect a specified NOAA HPSS
         filepath and place it within the directory path from which
         this function is called.
 
@@ -80,16 +81,17 @@ Functions
                  strip_dir=False, include_slash=True)
 
         This function attempts to read a tarball and extract the
-        user-specified file from the respective tarball and write it
-        to the user-specified path.
+        specified file from the respective tarball and write it to the
+        path.
 
     write_tarball(path, tarball_path, tarball_idx_path, filelist=None)
 
         This function will attempt to write a tarball and
         corresponding tarball index file to the NOAA HPSS; if one
-        cannot be written, this function will thrown a NOAAHPSSInterfaceError;
-        a returncode of 70, meaning the HPSS tarball file path is too
-        long, is ignored as it is erroneous.
+        cannot be written, this function will raise a
+        NOAAHPSSInterfaceError exception; a returncode of 70, meaning
+        the HPSS tarball file path is too long, is ignored as it is
+        erroneous.
 
 Author(s)
 ---------
@@ -111,6 +113,12 @@ History
 # pylint: disable=simplifiable-if-statement
 # pylint: disable=too-many-arguments
 # pylint: disable=too-many-locals
+
+# ----
+
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -139,26 +147,20 @@ __all__ = [
 
 # ----
 
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
-
-# ----
-
 logger = Logger()
 
 # ----
 
 
-def _check_hpss_env() -> Tuple:
+def _check_hpss_env() -> Tuple[str, str]:
     """
     Description
     -----------
 
     This function checks whether the HPSS environment has been loaded;
-    if not, a NOAAHPSSInterfaceError will be thrown; if so, the paths
-    to the htar and hsi executables will be defined respectively as
-    the base-class attributes htar and hsi.
+    if not, a NOAAHPSSInterfaceError exception will be raised; if so,
+    the paths to the `htar` and `hsi` executables will be defined
+    respectively as the base-class attributes `htar` and `hsi`.
 
     Returns
     -------
@@ -176,9 +178,9 @@ def _check_hpss_env() -> Tuple:
 
     NOAAHPSSInterfaceError:
 
-        * raised if the htar executable path cannot be determined.
+        - raised if the htar executable path cannot be determined.
 
-        * raised if the hsi executable path cannot be determined.
+        - raised if the hsi executable path cannot be determined.
 
     """
 
@@ -212,9 +214,9 @@ def check_filepath(
     -----------
 
     This function extracts the contents of a user specified tarball
-    into memory and checks whether the respective user-specified
-    filename exists within the archive; a boolean value is returned
-    specifying the result of the search.
+    into memory and checks whether the specified filename exists
+    within the archive; a boolean value is returned specifying the
+    result of the search.
 
     Parameters
     ----------
@@ -227,16 +229,16 @@ def check_filepath(
     filename: str
 
         A Python string specifying the filename to be queried within
-        the tarball (tarball_path) archive.
+        the tarball (`tarball_path`) archive.
 
     Keywords
     --------
 
     include_slash: bool, optional
 
-        A Python boolean variable, that if True, will append a './' to
-        the filename string within the tarball file to be collected;
-        if False, the filename string is not modified.
+        A Python boolean variable, that if `True`, will append a './'
+        to the filename string within the tarball file to be
+        collected; if `False`, the filename string is not modified.
 
     Returns
     -------
@@ -279,9 +281,9 @@ def get_hpssfile(hpss_filepath: str) -> None:
     Description
     -----------
 
-    This function attempts to collect a user specified NOAA HPSS
-    filepath and place it within the directory path from which this
-    function is called.
+    This function attempts to collect a specified NOAA HPSS filepath
+    and place it within the directory path from which this function is
+    called.
 
     Parameters
     ----------
@@ -296,7 +298,7 @@ def get_hpssfile(hpss_filepath: str) -> None:
 
     NOAAHPSSInterfaceError:
 
-        * raised if an exception is encountered during the HPSS file
+        - raised if an exception is encountered during the HPSS file
           collection.
 
     """
@@ -340,7 +342,7 @@ def path_build(path: str) -> None:
 
     NOAAHPSSInterfaceError:
 
-        * raised if the specified HPSS path cannot be created.
+        - raised if the specified HPSS path cannot be created.
 
     """
 
@@ -424,7 +426,7 @@ def path_filelist(path: str) -> List:
     Returns
     -------
 
-    filelist: list
+    filelist: List
 
         A Python list of all items returned by the directory contents.
         query.
@@ -434,7 +436,7 @@ def path_filelist(path: str) -> List:
 
     NOAAHPSSInterfaceError:
 
-        * raised if the NOAA HPSS path does not exist.
+        - raised if the NOAA HPSS path does not exist.
 
     """
 
@@ -487,7 +489,7 @@ def put_hpssfile(filepath: str, hpss_filepath: str) -> None:
 
     NOAAHPSSInterfaceError:
 
-        * raised if an exception is encountered while archiving the
+        - raised if an exception is encountered while archiving the
           respective file path to the NOAA HPSS.
 
     """
@@ -523,9 +525,8 @@ def read_tarball(
     Description
     -----------
 
-    This function attempts to read a tarball and extract the
-    user-specified file from the respective tarball and write it to
-    the user-specified path.
+    This function attempts to read a tarball and extract the specified
+    file from the respective tarball and write it to the path.
 
     Parameters
     ----------
@@ -626,9 +627,9 @@ def write_tarball(
 
     This function will attempt to write a tarball and corresponding
     tarball index file to the NOAA HPSS; if one cannot be written,
-    this function will thrown a NOAAHPSSInterfaceError; a returncode
-    of 70, meaning the HPSS tarball file path is too long, is ignored
-    as it is erroneous.
+    this function will raise a NOAAHPSSInterfaceError exception; a
+    returncode of 70, meaning the HPSS tarball file path is too long,
+    is ignored as it is erroneous.
 
     Parameters
     ----------
@@ -651,7 +652,7 @@ def write_tarball(
     Keywords
     --------
 
-    filelist: list, optional
+    filelist: List, optional
 
         A Python list containing specific files within the path to be
         archived within a tarball (tarball_path) specified by the
@@ -662,9 +663,9 @@ def write_tarball(
 
     NOAAHPSSInterfaceError:
 
-        * raised if the return code from the NOAA HPSS is neither 0 or
-          70; this indicates that the file was most likely not created
-          on the NOAA HPSS tape archive.
+        - raised if the return code from the NOAA HPSS is neither `0`
+          or `70`; this indicates that the file was most likely not
+          created on the NOAA HPSS tape archive.
 
     """
 

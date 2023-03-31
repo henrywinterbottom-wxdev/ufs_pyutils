@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # =========================================================================
 
 # Script: scripts/ufs_logger.py
@@ -37,11 +39,6 @@ Classes
         This is the base-class object for all supported logging levels
         of the ufs_pyutils logger_interface module.
 
-    UFSLoggerError(msg)
-
-        This is the base-class for all exceptions; it is a sub-class
-        of Error.
-
 Functions
 ---------
 
@@ -49,6 +46,25 @@ Functions
 
         This is the driver-level method to invoke the tasks within
         this script.
+
+Usage
+-----
+
+    user@host:$ python ufs_logger.py --msg "Eggs are good with ham."
+                                     --msgtype <critical|debug|error|info|warn>
+
+Parameters
+----------
+
+    msg: str
+
+        A Python string specifying the message to be printed.
+
+    msgtype: str
+
+        The logger level to be used for the specified message string;
+        supported options are "critical", "debug", "error", "info",
+        and "warn".
 
 Requirements
 ------------
@@ -69,18 +85,18 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 from dataclasses import dataclass
 
 from tools import parser_interface
 from utils.arguments_interface import Arguments
-from utils.error_interface import Error
+from utils.exceptions_interface import UFSLoggerError
 from utils.logger_interface import Logger
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -108,7 +124,7 @@ class UFSLogger:
 
     """
 
-    def __init__(self, options_obj: object):
+    def __init__(self: object, options_obj: object):
         """
         Description
         -----------
@@ -120,15 +136,18 @@ class UFSLogger:
         # Define the base-class attributes.
         self.options_obj = options_obj
 
-        self.logger_opts = {"msg": options_obj.msg, "msgtype": options_obj.msgtype}
+        self.logger_opts = {"msg": options_obj.msg,
+                            "msgtype": options_obj.msgtype}
 
         self.msgtype_opts = {
-            "info": logger.info,
+            "critical": logger.critical,
+            "debug": logger.debug,
             "error": logger.error,
+            "info": logger.info,
             "warn": logger.warn,
         }
 
-    def run(self) -> None:
+    def run(self: object) -> None:
         """
         Description
         -----------
@@ -146,13 +165,13 @@ class UFSLogger:
 
         UFSLoggerError:
 
-            * raised if the logger message cannot be determined from
+            - raised if the logger message cannot be determined from
               the command line arguments.
 
-            * raised if the logging level cannot be determined from
+            - raised if the logging level cannot be determined from
               the command line attributes.
 
-            * raised if the logging level is not supported.
+            - raised if the logging level is not supported.
 
         """
 
@@ -183,28 +202,6 @@ class UFSLogger:
             dict_in=self.msgtype_opts, key=logger_level.lower(), no_split=True
         )
         method(msg=logger_msg)
-
-
-# ----
-
-
-class UFSLoggerError(Error):
-    """
-    Description
-    -----------
-
-    This is the base-class for all exceptions; it is a sub-class of
-    Error.
-
-    Parameters
-    ----------
-
-    msg: str
-
-        A Python string to accompany the raised exception.
-
-    """
-
 
 # ----
 

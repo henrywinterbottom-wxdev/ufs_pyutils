@@ -63,6 +63,12 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 from collections.abc import Callable
 
 from utils.logger_interface import Logger
@@ -74,12 +80,6 @@ logger = Logger()
 # ----
 
 __all__ = ["Error", "msg_except_handle"]
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -102,7 +102,7 @@ class Error(Exception):
 
     """
 
-    def __init__(self, msg: str):
+    def __init__(self: Exception, msg: str):
         """
         Description
         -----------
@@ -135,8 +135,8 @@ def msg_except_handle(err_cls: object) -> Callable:
         A Python object containing the Error subclass to be used for
         exception raises.
 
-    Parameters
-    ----------
+    Returns
+    -------
 
     decorator: Callable
 

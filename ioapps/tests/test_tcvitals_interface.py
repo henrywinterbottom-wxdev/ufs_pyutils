@@ -44,7 +44,6 @@ Requirements
 
 - pytest-order; https://github.com/pytest-dev/pytest-order
 
-
 Author(s)
 ---------
 
@@ -64,6 +63,12 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 import filecmp
 import os
 import unittest
@@ -73,12 +78,6 @@ import pytest
 from ioapps import tcvitals_interface
 from tools import fileio_interface, parser_interface
 from utils.constants_interface import mps2kts
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -176,12 +175,14 @@ class TestTCVitalsMethods(TestCase):
 
         # Write the TC-vitals attributes to the output file to be
         # used for comparison.
-        tcvitals_interface.write_tcvfile(filepath=self.tcv_file, tcvstr=self.tcinfo)
+        tcvitals_interface.write_tcvfile(
+            filepath=self.tcv_file, tcvstr=self.tcinfo)
 
         # Compare the example file to the generated TC-vitals file.
         check = filecmp.cmp(self.tcv_exfile, self.tcv_file)
 
-        self.assertTrue(check, msg=(self.unit_test_msg.format("write_tcvfile")))
+        self.assertTrue(check, msg=(
+            self.unit_test_msg.format("write_tcvfile")))
 
     @pytest.mark.order(1)
     def test_write_tcvstr(self: TestCase) -> None:
@@ -241,7 +242,8 @@ class TestTCVitalsMethods(TestCase):
 
             # Write the formatted TC-vitals attributes for the
             # respective TC event.
-            tcvstr = tcvitals_interface.write_tcvstr(tcvit_obj=tcvit_obj).split()[:-1]
+            tcvstr = tcvitals_interface.write_tcvstr(
+                tcvit_obj=tcvit_obj).split()[:-1]
 
             assert tcvstr == list(tc.split()), self.unit_test_msg.format("write_tcvstr")
 

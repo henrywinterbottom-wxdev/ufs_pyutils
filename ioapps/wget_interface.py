@@ -27,7 +27,7 @@ Description
 -----------
 
     This module contains functions to create and collect internet
-    (world-wide web; WWW) files using the Python wget package.
+    (world-wide web; WWW) files using the Python `wget` package.
 
 Functions
 ---------
@@ -35,14 +35,12 @@ Functions
     _check_wget_env()
 
         This function checks whether the run-time environment contains
-        the wget application executable; if not, a WgetError will be
-        thrown; if so, the path to the wget executable will be defined
-        and returned.
+        the `wget` application executable.
 
     get_webfile(url, path, ignore_missing=False):
 
         This function collects the specified URL path using the Python
-        wget package.
+        `wget` package.
 
     get_weblist(url, path, matchstr=None, remove_webfile=True, ext=None):
 
@@ -65,9 +63,14 @@ History
 
 # pylint: disable=broad-except
 # pylint: disable=consider-using-with
-# pylint: disable=raise-missing-from
 # pylint: disable=too-many-locals
 # pylint: disable=unused-argument
+
+# ----
+
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -90,12 +93,6 @@ logger = Logger()
 
 # ----
 
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
-
-# ----
-
 
 def _check_wget_env() -> str:
     """
@@ -103,16 +100,14 @@ def _check_wget_env() -> str:
     -----------
 
     This function checks whether the run-time environment contains the
-    wget application executable; if not, an WgetInterfaceError will be
-    thrown; if so, the path to the wget executable will be defined and
-    returned.
+    `wget` application executable.
 
     Returns
     -------
 
     wget_exec: str
 
-        A Python string specifying the path to the wget application
+        A Python string specifying the path to the `wget` application
         executable.
 
     Raises
@@ -120,7 +115,7 @@ def _check_wget_env() -> str:
 
     WgetInterfaceError:
 
-        * raised if the wget application executable path cannot be
+        - raised if the wget application executable path cannot be
           determined.
 
     """
@@ -143,12 +138,11 @@ def _check_wget_env() -> str:
 
 
 def get_webfile(url: str, path: str, ignore_missing: bool = False):
-    """
-    Description
+    """Description
     -----------
 
     This function collects the specified URL path using the Python
-    wget package.
+    `wget` package.
 
     Parameters
     ----------
@@ -169,17 +163,16 @@ def get_webfile(url: str, path: str, ignore_missing: bool = False):
     ignore_missing: bool, optional
 
         A Python boolean valued variable specifying whether to ignore
-        missing files (True) or raise CurlError for missing files
-        (False).
+        missing files (`True`) or raise a CurlErrorInterface exception
+        for missing files (`False`).
 
     Raises
     ------
 
     WgetInterfaceError:
 
-        * raised if an Exception related to a missing URL path is
-          encountered; the respective error message accompanys the
-          message string passed to the WgetInterfaceError class.
+        - raised if an Exception related to a missing URL path is
+          encountered.
 
     """
 
@@ -212,7 +205,7 @@ def get_webfile(url: str, path: str, ignore_missing: bool = False):
                 f"Collecting of internet path {url} failed with error {errmsg}. "
                 "Aborting!!!"
             )
-            raise WgetInterfaceError(msg=msg)
+            raise WgetInterfaceError(msg=msg) from errmsg
 
 
 # ----
@@ -252,7 +245,7 @@ def get_weblist(
         A Python string specifying a character string for which to
         search while compiling the list of webfiles; if NoneType on
         entry, the entire list of files beneath the specified URL will
-        be returned; if not NoneType, a list of files containing the
+        be returned; otherwise, a list of files containing the
         specified string will be returned.
 
     remove_webfile: bool, optional
@@ -270,7 +263,7 @@ def get_weblist(
     Returns
     -------
 
-    weblist: list
+    weblist: List
 
         A Python list containing the files beneath the specified URL.
 
@@ -279,7 +272,7 @@ def get_weblist(
 
     WgetInterfaceError:
 
-        * raised if an Exception is encountered; the respective error
+        - raised if an Exception is encountered; the respective error
           message accompanys the message string passed to the
           WgetInterfaceError class.
 
@@ -338,6 +331,6 @@ def get_weblist(
             f"Collection of files available at internet path {url} failed "
             f"with error {errmsg}. Aborting!!!"
         )
-        raise WgetInterfaceError(msg=msg)
+        raise WgetInterfaceError(msg=msg) from errmsg
 
     return weblist

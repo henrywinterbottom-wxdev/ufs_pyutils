@@ -52,9 +52,9 @@ Functions
 
     datestrcomps(datestr, frmttyp=None)
 
-        This function returns a Python object containing the user
-        specified date string component values; the following
-        attributes are returned:
+        This function returns a Python object containing the specified
+        date string component values; the following attributes are
+        returned:
 
         year (year)
 
@@ -97,23 +97,29 @@ Functions
         The day of the year (day_of_year); begins from day 1 of
         respective year.
 
+        epoch (seconds since 0000 UTC 01 January 1970).
+
     datestrfrmt(datestr, frmttyp, offset_seconds=None)
 
-        This function ingests a date string of format (assuming POSIX
-        convention) yyyy-mm-dd_HH:MM:SS; optional argument
-        'offset_seconds' defines a new datestr relative to the user
-        provided datestr and the number of seconds.
+        This function ingests a date string and computes and returns a
+        (newly/different) formatted date string; the format of the
+        respective date string is defined by the `frmttyp` parameter
+        specified upon entry; an optional keyword `offset_seconds`
+        defines a datestr relative to the value for parameter
+        `datestr` and the the specified number of seconds; both
+        positive and negative values for `offset_seconds` is
+        supported.
 
     datestrupdate(datestr, in_frmttyp, out_frmttyp,
                   offset_seconds=None)
 
         This function ingests a date string and an optional argument
-        'offset_seconds' to define a new datestr relative to the user
-        provided datestr and the number of seconds and the input and
+        `offset_seconds` to define a new datestr relative to the user
+        provided `datestr` and the number of seconds and the input and
         output date string formats; this function also permits
         non-POSIX standard time attributes, as determined by
         datestrcomps (above) and user specified template values
-        (denoted between < > in the out_frmttyp parameter).
+        (denoted between < > in the `out_frmttyp` parameter).
 
     elapsed_seconds(start_datestr, start_frmttyp, stop_datestr,
                     stop_frmttyp)
@@ -147,6 +153,13 @@ History
 # ----
 
 # pylint: disable=consider-using-f-string
+# pylint: disable=no-member
+
+# ----
+
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -171,13 +184,6 @@ __all__ = [
     "elapsed_seconds",
     "epoch_to_datestr",
 ]
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
-
 
 # ----
 
@@ -255,8 +261,8 @@ def compare_crontab(datestr: str, cronstr: str, frmttyp: str) -> bool:
     crontab_match: bool
 
         A Python boolean valued variable specifying whether the
-        crontab string (specifying when to execute an action) and
-        user-specified date match.
+        crontab string (specifying when to execute an action) and a
+        date match.
 
     """
 
@@ -326,9 +332,9 @@ def datestrcomps(datestr: str, frmttyp: str) -> object:
     Description
     -----------
 
-    This function returns a Python object containing the user
-    specified date string component values; the following attributes
-    are returned:
+    This function returns a Python object containing the specified
+    date string component values; the following attributes are
+    returned:
 
     year (year)
 
@@ -382,7 +388,7 @@ def datestrcomps(datestr: str, frmttyp: str) -> object:
     frmttyp: str
 
         A Python string specifying the format for the input date
-        string (datestr).
+        string (`datestr`).
 
     Returns
     -------
@@ -433,13 +439,14 @@ def datestrcomps(datestr: str, frmttyp: str) -> object:
     # Define connect object for SQlite3 library and define the
     # timestamp values accordingly.
     connect = sqlite3.connect(":memory:")
-    datestr = "{0}-{1}-{2} {3}:{4}:{5}".format(date_comps_obj.year,
-                                               date_comps_obj.month,
-                                               date_comps_obj.day,
-                                               date_comps_obj.hour,
-                                               date_comps_obj.minute,
-                                               date_comps_obj.second
-                                               )
+    datestr = "{0}-{1}-{2} {3}:{4}:{5}".format(
+        date_comps_obj.year,
+        date_comps_obj.month,
+        date_comps_obj.day,
+        date_comps_obj.hour,
+        date_comps_obj.minute,
+        date_comps_obj.second,
+    )
 
     # Collect the Julian attribute using SQLite3 and proceed
     # accordingly.
@@ -458,13 +465,14 @@ def datestrcomps(datestr: str, frmttyp: str) -> object:
 
     # Define the epoch time (seconds) corresponding to the respective
     # timestamp.
-    value = datetime.datetime(int(date_comps_obj.year),
-                              int(date_comps_obj.month),
-                              int(date_comps_obj.day),
-                              int(date_comps_obj.hour),
-                              int(date_comps_obj.minute),
-                              int(date_comps_obj.second),
-                              ).timestamp()
+    value = datetime.datetime(
+        int(date_comps_obj.year),
+        int(date_comps_obj.month),
+        int(date_comps_obj.day),
+        int(date_comps_obj.hour),
+        int(date_comps_obj.minute),
+        int(date_comps_obj.second),
+    ).timestamp()
     date_comps_obj.epoch = value
 
     # Add the date and time component list corresponding to the
@@ -484,11 +492,11 @@ def datestrfrmt(datestr: str, frmttyp: str, offset_seconds: int = None) -> str:
 
     This function ingests a date string and computes and returns a
     (newly/different) formatted date string; the format of the
-    respective date string is defined by the frmttyp parameter
-    specified upon entry; an optional keyword offset_seconds defines a
-    datestr relative to the value for parameter datestr and the the
-    specified number of seconds; both positive and negative values for
-    offset_seconds is supported.
+    respective date string is defined by the `frmttyp` parameter
+    specified upon entry; an optional keyword `offset_seconds` defines
+    a datestr relative to the value for parameter `datestr` and the
+    the specified number of seconds; both positive and negative values
+    for `offset_seconds` is supported.
 
     Parameters
     ----------
@@ -496,7 +504,7 @@ def datestrfrmt(datestr: str, frmttyp: str, offset_seconds: int = None) -> str:
     datestr: str
 
         A Python string containing a date string; the input date
-        string is assumed to have format % Y-%m-%d_%H:%M:%S assuming
+        string is assumed to have format %Y-%m-%d_%H:%M:%S assuming
         the POSIX convention.
 
     frmttyp: str
@@ -510,8 +518,8 @@ def datestrfrmt(datestr: str, frmttyp: str, offset_seconds: int = None) -> str:
 
     offset_seconds: int, optional
 
-        A Python integer defining the total number of offset-seconds
-        relative to the datestr variable(see above) for the output
+        A Python integer defining the total number of `offset-seconds`
+        relative to the `datestr` variable (see above) for the output
         time-stamp/date-string; the default is NoneType.
 
     Returns
@@ -547,30 +555,30 @@ def datestrupdate(
     -----------
 
     This function ingests a date string and an optional argument
-    'offset_seconds' to define a new datestr relative to the user
-    provided datestr and the number of seconds and the input and
+    `offset_seconds` to define a new datestr relative to the user
+    provided `datestr` and the number of seconds and the input and
     output date string formats; this function also permits non-POSIX
-    standard time attributes, as determined by datestrcomps(above)
-    and user specified template values(denoted between < > in the
-    out_frmttyp parameter).
+    standard time attributes, as determined by datestrcomps (above)
+    and user specified template values (denoted between < > in the
+    `out_frmttyp` parameter).
 
     Parameters
     ----------
 
     datestr: str
 
-        A Python string containing a date string of format in_frmttyp
-        (see below).
+        A Python string containing a date string of format
+        `in_frmttyp` (see below).
 
     in_frmttyp: str
 
         A Python string specifying the POSIX convention for the
-        datestr variable upon input.
+        `datestr` variable upon input.
 
     out_frmttyp: str
 
         A Python string specifying the POSIX convention for the
-        datestr variable upon output.
+        `datestr` variable upon output.
 
     Keywords
     --------
@@ -578,7 +586,7 @@ def datestrupdate(
     offset_seconds: int, optional
 
         A Python integer defining the total number of offset-seconds
-        relative to the datestr variable(see above) for the output
+        relative to the `datestr` variable(see above) for the output
         time-stamp/date-string; the default is NoneType.
 
     Returns
@@ -605,8 +613,7 @@ def datestrupdate(
 
     for item in comps_list:
         if f"<{item}>" in outdatestr:
-            time_attr = parser_interface.object_getattr(
-                date_comps_obj, key=item)
+            time_attr = parser_interface.object_getattr(date_comps_obj, key=item)
             outdatestr = outdatestr.replace(f"<{item}>", time_attr)
 
     return outdatestr
@@ -631,22 +638,22 @@ def elapsed_seconds(
     start_datestr: str
 
         A Python string containing a date string of format
-        start_frmttyp(below).
+        `start_frmttyp` (below).
 
     start_frmttyp: str
 
        A Python string specifying the POSIX convention for the
-       start_datestr variable.
+       `start_datestr` variable.
 
     stop_datestr: str
 
         A Python string containing a date string of format
-        stop_frmttyp(below).
+        `stop_frmttyp` (below).
 
     stop_frmttyp: str
 
         A Python string specifying the POSIX convention for the
-        stop_datestr variable.
+        `stop_datestr` variable.
 
     Returns
     -------
@@ -708,7 +715,6 @@ def epoch_to_datestr(epoch_seconds: int, out_frmttyp: str = None) -> str:
     # Define the epoch time (seconds) date-string.
     datestr = out_frmttyp or timestamp_interface.GLOBAL
 
-    epoch_datestr = datetime.datetime.fromtimestamp(
-        epoch_seconds).strftime(datestr)
+    epoch_datestr = datetime.datetime.fromtimestamp(epoch_seconds).strftime(datestr)
 
     return epoch_datestr

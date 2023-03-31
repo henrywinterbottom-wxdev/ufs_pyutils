@@ -54,6 +54,12 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 # pylint: disable=broad-except
 # pylint: disable=consider-using-f-string
 # pylint: disable=too-many-branches
@@ -64,15 +70,10 @@ History
 # ----
 
 import re
+from typing import Dict
 
 from tools import datetime_interface, fileio_interface
 from utils.exceptions_interface import NamelistInterfaceError
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -116,7 +117,7 @@ class Namelist:
     """
 
     def __init__(
-        self,
+        self: object,
         log_messages: bool = False,
         no_string_quotes: bool = False,
         remove_comments: bool = False,
@@ -136,15 +137,15 @@ class Namelist:
         self.remove_comments = remove_comments
         self.strip_dblequotes = strip_dblequotes
 
-    def check_float(self, string: str) -> bool:
+    def check_float(self: object, string: str) -> bool:
         """
         Description
         ----------
 
         This method attempts to convert a string to a float value; if
-        successful, the return value (float_valid) is True; if
+        successful, the return value `float_valid` is `True`; if
         unsuccessful (e.g., a ValueError exception is encountered),
-        the return value (float_valid) is False.
+        the return value `float_valid` is `False`.
 
         Parameters
         ----------
@@ -179,7 +180,7 @@ class Namelist:
 
         return float_valid
 
-    def dblequotes_strip(self, nml_path: str) -> None:
+    def dblequotes_strip(self: object, nml_path: str) -> None:
         """
         Description
         -----------
@@ -211,7 +212,7 @@ class Namelist:
                 line = re.sub('["]', "", line)
                 file.write(f"{line}\n")
 
-    def write(self, nml_dict: dict, nml_template: str, nml_path: str) -> None:
+    def write(self: object, nml_dict: Dict, nml_template: str, nml_path: str) -> None:
         """
         Description
         -----------
@@ -223,7 +224,7 @@ class Namelist:
         Parameters
         ----------
 
-        nml_dict: dict
+        nml_dict: Dict
 
             A Python dictionary containing key and values pairs
             corresponding to the available variables within the
@@ -349,7 +350,7 @@ class Namelist:
                 timestamp = datetime_interface.current_date(frmttyp="%Y-%m-%d %H:%M:%S")
                 file.write(f"! Updated: {timestamp}.\n")
 
-    def run(self, nml_dict: dict, nml_template: str, nml_path: str) -> None:
+    def run(self: object, nml_dict: Dict, nml_template: str, nml_path: str) -> None:
         """
         Description
         -----------
@@ -383,7 +384,7 @@ class Namelist:
 
         NamelistInterfaceError:
 
-            * raised if an exception is raised when creating the
+            - raised if an exception is raised when creating the
               FORTRAN 90 namelist file.
 
         """

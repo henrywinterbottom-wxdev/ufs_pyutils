@@ -59,7 +59,7 @@ Functions
     _session(profile_name)
 
         This method defines a boto3 session in accordance with the
-        profile_name attribute value.
+        `profile_name` attribute value.
 
     _write(client, bucket, file_name, object_name)
 
@@ -77,7 +77,7 @@ Functions
 
         This function downloads objects from a user specified resource
         bucket either onto the respective platforms local disk
-        (into_mem = False) or into memory (into_mem = True).
+        (`into_mem` = `False`) or into memory (`into_mem` = `True`).
 
     put(bucket, filedict, profile_name=None, resource="s3")
 
@@ -88,8 +88,8 @@ Notes
 -----
 
     The functions within this module, when employed for credentialed
-    sessions, requires that the credentials (i.e., aws_access_key_id
-    and aws_secret_access_key) corresponding to the profile_name
+    sessions, requires that the credentials (i.e., `aws_access_key_id`
+    and `aws_secret_access_key`) corresponding to the `profile_name`
     parameter value upon entry exist in the user path
     ~/.aws/credentials.
 
@@ -109,6 +109,12 @@ History
     2022-08-22: Henry Winterbottom -- Initial implementation.
 
 """
+
+# ----
+
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -137,24 +143,18 @@ __all__ = ["filelist", "get", "put"]
 
 # ----
 
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
-
-# ----
-
 logger = Logger()
 
 # ----
 
 
-def _aws_credentials(profile_name: str = None) -> Tuple:
+def _aws_credentials(profile_name: str = None) -> Tuple[bool, object]:
     """
     Description
     -----------
 
     This function establishes the boto3 credentials as a function of
-    the entry value of the parameter attribute profile_name.
+    the entry value of the parameter attribute `profile_name`.
 
     Keywords
     --------
@@ -172,13 +172,13 @@ def _aws_credentials(profile_name: str = None) -> Tuple:
     unsigned: bool
 
         A Python boolean valued variable specifying whether or not to
-        provided UNSIGNED credentials to the boto3 client
+        provided `UNSIGNED` credentials to the boto3 client
         configuration.
 
     session: object
 
         A Python boto3 Session object for the respective entry value
-        of the parameter profile_name; if profile_name is NoneType
+        of the parameter `profile_name`; if `profile_name` is NoneType
         upon entry, the returned value is NoneType.
 
     Raises
@@ -186,9 +186,9 @@ def _aws_credentials(profile_name: str = None) -> Tuple:
 
     Boto3InterfaceError:
 
-        * raised if an exception is encountered establishing the boto3
+        - raised if an exception is encountered establishing the boto3
           Session object for non-NoneType entry values for the
-          profile_name parameter.
+          `profile_name` parameter.
 
     """
 
@@ -247,7 +247,7 @@ def _client(
     session: object, optional
 
         A Python boto3 Session object for the respective entry value
-        of the parameter profile_name; if profile_name is NoneType
+        of the parameter `profile_name`; if `profile_name` is NoneType
         upon entry, the returned value is NoneType.
 
     profile_name: str, optional
@@ -276,7 +276,7 @@ def _client(
     if not unsigned and session is None:
         msg = (
             "The boto3 client cannot be established for instances when "
-            "using neither UNSIGNED credentials of a valid "
+            "using neither `UNSIGNED` credentials of a valid "
             "~/.aws/credentials profile name. Aborting!!!"
         )
         raise Boto3InterfaceError(msg=msg)
@@ -284,7 +284,7 @@ def _client(
     if unsigned and session is not None:
         msg = (
             "A boto3 client configuration cannot be determined when "
-            "UNSIGNED credentials are specified and the profile_name "
+            "`UNSIGNED` credentials are specified and the `profile_name` "
             "parameter value upon entry is not NoneType. Aborting!!!"
         )
         raise Boto3InterfaceError(msg=msg)
@@ -337,7 +337,7 @@ def _list(client: object, bucket: str, object_path: str = None) -> List:
     Returns
     -------
 
-    filelist: list
+    filelist: List
 
         A Python list containing the contents (keys) of the user
         specified resource bucket.
@@ -429,7 +429,7 @@ def _resource(
     unsigned: bool, optional
 
         A Python boolean valued variable specifying whether or not to
-        provided UNSIGNED credentials to the AWS resource
+        provided `UNSIGNED` credentials to the AWS resource
         configuration.
 
     profile_name: str, optional
@@ -477,7 +477,7 @@ def _session(profile_name: str) -> object:
     -----------
 
     This method defines a boto3 session in accordance with the
-    profile_name attribute value.
+    `profile_name` attribute value.
 
     Parameters
     ----------
@@ -494,7 +494,7 @@ def _session(profile_name: str) -> object:
     session: object
 
         A Python boto3 Session object for the respective entry value
-        of the parameter profile_name.
+        of the parameter `profile_name`.
 
     """
 
@@ -534,7 +534,7 @@ def _write(client: object, bucket: str, file_name: str, object_name: str) -> Non
     object_name: str
 
         A Python string specifying the resource bucket object
-        corresponding to the file_name attribute.
+        corresponding to the `file_name` attribute.
 
     """
 
@@ -590,7 +590,7 @@ def filelist(
     Returns
     -------
 
-    filelist: list
+    filelist: List
 
         A Python list containing the contents of the resource bucket.
 
@@ -617,13 +617,12 @@ def get(
     profile_name: str = None,
     resource: str = "s3",
 ) -> object:
-    """
-    Description
+    """Description
     -----------
 
     This function downloads objects from a user specified resource
-    bucket either onto the respective platforms local disk (into_mem =
-    False) or into memory (into_mem = True).
+    bucket either onto the respective platforms local disk (`into_mem`
+    = `False`) or into memory (`into_mem` = `True`).
 
     Parameters
     ----------
@@ -651,8 +650,8 @@ def get(
     object_path: str, optional
 
         A Python string specifying the respective resource bucket
-        object path; required and used only if into_mem is True upon
-        entry.
+        object path; required and used only if `into_mem` is `True`
+        upon entry.
 
     profile_name: str, optional
 
@@ -674,7 +673,7 @@ def get(
 
         A Python tempfile NamedTemporaryFile object containing the
         contents of the resource bucket and object path specified upon
-        entry; if the into_mem parameter is False upon entry, the
+        entry; if the `into_mem` parameter is `False` upon entry, the
         returned value is NoneType.
 
     Raises
@@ -682,12 +681,12 @@ def get(
 
     Boto3InterfaceError:
 
-        * raised if parameter values provided upon entry are invalid.
+        - raised if parameter values provided upon entry are invalid.
 
-        * raised if the downloading of a specified object path
+        - raised if the downloading of a specified object path
           into local memory encounters and exception.
 
-        * raised if the downloading of a specified object path
+        - raised if the downloading of a specified object path
           encounters and exception.
 
     """
@@ -801,7 +800,7 @@ def put(
 
         A Python string specifying the name of the resource bucket.
 
-    filedict: dict
+    filedict: Dict
 
         A Python dictionary containing key and value pairs for the
         objects to be written to the resource bucket objects; the
@@ -829,7 +828,7 @@ def put(
 
     Boto3InterfaceError:
 
-        * raised if the uploading of a specified object path
+        - raised if the uploading of a specified object path
           encounters and exception.
 
     """

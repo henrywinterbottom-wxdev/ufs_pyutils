@@ -35,14 +35,14 @@ Functions
     read_tarfile(path, tarball_path, mode=None, filelist=None):
 
         This function parses a specified tarball archive and extracts
-        the specified files; if filelist is NoneType on entry, all
+        the specified files; if `filelist` is NoneType on entry, all
         files within the archive will be extracted.
 
     write_tarfile(path, tarball_path, filelist=None, filedict=None,
                  ref_local=False, gzip=False, compress_level=1)
 
         This function creates a POSIX compliant tarball file and
-        appends the files within the user-specified filelist to the
+        appends the files within the specified filelist to the
         respective tarball file.
 
 Author(s)
@@ -66,6 +66,12 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 import os
 import tarfile
 from typing import Dict, List
@@ -82,12 +88,6 @@ __all__ = ["read_tarfile", "write_tarfile"]
 # ----
 
 logger = Logger()
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -124,7 +124,7 @@ def read_tarfile(
         tarball archive; a complete list of combinations can be found
         at https://docs.python.org/3/library/tarfile.html#tarfile.open.
 
-    filelist: list, optional
+    filelist: List, optional
 
         A Python list of member files within the tarball archive to be
         extracted.
@@ -134,10 +134,10 @@ def read_tarfile(
 
     TarFileInterfaceError:
 
-        * raised if an exception is encountered while extracting files
+        - raised if an exception is encountered while extracting files
           from the tarball file path specified upon entry.
 
-        * raised if an execption is encountered while extracting a
+        - raised if an execption is encountered while extracting a
           specified file from the tarball file path specified upon
           entry.
 
@@ -216,7 +216,7 @@ def write_tarfile(
     -----------
 
     This function creates a POSIX compliant tarball file and appends
-    the files within the user-specified filelist to the respective
+    the files within the specified filelist to the respective
     tarball file.
 
     Parameters
@@ -225,7 +225,7 @@ def write_tarfile(
     path: str
 
         A Python string specifying the path beneath which the files to
-        be archived (see filelist) exist on the local host.
+        be archived (see `filelist`) exist on the local host.
 
     tarball_path: str
 
@@ -235,13 +235,13 @@ def write_tarfile(
     Keywords
     --------
 
-    filelist: list, optional
+    filelist: List, optional
 
         A Python list of filename and/or paths beneath the path to be
-        archived (see path, above); if provided, only the files
+        archived (see `path`, above); if provided, only the files
         contained within the list will be writen to tarball archive.
 
-    filedict: dict, optional
+    filedict: Dict, optional
 
         A Python dictionary containing the key and value pairs to be
         used to construct the tarball file; the key values are the
@@ -252,7 +252,7 @@ def write_tarfile(
 
         A Python boolean variable specifying whether to define the
         archive path, within the user-specified tarball, relative to
-        the working directory (path).
+        the working directory (`path`).
 
     gzip: bool, optional
 
@@ -269,7 +269,7 @@ def write_tarfile(
 
     TarFileInterfaceError:
 
-        * raised if an exception is encountered while validating the
+        - raised if an exception is encountered while validating the
           parameter values provided upon entry.
 
     """

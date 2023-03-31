@@ -88,6 +88,11 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
 
 from collections import OrderedDict
 from typing import Dict, Tuple
@@ -107,12 +112,6 @@ __all__ = ["read_tcvfile", "scale_tcvrec", "write_tcvfile", "write_tcvstr"]
 # ----
 
 logger = Logger()
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -422,7 +421,7 @@ def scale_tcvrec(tcv_dict: Dict) -> object:
     Parameters
     ----------
 
-    tcv_dict: dict
+    tcv_dict: Dict
 
         A Python dictionary containing the TC-vitals record
         attributes.
@@ -440,8 +439,7 @@ def scale_tcvrec(tcv_dict: Dict) -> object:
     # Collect the relevant attributes from the TC-vitals record.
     tcv_obj = parser_interface.object_define()
     (lat, lon, mslp, poci, rmw, roci, vmax) = [
-        parser_interface.dict_key_value(
-            dict_in=tcv_dict, key=key, no_split=True)
+        parser_interface.dict_key_value(dict_in=tcv_dict, key=key, no_split=True)
         for key in ["lat", "lon", "mslp", "poci", "rmw", "roci", "vmax"]
     ]
 
@@ -603,7 +601,7 @@ def write_tcvstr(tcvit_obj: object) -> str:
 
     TCVitalsInterfaceError:
 
-        * raised if the TC-vitals attribute object provided upon entry
+        - raised if the TC-vitals attribute object provided upon entry
           does not contain a mandatory TC-vitals record
           attribute/value.
 
@@ -619,8 +617,7 @@ def write_tcvstr(tcvit_obj: object) -> str:
 
     # Check that all mandatory TC-vitals record attributes are
     # specified; proceed accordingly.
-    mand_attr_list = ["lat", "lon", "mslp",
-                      "tcid", "time_hm", "time_ymd", "vmax"]
+    mand_attr_list = ["lat", "lon", "mslp", "tcid", "time_hm", "time_ymd", "vmax"]
 
     for mand_attr in mand_attr_list:
         if not parser_interface.object_hasattr(object_in=tcvit_obj, key=mand_attr):
@@ -631,8 +628,7 @@ def write_tcvstr(tcvit_obj: object) -> str:
             raise TCVitalsInterfaceError(msg=msg)
 
         # Build the TC-vitals record object.
-        value = parser_interface.object_getattr(
-            object_in=tcvit_obj, key=mand_attr)
+        value = parser_interface.object_getattr(object_in=tcvit_obj, key=mand_attr)
         tcvobj = parser_interface.object_setattr(
             object_in=tcvobj, key=mand_attr, value=value
         )

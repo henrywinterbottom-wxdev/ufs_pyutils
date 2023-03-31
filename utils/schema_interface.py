@@ -37,7 +37,7 @@ Functions
         This function builds a Python schema dictionary using the And
         attribute.
 
-    check_opts(key, valid_opts, data, check_and: bool = False)
+    check_opts(key, valid_opts, data, check_and=False)
 
         This function checks that key and value pair is valid relative
         to the list of accepted values.
@@ -71,6 +71,12 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 from typing import Dict, List
 
 from schema import And, Schema
@@ -81,13 +87,6 @@ from utils.exceptions_interface import SchemaInterfaceError
 
 # Define all available attributes.
 __all__ = ["check_opts", "validate_opts"]
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
-
 
 # ----
 
@@ -108,14 +107,14 @@ def __andopts__(key: str, valid_opts: List) -> Dict:
         A Python string specifying the key for which to valid the
         respective value against list of accepted values.
 
-    valid_opts: list
+    valid_opts: List
 
         A Python list containing the accepted values.
 
     Returns
     -------
 
-    schema_dict: dict
+    schema_dict: Dict
 
         A Python dictionary containing the schema to be validated.
 
@@ -145,11 +144,11 @@ def check_opts(key: str, valid_opts: List, data: Dict, check_and: bool = False) 
         A Python string specifying the key for which to validate the
         respective value against list of accepted values.
 
-    valid_opts: list
+    valid_opts: List
 
         A Python list containing the accepted values.
 
-    data: dict
+    data: Dict
 
         A Python dictionary containing the key and value pair which to
         validate.
@@ -168,7 +167,7 @@ def check_opts(key: str, valid_opts: List, data: Dict, check_and: bool = False) 
 
     SchemaInterfaceError:
 
-        * raised if an exception is encountered while validating the
+        - raised if an exception is encountered while validating the
           schema.
 
     """
@@ -207,11 +206,11 @@ def validate_opts(cls_schema: Dict, cls_opts: Dict) -> None:
     Parameters
     ----------
 
-    cls_schema: dict
+    cls_schema: Dict
 
         A Python dictionary containing the calling class schema.
 
-    cls_opts: dict
+    cls_opts: Dict
 
         A Python dictionary containing the options (i.e., parameter
         arguments, keyword arguments, etc.,) passed to the respective
@@ -222,7 +221,7 @@ def validate_opts(cls_schema: Dict, cls_opts: Dict) -> None:
 
     SchemaInterfaceError:
 
-        * raised if an exception is encountered while validating the
+        - raised if an exception is encountered while validating the
           schema.
 
     """

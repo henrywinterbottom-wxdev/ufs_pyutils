@@ -63,18 +63,18 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 import os
 from unittest import TestCase
 
 import pytest
 from confs import namelist_interface
 from tools import fileio_interface
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -110,7 +110,8 @@ class TestNamelistMethods(TestCase):
 
         # Define the file paths required for the test method(s).
         dirpath = os.path.join(os.getcwd(), "tests")
-        self.nml_template = os.path.join(dirpath, "test_files", "namelist.template")
+        self.nml_template = os.path.join(
+            dirpath, "test_files", "namelist.template")
         self.nml_check = os.path.join(dirpath, "test_files", "namelist.check")
         self.nml_path = os.path.join(dirpath, "namelist.test")
 
