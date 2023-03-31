@@ -39,11 +39,10 @@ Functions
 
     _launch(cmd, infile, errlog, outlog)
 
-        This function launches the command string arguments (cmd) and
-        writes the output and error to the outlog and errlog paths; if
-        errlog and/or outlog are NoneType, they default to err.log
-        and/or out.log, respectively; if an exception is encountered,
-        this function raises SubprocessInterfaceError.
+        This function launches the command string arguments (`cmd`)
+        and writes the output and error to the `outlog` and `errlog`
+        paths; if `errlog` and/or `outlog` are NoneType, they default
+        to `err.log` and/or `out.log`, respectively.
 
     run(exe, job_type="slurm", ntasks=1, args=None, infile=None, errlog=None,
         outlog=None, multi_prog=False, multi_prog_conf=None)
@@ -73,6 +72,12 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 import glob
 import re
 import subprocess
@@ -93,19 +98,13 @@ logger = Logger()
 
 # ----
 
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
-
-# ----
-
 # Define the supported job types.
 job_types_list = ["app", "python", "slurm"]
 
 # ----
 
 
-def __job_info__(job_type: str, app: str = None) -> Tuple:
+def __job_info__(job_type: str, app: str = None) -> Tuple[str, str]:
     """
     Description
     -----------
@@ -147,14 +146,14 @@ def __job_info__(job_type: str, app: str = None) -> Tuple:
 
     SubprocessInterfaceError:
 
-        * raised if the job type specified upon entry is not
+        - raised if the job type specified upon entry is not
           supported.
 
-        * raised if an exception is encountered while determing the
+        - raised if an exception is encountered while determing the
           application launcher; this is currently only relative to
           SLURM.
 
-        * raised if the launcher for the respective job type is
+        - raised if the launcher for the respective job type is
           NoneType following assignment.
 
     """
@@ -211,16 +210,15 @@ def _launch(cmd: List, infile: str, errlog: str, outlog: str) -> int:
     Description
     -----------
 
-    This function launches the command string arguments (cmd) and
-    writes the output and error to the outlog and errlog paths; if
-    errlog and/or outlog are NoneType, they default to err.log and/or
-    out.log, respectively; if an exception is encountered, this
-    function raises SubprocessInterfaceError.
+    This function launches the command string arguments (`cmd`) and
+    writes the output and error to the `outlog` and `errlog paths`; if
+    `errlog` and/or `outlog` are NoneType, they default to `err.log` and/or
+    `out.log`, respectively.
 
     Parameters
     ----------
 
-    cmd: list
+    cmd: List
 
         A Python list containing the SLURM commands for launching the
         respective executable task.
@@ -235,19 +233,19 @@ def _launch(cmd: List, infile: str, errlog: str, outlog: str) -> int:
         used to collect the relevant files and the collected files are
         then appended to the command string; for wildcard instances,
         the parameter shell is passed to the subprocess object and set
-        to True.
+        to `True`.
 
     errlog: str
 
         A Python string specifying the path to the error-output (e.g.,
-        stderr) information; if NoneType upon entry, the stderr is
-        written to err.log.
+        `stderr`) information; if NoneType upon entry, the `stderr` is
+        written to `err.log`.
 
     outlog: str
 
         A Python string specifying the path to the standard-output
-        (e.g., stdout) information; if NoneType upon entry, the stdout
-        is written to out.log.
+        (e.g., `stdout`) information; if NoneType upon entry, the `stdout`
+        is written to `out.log`.
 
     Returns
     -------
@@ -262,7 +260,7 @@ def _launch(cmd: List, infile: str, errlog: str, outlog: str) -> int:
 
     SubprocessInterfaceError:
 
-        * raised if an exception is encountered during the launch of
+        - raised if an exception is encountered during the launch of
           the respective application.
 
     """
@@ -355,8 +353,11 @@ def run(
     multi_prog: bool = False,
     multi_prog_conf: str = None,
 ) -> int:
-    """
-    Description
+
+    # CHECK ARGUMENT FORMAT (e.g., `True`, etc.,)
+
+    # UPDATE unittest formats.
+    """Description
     -----------
 
     This function launches a job application in accordance with the
@@ -375,15 +376,15 @@ def run(
 
     job_type: str, optional
 
-        A Python string specifying the job type; this applies to
+        A Python string specifying the job type; this applies to the
         workload scheduler (e.g., SLURM, PBS, SGE, etc.,).
 
     ntasks: int, optional
 
         A Python integer specifying the number of compute tasks; if
-        NoneType upon entry, a default value of 1 is assumed.
+        NoneType upon entry, a value of 1 is assumed.
 
-    args: list, optional
+    args: List, optional
 
         A Python list of arguments to be passed to the executable via
         the command line parser; if NoneType upon entry, no command
@@ -393,35 +394,35 @@ def run(
 
         A Python string specifying the path to a file to be open and
         used as input to the respective executable; if NoneType upon
-        entry, the stdin argument to the subprocess Popen object is
+        entry, the stdin argument to the subprocess `Popen` object is
         ignored.
 
     outlog: str, optional
 
         A Python string specifying the path to the standard-output
-        (e.g., stdout) information; if NoneType upon entry, the stdout
-        is written to out.log.
+        (e.g., `stdout`) information; if NoneType upon entry, the
+        `stdout` is written to `out.log`.
 
     errlog: str, optional
 
         A Python string specifying the path to the error-output (e.g.,
-        stderr) information; if NoneType upon entry, the stderr is
-        written to err.log.
+        `stderr`) information; if NoneType upon entry, the stderr is
+        written to `err.log`.
 
     multi_prog: bool, optional
 
         A Python boolean valued variable specifying whether to
-        implement the SLURM multi_prog capabilities for the respective
-        task; if True, multi_prog_conf must be specified; note that is
-        not (yet) supported for MVAPICH at run-time
-        configurations/executables.
+        implement the SLURM `multi_prog` capabilities for the
+        respective task; if `True`, `multi_prog_conf` must be
+        specified; note that is not (yet) supported for MVAPICH at
+        run-time configurations/executables.
 
     multi_prog_conf: str, optional
 
         A Python string specifying the path to the file containing the
-        SLURM multi_prog directives; if multi_prog (above) is True,
-        this value is required; note that is not (yet) supported for
-        MVAPICH run-time configurations/executables.
+        SLURM `multi_prog` directives; if `multi_prog` (above) is
+        `True`, this value is required; note that is not (yet)
+        supported for MVAPICH run-time configurations/executables.
 
     Returns
     -------
@@ -436,7 +437,7 @@ def run(
 
     SubprocessInterfaceError:
 
-        * raised if a specified configuration is not supported.
+        - raised if a specified configuration is not supported.
 
     """
 
