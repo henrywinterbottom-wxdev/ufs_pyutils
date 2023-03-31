@@ -1026,9 +1026,9 @@ def object_getattr(object_in: object, key: str, force: bool = False) -> Any:
     -----------
 
     This function ingests a Python object and a Python attribute and
-    returns the value of the respective attribute; if `force` is True
-    and the Python object attribute does not exist, this function
-    returns NoneType.
+    returns the value of the respective attribute; if `force` is
+    `True` and the Python object attribute does not exist, this
+    function returns NoneType.
 
     Parameters
     ----------
@@ -1046,9 +1046,9 @@ def object_getattr(object_in: object, key: str, force: bool = False) -> Any:
 
     force: bool, optional
 
-        A Python boolean variable; if True and in the absence of the
+        A Python boolean variable; if `True` and in the absence of the
         respective attribute within the Python object, NoneType is
-        returned; otherwise, an ParserInterfaceError is raised.
+        returned.
 
     Returns
     -------
@@ -1062,7 +1062,7 @@ def object_getattr(object_in: object, key: str, force: bool = False) -> Any:
 
     ParserInterfaceError:
 
-        - raised if `force` is False and the Python object attribute
+        - raised if `force` is `False` and the Python object attribute
           does not exist.
 
     """

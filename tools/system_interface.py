@@ -110,8 +110,7 @@ from utils.logger_interface import Logger
 # ----
 
 # Define all available functions.
-__all__ = ["app_path", "chown", "get_app_path",
-           "get_pid", "sleep", "task_exit", "user"]
+__all__ = ["app_path", "chown", "get_app_path", "get_pid", "sleep", "task_exit", "user"]
 
 # ----
 
@@ -177,8 +176,7 @@ def app_path(app: str) -> Union[str, None]:
     # the application name specified upon entry.
     cmd = ["command", "-V", app]
 
-    proc = subprocess.Popen(cmd, stderr=subprocess.PIPE,
-                            stdout=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
     (out, err) = proc.communicate()
 
     # Collect the run-time environment path from the query for the
