@@ -138,6 +138,11 @@ Classes
         This is the base-class for exceptions encountered within the
         ioapps/url_interface module; it is a sub-class of Error.
 
+    UFSLoggerError(msg)
+
+        This is the base-class for exceptions encountered within the
+        scripts/ufs_logger.py application; is it a sub-class of Error.
+
     WgetInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
@@ -199,6 +204,7 @@ __all__ = [
     "TarFileInterfaceError",
     "TCVitalsInterfaceError",
     "TimestampInterfaceError",
+    "UFSLoggerError",
     "URLInterfaceError",
     "WgetInterfaceError",
     "XMLInterfaceError",
@@ -218,7 +224,6 @@ class ArgumentsInterfaceError(Error):
 
     """
 
-
 # ----
 
 
@@ -231,7 +236,6 @@ class AWSCLIInterfaceError(Error):
     ioapps/awscli_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
@@ -246,7 +250,6 @@ class Boto3InterfaceError(Error):
 
     """
 
-
 # ----
 
 
@@ -259,7 +262,6 @@ class ContainerInterfaceError(Error):
     execute/container_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
@@ -274,7 +276,6 @@ class CurlInterfaceError(Error):
 
     """
 
-
 # ----
 
 
@@ -287,7 +288,6 @@ class EnviroInterfaceError(Error):
     confs/enviro_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
@@ -302,7 +302,6 @@ class GRIBInterfaceError(Error):
 
     """
 
-
 # ----
 
 
@@ -315,7 +314,6 @@ class HashLibInterfaceError(Error):
     ioapps/hashlib_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
@@ -330,7 +328,6 @@ class Jinja2InterfaceError(Error):
 
     """
 
-
 # ----
 
 
@@ -343,7 +340,6 @@ class JSONInterfaceError(Error):
     confs/json_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
@@ -358,7 +354,6 @@ class NamelistInterfaceError(Error):
 
     """
 
-
 # ----
 
 
@@ -371,7 +366,6 @@ class NetCDF4InterfaceError(Error):
     ioapps/netcdf4_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
@@ -386,7 +380,6 @@ class NOAAHPSSInterfaceError(Error):
 
     """
 
-
 # ----
 
 
@@ -399,7 +392,6 @@ class ParserInterfaceError(Error):
     tools/parser_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
@@ -414,7 +406,6 @@ class SchemaInterfaceError(Error):
 
     """
 
-
 # ----
 
 
@@ -427,7 +418,6 @@ class SQLite3InterfaceError(Error):
     ioapps/sqlite3_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
@@ -442,7 +432,6 @@ class SubprocessInterfaceError(Error):
 
     """
 
-
 # ----
 
 
@@ -455,7 +444,6 @@ class TarFileInterfaceError(Error):
     ioapps/tarfile_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
@@ -470,7 +458,6 @@ class TCVitalsInterfaceError(Error):
 
     """
 
-
 # ----
 
 
@@ -484,6 +471,18 @@ class TimestampInterfaceError(Error):
 
     """
 
+# ----
+
+
+class UFSLoggerError(Error):
+    """
+    Description
+    -----------
+
+    This is the base-class for exceptions encountered within the
+    scripts/ufs_logger.py application; is it a sub-class of Error.
+
+    """
 
 # ----
 
@@ -498,7 +497,6 @@ class URLInterfaceError(Error):
 
     """
 
-
 # ----
 
 
@@ -512,7 +510,6 @@ class WgetInterfaceError(Error):
 
     """
 
-
 # ----
 
 
@@ -525,7 +522,6 @@ class XMLInterfaceError(Error):
     confs/xml_interface module; it is a sub-class of Error.
 
     """
-
 
 # ----
 
