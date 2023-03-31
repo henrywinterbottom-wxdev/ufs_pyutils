@@ -311,8 +311,7 @@ def _launch(cmd: List, infile: str, errlog: str, outlog: str) -> int:
             # Build the command line arguments assuming that no
             # wildcard values are included.
             if not has_wildcards:
-                proc = subprocess.Popen(
-                    cmd, stdin=stdin, stdout=stdout, stderr=stderr)
+                proc = subprocess.Popen(cmd, stdin=stdin, stdout=stdout, stderr=stderr)
 
         # Launch the executable and proceed accordingly.
         proc.wait()
@@ -353,7 +352,6 @@ def run(
     multi_prog: bool = False,
     multi_prog_conf: str = None,
 ) -> int:
-
     """Description
     -----------
 
@@ -462,9 +460,7 @@ def run(
     # Define the launcher for the respective job type; proceed
     # accordingly.
     if launcher is None:
-        msg = ("The launcher application cannot be NoneType upon entry."
-               "Aborting!!!"
-               )
+        msg = "The launcher application cannot be NoneType upon entry. Aborting!!!"
         raise SubprocessInterfaceError(msg=msg)
 
     if launcher is not None:
