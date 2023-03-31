@@ -64,7 +64,12 @@ History
 # ----
 
 # pylint: disable=broad-except
-# pylint: disable=raise-missing-from
+
+# ----
+
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -80,12 +85,6 @@ from utils.logger_interface import Logger
 
 # Define all available functions.
 __all__ = ["get_weblist", "read_webfile"]
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -122,13 +121,13 @@ def get_weblist(url: str, ext: str = None, include_dirname: bool = False) -> Lis
 
         A Python boolean valued variable specifying whether to append
         the URL path directory name to the retrieved file names; if
-        False upon entry, the retrieved files will simply be the
+        `False` upon entry, the retrieved files will simply be the
         basename for the respective retrieved file names.
 
     Returns
     -------
 
-    weblist: list
+    weblist: List
 
         A Python list containing the files beneath the specified URL.
 
@@ -137,7 +136,7 @@ def get_weblist(url: str, ext: str = None, include_dirname: bool = False) -> Lis
 
     URLInterfaceError:
 
-        * raised if an Exception is encountered while attempting to
+        - raised if an Exception is encountered while attempting to
           parse the URL path contents; the respective error message
           accompanys the message string passed to the URLError class.
 
@@ -152,10 +151,8 @@ def get_weblist(url: str, ext: str = None, include_dirname: bool = False) -> Lis
         soup = BeautifulSoup(url_contents, "html.parser")
 
     except Exception as errmsg:
-        msg = (
-            f"Retrieving the URL path {url} failed with error {errmsg}. " "Aborting!!!"
-        )
-        raise URLInterfaceError(msg=msg)
+        msg = f"Retrieving the URL path {url} failed with error {errmsg}. Aborting!!!"
+        raise URLInterfaceError(msg=msg) from errmsg
 
     # Compile a list of all URL file paths beneath the respective URL
     # file path provided upon entry; compile a list of the respective
@@ -184,7 +181,7 @@ def get_weblist(url: str, ext: str = None, include_dirname: bool = False) -> Lis
             f"Compilation of URL paths beneath URL {url} failed with "
             f"error {errmsg}. Aborting!!!"
         )
-        raise URLInterfaceError(msg=msg)
+        raise URLInterfaceError(msg=msg) from errmsg
 
     return weblist
 
@@ -219,7 +216,7 @@ def read_webfile(
     ignore_missing: bool, optional
 
         A Python boolean valued variable specifying whether to ignore
-        URL path requests that raise urllib.error.HTTPError; if True
+        URL path requests that raise urllib.error.HTTPError; if `True`
         upon entry the returned list (see below) will be an empty
         list.
 
@@ -231,14 +228,14 @@ def read_webfile(
     return_string: bool, optional
 
         A Python boolean valued variable specifying whether to return
-        the contents of the URL path as a string; if False upon entry,
-        the default format of the file (typically bytes) will be
-        returned.
+        the contents of the URL path as a string; if `False` upon
+        entry, the default format of the file (typically bytes) will
+        be returned.
 
     Returns
     -------
 
-    contents: list
+    contents: List
 
         A Python list containing the contents of the specified URL
         path.
@@ -248,14 +245,14 @@ def read_webfile(
 
     URLInterfaceError:
 
-        * raised if an exception is encountered while establishing the
+        - raised if an exception is encountered while establishing the
           URL path request.
 
-        * raised if the opening the specified URL path fails due to a
+        - raised if the opening the specified URL path fails due to a
           missing endpoint; raised only if ignore_missing is False
           upon entry.
 
-        * raised if an exception is encountered while parsing the
+        - raised if an exception is encountered while parsing the
           contents of the URL file path specified upon entry.
 
     """
@@ -269,7 +266,7 @@ def read_webfile(
         msg = (
             f"Retrieving the URL path {url} failed with error {errmsg}. " "Aborting!!!"
         )
-        raise URLInterfaceError(msg=msg)
+        raise URLInterfaceError(msg=msg) from errmsg
 
     # Read the contents of the URL file path; proceed accordingly.
     try:
@@ -306,13 +303,13 @@ def read_webfile(
                     f"Opening URL path {url} failed with error {url_error}. "
                     "Aborting!!!"
                 )
-                raise URLInterfaceError(msg=msg)
+                raise URLInterfaceError(msg=msg) from errmsg
 
     except Exception as errmsg:
         msg = (
             f"Reading the contents of URL path {url} failed with error "
             f"{errmsg}. Aborting!!!"
         )
-        raise URLInterfaceError(msg=msg)
+        raise URLInterfaceError(msg=msg) from errmsg
 
     return contents
