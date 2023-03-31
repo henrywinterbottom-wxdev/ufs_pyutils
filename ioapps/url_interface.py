@@ -216,9 +216,9 @@ def read_webfile(
     ignore_missing: bool, optional
 
         A Python boolean valued variable specifying whether to ignore
-        URL path requests that raise urllib.error.HTTPError; if `True`
-        upon entry the returned list (see below) will be an empty
-        list.
+        URL path requests that raise `urllib.error.HTTPError`; if
+        `True` upon entry the returned list (see below) will be an
+        empty list.
 
     split: str, optional
 
@@ -249,7 +249,7 @@ def read_webfile(
           URL path request.
 
         - raised if the opening the specified URL path fails due to a
-          missing endpoint; raised only if ignore_missing is False
+          missing endpoint; raised only if ignore_missing is `False`
           upon entry.
 
         - raised if an exception is encountered while parsing the
