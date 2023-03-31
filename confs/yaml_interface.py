@@ -432,7 +432,8 @@ class YAML:
         """
 
         # Define the YAML library loader type.
-        YAMLLoader.add_implicit_resolver("!ENV", YAMLLoader.envvar_matcher, None)
+        YAMLLoader.add_implicit_resolver(
+            "!ENV", YAMLLoader.envvar_matcher, None)
         YAMLLoader.add_constructor("!ENV", YAMLLoader.envvar_constructor)
 
         # Open and read the contents of the specified YAML-formatted
@@ -698,7 +699,7 @@ class YAMLLoader(SafeLoader):
 
         return os.path.expandvars(node.value)
 
-    def include_constructor(self, node: Any) -> Any:
+    def include_constructor(self: object, node: Any) -> Any:
         """
         Description
         -----------
