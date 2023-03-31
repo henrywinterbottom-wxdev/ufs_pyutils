@@ -56,8 +56,15 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 from argparse import ArgumentParser
 from dataclasses import dataclass
+from typing import Dict
 
 from tools import parser_interface
 
@@ -78,7 +85,7 @@ class Arguments:
 
     """
 
-    def run(self, eval_schema=False, cls_schema=None) -> object:
+    def run(self: object, eval_schema: bool = False, cls_schema: Dict = None) -> object:
         """
         Description
         -----------
@@ -96,6 +103,22 @@ class Arguments:
         Here 'key' is the argument name and 'value' is the value
         attributed to the respective argument/key.
 
+        Keywords
+        --------
+
+        eval_schema: bool, optional
+
+            A Python boolean valued variable specifying whether to
+            evaluate the schema/attributes of the parameter value; if
+            `True`, `cls_schema` must be specified and contain the
+            accepted attributes.
+
+        cls_schema: Dict, optional
+
+            A Python dictionary containing the schema attributes for
+            the respective caller class; only used if `eval_schema` is
+            `True` upon entry.
+
         Returns
         --------
 
@@ -109,15 +132,14 @@ class Arguments:
 
         ArgumentsError:
 
-            * raised if an exception is encountered while parsing the
+            - raised if an exception is encountered while parsing the
               command line arguments.
 
         """
 
         # Collect the command-line argument key and value pairs.
         (_, args) = ArgumentParser().parse_known_args()
-        (arg_keys, arg_values) = ([item.strip("-")
-                                   for item in args[::2]], args[1::2])
+        (arg_keys, arg_values) = ([item.strip("-") for item in args[::2]], args[1::2])
 
         # Build the Python object containing the command line
         # arguments.
@@ -147,8 +169,7 @@ class Arguments:
                 cls_opts = parser_interface.dict_formatter(in_dict=cls_opts)
 
                 # Evalute the schema; proceed accordingly.
-                schema_interface.validate_opts(
-                    cls_schema=cls_schema, cls_opts=cls_opts)
+                schema_interface.validate_opts(cls_schema=cls_schema, cls_opts=cls_opts)
 
             except Exception as errmsg:
 
