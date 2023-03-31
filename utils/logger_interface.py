@@ -237,7 +237,7 @@ class Logger:
         self.__write__(level="critical", msg=msg)
 
     # The base-class logger DEBUG level interface.
-    def debug(self: object, , msg: str) -> None:
+    def debug(self: object, msg: str) -> None:
         self.__write__(level="debug", msg=msg)
 
     # The base-class logger ERROR level interface.
