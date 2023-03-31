@@ -68,8 +68,7 @@ Functions
 
     user()
 
-        This method invokes the POSIX UNIX command whoami to determine
-        the respective user calling this function.
+        This method returns the login name of the user.
 
 Author(s)
 ---------
@@ -91,21 +90,21 @@ History
 
 # ----
 
+import getpass
 import inspect
 import os
 import shutil
 import subprocess
 import sys
 import time
-from typing import List
+from typing import List, Union
 
 from utils.logger_interface import Logger
 
 # ----
 
 # Define all available functions.
-__all__ = ["app_path", "chown", "get_app_path", "get_pid",
-           "sleep", "task_exit", "user"]
+__all__ = ["app_path", "chown", "get_app_path", "get_pid", "sleep", "task_exit", "user"]
 
 # ----
 
@@ -130,7 +129,7 @@ def _get_stack() -> List:
     Returns
     -------
 
-    stack: list
+    stack: List
 
         A Python list containing the calling application stack frame.
 
@@ -145,7 +144,7 @@ def _get_stack() -> List:
 # ----
 
 
-def app_path(app: str) -> str:
+def app_path(app: str) -> Union[str, None]:
     """
     Description
     -----------
@@ -164,7 +163,7 @@ def app_path(app: str) -> str:
     Returns
     -------
 
-    path: str
+    path: Union[str, None]
 
         A Python string specifying the path determined for the
         application name specified upon entry; if no path for the
@@ -177,8 +176,7 @@ def app_path(app: str) -> str:
     # the application name specified upon entry.
     cmd = ["command", "-V", app]
 
-    proc = subprocess.Popen(cmd, stderr=subprocess.PIPE,
-                            stdout=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
     (out, err) = proc.communicate()
 
     # Collect the run-time environment path from the query for the
@@ -233,7 +231,7 @@ def chown(path: str, user: str, group: str = None) -> None:
 # ----
 
 
-def get_app_path(app: str) -> str:
+def get_app_path(app: str) -> Union[str, None]:
     """
     Description
     -----------
@@ -252,7 +250,7 @@ def get_app_path(app: str) -> str:
     Returns
     -------
 
-    app_path: str
+    app_path: Union[str, None]
 
         A Python string specifying the path to the application name
         provided upon entry; if the application path cannot be
@@ -264,6 +262,7 @@ def get_app_path(app: str) -> str:
     app_path = shutil.which(app)
 
     return app_path
+
 
 # ----
 
@@ -350,32 +349,19 @@ def user() -> str:
     Description
     -----------
 
-    This method invokes the POSIX UNIX command whoami to determine the
-    respective user calling this function.
+    This method returns the login name of the user.
 
     Returns
     -------
 
     username: str
 
-        A Python string specifying the POSIX UNIX whoami command
-        result; if the whoami command returns an empty string, the
-        return is NoneType.
+        A Python string specifying the login name of the user.
 
     """
 
     # Query the POSIX UNIX environment to determine the user invoking
     # this function.
-    cmd = ["whoami"]
-
-    proc = subprocess.Popen(cmd, stderr=subprocess.PIPE,
-                            stdout=subprocess.PIPE)
-    (out, err) = proc.communicate()
-
-    # Collect the POSIX UNIX environment user name from the query.
-    if len(out) > 0:
-        username = out.rstrip().decode("utf-8")
-    else:
-        username = None
+    username = getpass.getuser()
 
     return username
