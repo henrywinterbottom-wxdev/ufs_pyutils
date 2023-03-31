@@ -92,9 +92,9 @@ def get_hash(filepath: str, hash_level: str = None) -> str:
     hash_level: str, optional
 
         A Python string specifying the hash level for the respective
-        hash index; currently supported values are md5, sha1, sha224,
-        sha256, sha384, and sha512; if NoneType upon entry, the md5
-        hash level is assumed.
+        hash index; currently supported values are `md5`, `sha1`,
+        `sha224`, `sha256`, `sha384`, and `sha512`; if NoneType upon
+        entry, the `md5` hash level is assumed.
 
     Returns
     -------
@@ -109,7 +109,7 @@ def get_hash(filepath: str, hash_level: str = None) -> str:
 
     HashLibError:
 
-        * raise if the hash level specified upon entry is not
+        - raise if the hash level specified upon entry is not
           supported.
 
     """
