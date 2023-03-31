@@ -34,33 +34,32 @@ Functions
 
     concatenate(filelist, concatfile, sepfiles=False)
 
-        This function concatenates a list of user-specified files
-        (filelist) into a single user-specified file (concatfile); the
-        respective files are opened in binary mode to increase the
-        applicability of the function.
+        This function concatenates a list of ufiles (`filelist`) into
+        a single file (`concatfile`); the respective files are opened
+        in binary mode to increase the applicability of the function.
 
     copyfile(srcfile, dstfile)
 
-        This function will create a local copy of a user specified
-        source file to user specified destination file location; if
-        the destination file already exists, it will be removed prior
-        to the creation of the destination file.
+        This function will create a local copy of a specified source
+        file to user specified destination file location; if the
+        destination file already exists, it will be removed prior to
+        the creation of the destination file.
 
     dircontents(path)
 
-        This function compiles a content list of the user specified
+        This function compiles a content list of the specified
         directory.
 
     dirpath_tree(path)
 
-        This function checks whether the directory tree (i.e., path)
+        This function checks whether the directory tree (`path`)
         exists; if not an attempt will be made to build it.
 
     fileexist(path)
 
         This function will ingest a file-path and check whether the
         respective file-path exists; this function is a wrapper around
-        os.path.isfile.
+        `os.path.isfile`.
 
     filepermission(path, permission)
 
@@ -76,33 +75,32 @@ Functions
 
     makedirs(path, force=False)
 
-        This function is a wrapper around os.makedirs and will build
-        the directory tree (if needed) and the directory
-        leaves/sub-directories.
+        This function is a wrapper around `os.makedirs` and will build
+        the directory tree if necessary.
 
     removefiles(filelist)
 
-        This function ingests a list of filenames. The function then
+        This function ingests a list of filenames; the function then
         checks whether the respective filename exists and if so it
         removes it.
 
     rename(srcfile, dstfile)
 
-        This function will rename a file in accordance with the user
+        This function will rename a file in accordance with the
         specifications; this function may also be used to move and
         rename files between different file paths.
 
     rmdir(path)
 
-        This function will attempt to remove the user specified
-        path. the path does not exist, this function does nothing.
+        This function will attempt to remove the specified path. the
+        path does not exist, this function does nothing.
 
     symlink(srcfile, dstfile)
 
-        This function will create a symbolic link from a user
-        specified source file to a user specified destination file; if
-        the destination file already exists, it will be removed prior
-        to the creation of the symbolic link.
+        This function will create a symbolic link from a specified
+        source file to a specified destination file; if the
+        destination file already exists, it will be removed prior to
+        the creation of the symbolic link.
 
     touch(path)
 
@@ -113,7 +111,7 @@ Functions
         This function opens (i.e., creates) a temporary (e.g.,
         virtual) file beneath /tmp to be utilized by the respective
         calling application; the open virtual file path may be closed
-        in the calling script using os.unlink().
+        in the calling script using `os.unlink()`.
 
 Requirements
 ------------
@@ -139,6 +137,12 @@ History
 # pylint: disable=broad-except
 # pylint: disable=too-many-ancestors
 # pylint: disable=unspecified-encoding
+
+# ----
+
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -177,27 +181,20 @@ logger = Logger()
 
 # ----
 
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
-
-# ----
-
 
 def concatenate(filelist: List, concatfile: str, sepfiles: bool = False) -> None:
     """
     Description
     -----------
 
-    This function concatenates a list of user-specified files
-    (filelist) into a single user-specified file (concatfile); the
-    respective files are opened in binary mode to increase the
-    applicability of the function.
+    This function concatenates a list of ufiles (`filelist`) into a
+    single file (`concatfile`); the respective files are opened in
+    binary mode to increase the applicability of the function.
 
     Parameters
     ----------
 
-    filelist: list
+    filelist: List
 
         A Python list of file paths to compose the concatenated file
         path.
@@ -237,10 +234,10 @@ def copyfile(srcfile: str, dstfile: str) -> None:
     Description
     -----------
 
-    This function will create a local copy of a user specified source
-    file to user specified destination file location; if the
-    destination file already exists, it will be removed prior to the
-    creation of the destination file.
+    This function will create a local copy of a specified source file
+    to user specified destination file location; if the destination
+    file already exists, it will be removed prior to the creation of
+    the destination file.
 
     Parameters
     ----------
@@ -273,8 +270,7 @@ def copyfile(srcfile: str, dstfile: str) -> None:
 
     cmd = ["cp", "-rRfL", srcfile, dstfile]
 
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     proc.communicate()
 
 
@@ -286,8 +282,7 @@ def dircontents(path: str) -> List:
     Description
     -----------
 
-    This function compiles a content list of the user specified
-    directory.
+    This function compiles a content list of the specified directory.
 
     Parameters
     ----------
@@ -300,7 +295,7 @@ def dircontents(path: str) -> List:
     Returns
     -------
 
-    contents: list
+    contents: List
 
         A Python list containing the directory contents.
 
@@ -320,7 +315,7 @@ def dirpath_tree(path: str) -> None:
     Description
     -----------
 
-    This function checks whether the directory tree (i.e., path) exists;
+    This function checks whether the directory tree (`path`) exists;
     if not an attempt will be made to build it.
 
     Parameters
@@ -357,9 +352,9 @@ def fileexist(path: str) -> bool:
     Description
     -----------
 
-    This function ingests a file-path and checks whether the
+    This function will ingest a file-path and check whether the
     respective file-path exists; this function is a wrapper around
-    os.path.isfile.
+    `os.path.isfile`.
 
     Parameters
     ----------
@@ -415,7 +410,7 @@ def filepermission(path: str, permission: int) -> None:
 # ----
 
 
-def filesize(path: str) -> Tuple:
+def filesize(path: str) -> Tuple[int, int, int, int]:
     """
     Description
     -----------
@@ -471,9 +466,8 @@ def makedirs(path: str, force: bool = False) -> None:
     Description
     -----------
 
-    This function is a wrapper around os.makedirs and will build the
-    directory tree (if needed) and the directory
-    leaves/sub-directories.
+    This function is a wrapper around `os.makedirs` and will build the
+    directory tree (if necessary).
 
     Parameters
     ----------
@@ -490,7 +484,7 @@ def makedirs(path: str, force: bool = False) -> None:
 
         A Python boolean variable indicating whether any previous
         directories should be forcibly removed prior to constucting
-        the directory tree; default is False.
+        the directory tree.
 
     """
 
@@ -521,7 +515,7 @@ def removefiles(filelist: List) -> None:
     Parameters
     ----------
 
-    filelist: list
+    filelist: List
 
         A Python list containing a list of files to be removed.
 
@@ -541,7 +535,7 @@ def rename(srcfile: str, dstfile: str) -> None:
     Description
     -----------
 
-    This function will rename a file in accordance with the user
+    This function will rename a file in accordance with the
     specifications; this function may also be used to move and rename
     files between different file paths.
 
@@ -577,8 +571,8 @@ def rmdir(path: str) -> None:
     Description
     -----------
 
-    This function will attempt to remove the user specified path. the
-    path does not exist, this function does nothing.
+    This function will attempt to remove the specified path. the path
+    does not exist, this function does nothing.
 
     Parameters
     ----------
@@ -607,10 +601,10 @@ def symlink(srcfile: str, dstfile: str) -> None:
     Description
     -----------
 
-    This function will create a symbolic link from a user specified
-    source file to a user specified destination file; if the
-    destination file already exists, it will be removed prior to the
-    creation of the symbolic link.
+    This function will create a symbolic link from a specified source
+    file to a specified destination file; if the destination file
+    already exists, it will be removed prior to the creation of the
+    symbolic link.
 
     Parameters
     ----------
@@ -675,7 +669,7 @@ def virtual_file(delete: bool = True) -> object:
     This function opens (i.e., creates) a temporary (e.g., virtual)
     file beneath /tmp to be utilized by the respective calling
     application; the open virtual file path may be closed in the
-    calling script using os.unlink().
+    calling script using `os.unlink()`.
 
     Keywords
     --------
@@ -685,7 +679,7 @@ def virtual_file(delete: bool = True) -> object:
         A Python boolean valued variable specifying whether to
         maintain the respective virtual file path beneath /tmp; if
         False the downstream application should call
-        close_virtual_file (see above) following the respective
+        `close_virtual_file` (see above) following the respective
         application.
 
     Returns
