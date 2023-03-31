@@ -417,6 +417,8 @@ class YAML:
         Returns
         -------
 
+        Union[Dict, object] as follows.
+
         yaml_dict: Dict
 
             A Python dictionary containing all attributes ingested
@@ -522,6 +524,8 @@ class YAML:
         Returns
         -------
 
+        Union[Dict, object] as follows.
+
         yaml_dict: Dict
 
             A Python dictionary containing all attributes ingested
@@ -537,7 +541,8 @@ class YAML:
         """
 
         # Define the YAML library loader type.
-        YAMLLoader.add_implicit_resolver("!ENV", YAMLLoader.envvar_matcher, None)
+        YAMLLoader.add_implicit_resolver(
+            "!ENV", YAMLLoader.envvar_matcher, None)
         YAMLLoader.add_constructor("!ENV", YAMLLoader.envvar_constructor)
         YAMLLoader.add_constructor("!INC", YAMLLoader.include_constructor)
 
