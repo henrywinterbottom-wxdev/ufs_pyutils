@@ -75,12 +75,12 @@ Classes
     Jinja2InterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
-        confs/jinja2_interface module; it is a sub-class of Error.    
+        confs/jinja2_interface module; it is a sub-class of Error.
 
     JSONInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
-        confs/json_interface module; it is a sub-class of Error.     
+        confs/json_interface module; it is a sub-class of Error.
 
     NamelistInterfaceError(msg)
 
@@ -202,7 +202,7 @@ __all__ = [
     "URLInterfaceError",
     "WgetInterfaceError",
     "XMLInterfaceError",
-    "YAMLInterfaceError"
+    "YAMLInterfaceError",
 ]
 
 # ----
@@ -217,6 +217,7 @@ class ArgumentsInterfaceError(Error):
     utils/arguments_interface module; it is a sub-class of Error.
 
     """
+
 
 # ----
 
@@ -245,6 +246,7 @@ class Boto3InterfaceError(Error):
 
     """
 
+
 # ----
 
 
@@ -257,6 +259,7 @@ class ContainerInterfaceError(Error):
     execute/container_interface module; it is a sub-class of Error.
 
     """
+
 
 # ----
 
@@ -271,6 +274,7 @@ class CurlInterfaceError(Error):
 
     """
 
+
 # ----
 
 
@@ -283,6 +287,7 @@ class EnviroInterfaceError(Error):
     confs/enviro_interface module; it is a sub-class of Error.
 
     """
+
 
 # ----
 
@@ -297,6 +302,7 @@ class GRIBInterfaceError(Error):
 
     """
 
+
 # ----
 
 
@@ -309,6 +315,7 @@ class HashLibInterfaceError(Error):
     ioapps/hashlib_interface module; it is a sub-class of Error.
 
     """
+
 
 # ----
 
@@ -323,6 +330,7 @@ class Jinja2InterfaceError(Error):
 
     """
 
+
 # ----
 
 
@@ -335,6 +343,7 @@ class JSONInterfaceError(Error):
     confs/json_interface module; it is a sub-class of Error.
 
     """
+
 
 # ----
 
@@ -349,6 +358,7 @@ class NamelistInterfaceError(Error):
 
     """
 
+
 # ----
 
 
@@ -361,6 +371,7 @@ class NetCDF4InterfaceError(Error):
     ioapps/netcdf4_interface module; it is a sub-class of Error.
 
     """
+
 
 # ----
 
@@ -375,6 +386,7 @@ class NOAAHPSSInterfaceError(Error):
 
     """
 
+
 # ----
 
 
@@ -387,6 +399,7 @@ class ParserInterfaceError(Error):
     tools/parser_interface module; it is a sub-class of Error.
 
     """
+
 
 # ----
 
@@ -401,6 +414,7 @@ class SchemaInterfaceError(Error):
 
     """
 
+
 # ----
 
 
@@ -413,6 +427,7 @@ class SQLite3InterfaceError(Error):
     ioapps/sqlite3_interface module; it is a sub-class of Error.
 
     """
+
 
 # ----
 
@@ -427,6 +442,7 @@ class SubprocessInterfaceError(Error):
 
     """
 
+
 # ----
 
 
@@ -439,6 +455,7 @@ class TarFileInterfaceError(Error):
     ioapps/tarfile_interface module; it is a sub-class of Error.
 
     """
+
 
 # ----
 
@@ -453,6 +470,7 @@ class TCVitalsInterfaceError(Error):
 
     """
 
+
 # ----
 
 
@@ -465,6 +483,7 @@ class TimestampInterfaceError(Error):
     utils/timestamp_interface module; it is a sub-class of Error.
 
     """
+
 
 # ----
 
@@ -479,6 +498,7 @@ class URLInterfaceError(Error):
 
     """
 
+
 # ----
 
 
@@ -492,6 +512,7 @@ class WgetInterfaceError(Error):
 
     """
 
+
 # ----
 
 
@@ -504,6 +525,7 @@ class XMLInterfaceError(Error):
     confs/xml_interface module; it is a sub-class of Error.
 
     """
+
 
 # ----
 

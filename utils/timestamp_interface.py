@@ -35,51 +35,52 @@ Globals
     GENERAL: str
 
         A timestamp format, assuming the POSIX convention, of
-        %Y-%m-%d_%H:%M:%S.
+        `%Y-%m-%d_%H:%M:%S`.
 
     GLOBAL: str
 
         Global timestamp format; this is the format from which all
         others should be defined/determined; format is, assuming the
-        POSIX convention, %Y%m%d%H%M%S.
+        POSIX convention, `%Y%m%d%H%M%S`.
 
     H: str
 
-        A timestamp format, assuming the POSIX convention, of %H.
+        A timestamp format, assuming the POSIX convention, of `%H`.
 
     INFO: str
 
         Information timestamp format; this format is typically used
-        for informational purposes.
+        for informational purposes; format is, assuming the POSIX
+        convention, `%H:%M:%S UTC %d %B %Y`.
 
     Y_m_dTHMSZ: str
 
         A timestamp format, assuming the POSIX convention, of
-        %Y-%m-%dT%H%M%SZ.
+        `%Y-%m-%dT%H%M%SZ`.
 
     Ymd: str
 
-        A timestamp format, assuming the POSIX convention, of %Y%m%d.
+        A timestamp format, assuming the POSIX convention, of `%Y%m%d`.
 
     YmdH: str
 
         A timestamp format, assuming the POSIX convention, of
-        %Y%m%d%H.
+        `%Y%m%d%H`.
 
     YmdTHM: str
 
         A timestamp format, assuming the POSIX convention, of
-        %Y%m%dT%H%M.
+        `%Y%m%dT%H%M`.
 
     YmdTHMS: str
 
         A timestamp format, assuming the POSIX convention, of
-        %Y%m%dT%H%M%S.
+        `%Y%m%dT%H%M%S`.
 
     YmdTHMZ: str
 
         A timestamp format, assuming the POSIX convention, of
-        %Y%m%dT%H%MZ.
+        `%Y%m%dT%H%MZ`.
 
 Functions
 ---------
@@ -107,15 +108,15 @@ History
 
 # ----
 
-from tools import datetime_interface
-
-from utils.exceptions_interface import TimestampInterfaceError
-
-# ----
-
 __author__ = "Henry R. Winterbottom"
 __maintainer__ = "Henry R. Winterbottom"
 __email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
+from tools import datetime_interface
+
+from utils.exceptions_interface import TimestampInterfaceError
 
 # ----
 
@@ -172,7 +173,7 @@ def check_frmt(
 
     TimestampInterfaceError:
 
-        * raised if the provided timestamp string is not of the proper
+        - raised if the provided timestamp string is not of the proper
           format.
 
     """
