@@ -36,9 +36,9 @@ Functions
     _check_awscli_env()
 
         This function checks whether the AWS CLI environment has been
-        loaded; if not, an AWSCLIInterfaceError will be thrown; if so,
-        the path to the AWS CLI executable will be defined and
-        returned.
+        loaded; if not, an AWSCLIInterfaceError will be raised;
+        otherwise, the path to the AWS CLI executable will be defined
+        and returned.
 
     exist_awspath(aws_path, resource='s3', profile=None)
 
@@ -59,8 +59,8 @@ Functions
 
         This function provides an interface to the Amazona Web
         Services (AWS) command line interface (CLI) application to
-        stage local files within specified AWS resource `bucket and object
-        paths.
+        stage local files within specified AWS resource bucket and
+        object paths.
 
 Requirements
 ------------
@@ -91,6 +91,12 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 import subprocess
 from ast import literal_eval
 from typing import List
@@ -110,12 +116,6 @@ logger = Logger()
 
 # ----
 
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
-
-# ----
-
 
 def _check_awscli_env() -> str:
     """
@@ -123,8 +123,8 @@ def _check_awscli_env() -> str:
     -----------
 
     This function checks whether the AWS CLI environment has been
-    loaded; if not, an AWSCLIInterfaceError will be thrown; if so, the
-    path to the AWS CLI executable will be defined and returned.
+    loaded; if not, an AWSCLIInterfaceError will be raised; otherwise,
+    the path to the AWS CLI executable will be defined and returned.
 
     Returns
     -------
@@ -138,7 +138,7 @@ def _check_awscli_env() -> str:
 
     AWSCLIInterfaceError:
 
-        * raised if the AWS CLI executable path cannot be determined.
+        - raised if the AWS CLI executable path cannot be determined.
 
     """
 
@@ -191,11 +191,12 @@ def exist_awspath(aws_path: str, resource: str = "s3", profile: str = None) -> b
     profile: str, optional
 
         A Python string specifying the AWS CLI credentials; if
-        NoneType upon entry the AWS CLI assumes the --no-sign-request
-        attribute; if this value is not NoneType, the credentials
-        corresponding to the respective string must live beneath the
-        ~/.aws/credentials path and contain the appropriate AWS
-        aws_access_key_id and aws_secret_access_key attributes.
+        NoneType upon entry the AWS CLI assumes the
+        `--no-sign-request` attribute; if this value is not NoneType,
+        the credentials corresponding to the respective string must
+        live beneath the ~/.aws/credentials path and contain the
+        appropriate AWS `aws_access_key_id` and
+        `aws_secret_access_key` attributes.
 
     Returns
     -------
@@ -214,13 +215,13 @@ def exist_awspath(aws_path: str, resource: str = "s3", profile: str = None) -> b
     # Determine the permission attributes for the AWS CLI executable.
     if profile is None:
         cmd.append("--no-sign-request")
+
     if profile is not None:
         cmd.append("--profile")
         cmd.append(f"{profile}")
 
     # Query the AWS path; proceed accordingly.
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (contents, _) = proc.communicate()
     proc.wait()
 
@@ -264,16 +265,17 @@ def list_awspath(aws_path: str, resource: str = "s3", profile: str = None) -> Li
     profile: str, optional
 
         A Python string specifying the AWS CLI credentials; if
-        NoneType upon entry the AWS CLI assumes the --no-sign-request
-        attribute; if this value is not NoneType, the credentials
-        corresponding to the respective string must live beneath the
-        ~/.aws/credentials path and contain the appropriate AWS
-        aws_access_key_id and aws_secret_access_key attributes.
+        NoneType upon entry the AWS CLI assumes the
+        `--no-sign-request` attribute; if this value is not NoneType,
+        the credentials corresponding to the respective string must
+        live beneath the ~/.aws/credentials path and contain the
+        appropriate AWS `aws_access_key_id` and
+        `aws_secret_access_key` attributes.
 
     Returns
     -------
 
-    awspath_list: list
+    awspath_list: List
 
         A Python list containing the contents of the specified AWS
         resource bucket and object path.
@@ -283,7 +285,7 @@ def list_awspath(aws_path: str, resource: str = "s3", profile: str = None) -> Li
 
     AWSCLIInterfaceError:
 
-        * raised if an exception is encountered while creating the
+        - raised if an exception is encountered while creating the
           list of files within the specified AWS resource bucket and
           object path.
 
@@ -296,6 +298,7 @@ def list_awspath(aws_path: str, resource: str = "s3", profile: str = None) -> Li
     # Determine the permission attributes for the AWS CLI executable.
     if profile is None:
         cmd.append("--no-sign-request")
+
     if profile is not None:
         cmd.append("--profile")
         cmd.append(f"{profile}")
@@ -305,8 +308,7 @@ def list_awspath(aws_path: str, resource: str = "s3", profile: str = None) -> Li
     try:
 
         # Collect a list of the AWS resource path contents.
-        proc = subprocess.Popen(
-            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (path_list, _) = proc.communicate()
         proc.wait()
 
@@ -376,26 +378,26 @@ def put_awsfile(
     is_dir: bool, optional
 
         A Python boolean valued variable specifying whether the local
-        file path (see path above) is a directory; if True, the
-        --recursive attribute will be invoked for the AWS CLI
+        file path (see path above) is a directory; if `True`, the
+        `--recursive` attribute will be invoked for the AWS CLI
         application.
 
     is_wildcards: bool, optional
 
         A Python boolean valued variable specifying whether strings
         with wild cards are to be included for the AWS CLI
-        application; if True, at least aws_exclude and/or aws_include
-        must not be NoneType.
+        application; if `True`, at least `aws_exclude` and/or
+        `aws_include` must not be NoneType.
 
     aws_exclude: str, optional
 
         A Python string specifying the file strings to be excluded;
-        utilized only if is_wildcards (above) is True.
+        utilized only if `is_wildcards` (above) is `True`.
 
     aws_include: str, optional
 
         A Python string specifying the file strings to be included;
-        utilized only if is_wildcards (above) is True.
+        utilized only if `is_wildcards` (above) is `True`.
 
     resource: str, optional
 
@@ -406,33 +408,34 @@ def put_awsfile(
     profile: str, optional
 
         A Python string specifying the AWS CLI credentials; if
-        NoneType upon entry the AWS CLI assumes the --no-sign-request
-        attribute; if this value is not NoneType, the credentials
-        corresponding to the respective string must live beneath the
-        ~/.aws/credentials path and contain the appropriate AWS
-        aws_access_key_id and aws_secret_access_key attributes.
+        NoneType upon entry the AWS CLI assumes the
+        `--no-sign-request` attribute; if this value is not NoneType,
+        the credentials corresponding to the respective string must
+        live beneath the ~/.aws/credentials path and contain the
+        appropriate AWS `aws_access_key_id` and
+        `aws_secret_access_key` attributes.
 
     errlog: str, optional
 
         A Python string specifying the path to which the AWS CLI
-        application stderr should be written; if NoneType, the stderr
-        is written to subprocess.PIPE.
+        application `stderr` should be written; if NoneType, the
+        `stderr` is written to subprocess.PIPE.
 
     outlog: str, optional
 
         A Python string specifying the path to which the AWS CLI
-        application stdout should be written; if NoneType, the stdout
-        is written to subprocess.PIPE.
+        application `stdout` should be written; if NoneType, the
+        `stdout` is written to subprocess.PIPE.
 
     Raises
     ------
 
     AWSCLIInterfaceError:
 
-        * raised if the parameter values specified upon entry are
+        - raised if the parameter values specified upon entry are
           non-compliant with the wildcards attribute.
 
-        * raised if an exception is countered for the AWS CLI
+        - raised if an exception is countered for the AWS CLI
           application.
 
     """
@@ -477,8 +480,7 @@ def put_awsfile(
                     "entry; wildcards are not supported by the "
                     "parameters provided upon entry; resetting to "
                     "NoneType.".format(
-                        parser_interface.object_getattr(
-                            object_in=aws_obj, key=item),
+                        parser_interface.object_getattr(object_in=aws_obj, key=item),
                     )
                 )
                 logger.warn(msg=msg)
@@ -502,8 +504,7 @@ def put_awsfile(
             strval = parser_interface.dict_key_value(
                 dict_in=aws_kwargs_dict, key=aws_kwarg, no_split=True
             )
-            value = parser_interface.object_getattr(
-                object_in=aws_obj, key=aws_kwarg)
+            value = parser_interface.object_getattr(object_in=aws_obj, key=aws_kwarg)
 
             # Check that the keyword argument value is not NoneType;
             # proceed accordingly.
@@ -521,6 +522,7 @@ def put_awsfile(
     # Determine the permission attributes for the AWS CLI executable.
     if profile is None:
         cmd.append("--no-sign-request")
+
     if profile is not None:
         cmd.append("--profile")
         cmd.append(f"{profile}")
@@ -529,6 +531,7 @@ def put_awsfile(
     # entry; proceed accordingly.
     if errlog is None:
         stderr = subprocess.PIPE
+
     if errlog is not None:
         msg = f"The stderr from the AWS CLI application will be written to {errlog}."
         logger.warn(msg=msg)
@@ -536,6 +539,7 @@ def put_awsfile(
 
     if outlog is None:
         stdout = subprocess.PIPE
+
     if outlog is not None:
         msg = f"The stdout from the AWS CLI application will be written to {outlog}."
         logger.warn(msg=msg)
