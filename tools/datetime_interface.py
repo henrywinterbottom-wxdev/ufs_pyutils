@@ -417,7 +417,7 @@ def datestrcomps(datestr: str, frmttyp: str) -> object:
         "second": "%S",
         "month_name_long": "%B",
         "month_name_short": "%b",
-        "century_short": "%G",
+        "century_short": "%C",
         "year_short": "%y",
         "century": "%G",
         "weekday_long": "%A",
@@ -429,9 +429,6 @@ def datestrcomps(datestr: str, frmttyp: str) -> object:
 
     for (key, item) in date_comps_dict.items():
         value = datetime.datetime.strftime(dateobj, item)
-        if key.lower() == "century_short":
-            century_list = [int(d) for d in str(value)]
-            value = f"{century_list[0]}{century_list[1]}"
         date_comps_obj = parser_interface.object_setattr(
             object_in=date_comps_obj, key=key, value=value
         )
