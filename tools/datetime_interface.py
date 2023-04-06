@@ -76,8 +76,6 @@ Functions
 
         abbreviated day name (weekday_short)
 
-        century (century)
-
         2-digit century (e.g., 2015 is 20; century_short)
 
         2-digit year (e.g., year without the century value;
@@ -356,8 +354,6 @@ def datestrcomps(datestr: str, frmttyp: str) -> object:
 
     abbreviated day name (weekday_short)
 
-    century (century)
-
     2-digit century (e.g., 2015 is 20; century_short)
 
     2-digit year (e.g., year without the century value; year_short)
@@ -417,9 +413,8 @@ def datestrcomps(datestr: str, frmttyp: str) -> object:
         "second": "%S",
         "month_name_long": "%B",
         "month_name_short": "%b",
-        "century_short": "%G",
+        "century_short": "%C",
         "year_short": "%y",
-        "century": "%G",
         "weekday_long": "%A",
         "weekday_short": "%a",
         "date_string": timestamp_interface.GENERAL,
@@ -429,9 +424,6 @@ def datestrcomps(datestr: str, frmttyp: str) -> object:
 
     for (key, item) in date_comps_dict.items():
         value = datetime.datetime.strftime(dateobj, item)
-        if key.lower() == "century_short":
-            century_list = [int(d) for d in str(value)]
-            value = f"{century_list[0]}{century_list[1]}"
         date_comps_obj = parser_interface.object_setattr(
             object_in=date_comps_obj, key=key, value=value
         )
@@ -613,7 +605,8 @@ def datestrupdate(
 
     for item in comps_list:
         if f"<{item}>" in outdatestr:
-            time_attr = parser_interface.object_getattr(date_comps_obj, key=item)
+            time_attr = parser_interface.object_getattr(
+                date_comps_obj, key=item)
             outdatestr = outdatestr.replace(f"<{item}>", time_attr)
 
     return outdatestr
@@ -715,6 +708,7 @@ def epoch_to_datestr(epoch_seconds: int, out_frmttyp: str = None) -> str:
     # Define the epoch time (seconds) date-string.
     datestr = out_frmttyp or timestamp_interface.GLOBAL
 
-    epoch_datestr = datetime.datetime.fromtimestamp(epoch_seconds).strftime(datestr)
+    epoch_datestr = datetime.datetime.fromtimestamp(
+        epoch_seconds).strftime(datestr)
 
     return epoch_datestr
