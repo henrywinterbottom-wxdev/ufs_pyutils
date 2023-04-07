@@ -64,6 +64,8 @@ import logging
 import sys
 from importlib import reload
 
+from utils.decorator_interface import private
+
 # ----
 
 
@@ -102,7 +104,8 @@ class Logger:
             "RESET": "\x1b[0m",
         }
 
-    def __level__(self: object, level: str) -> object:
+    @private
+    def level(self: object, loglev: str) -> object:
         """
         Description
         -----------
@@ -112,7 +115,7 @@ class Logger:
         Parameters
         ----------
 
-        level: str
+        loglev: str
 
             A Python string defining the logger level; case
             insensitive.
@@ -128,18 +131,19 @@ class Logger:
 
         # Check that the logger level type is supported.
         if level.upper() not in self.colors_dict:
-            msg = f"Logger level {level.upper()} not supported. Aborting!!!"
+            msg = f"Logger level {loglev.upper()} not supported. Aborting!!!"
             self.stream.write(
                 (self.colors_dict["ERROR"] + msg + self.colors_dict["RESET"])
             )
             raise KeyError
 
         # Define the logging level object.
-        level_obj = getattr(logging, f"{level.upper()}")
+        level_obj = getattr(logging, f"{loglev.upper()}")
 
         return level_obj
 
-    def __format__(self: object, level: str) -> object:
+    @private
+    def format(self: object, loglev: str) -> object:
         """
         Description
         -----------
@@ -150,7 +154,7 @@ class Logger:
         Parameters
         ----------
 
-        level: str
+        loglev: str
 
             A Python string defining the logger level; case
             insensitive.
@@ -165,14 +169,15 @@ class Logger:
         """
 
         format_str = (
-            self.colors_dict[level.upper()]
+            self.colors_dict[loglev.upper()]
             + self.log_format
             + self.colors_dict["RESET"]
         )
 
         return format_str
 
-    def __reset__(self: object) -> None:
+    @private
+    def reset(self: object) -> None:
         """
         Description
         -----------
@@ -189,7 +194,8 @@ class Logger:
         logging.shutdown()
         reload(logging)
 
-    def __write__(self: object, level: str, msg: str = None) -> None:
+    @private
+    def write(self: object, loglev: str, msg: str = None) -> None:
         """
         Description
         -----------
@@ -202,7 +208,7 @@ class Logger:
         Parameters
         ----------
 
-        level: str
+        loglev: str
 
             A Python string defining the logger level; case
             insensitive.
@@ -215,12 +221,12 @@ class Logger:
         """
 
         # Reset the Python logging library.
-        self.__reset__()
+        self.reset()
 
         # Define the attributes of and the logger object.
         log = logging
-        level_obj = self.__level__(level=level)
-        format_str = self.__format__(level=level)
+        level_obj = self.level(loglev=loglev)
+        format_str = self.format(loglev=loglev)
 
         log.basicConfig(
             stream=self.stream,
@@ -230,24 +236,24 @@ class Logger:
         )
 
         # Write the respective logger level message.
-        getattr(log, f"{level}")(msg)
+        getattr(log, f"{loglev}")(msg)
 
     # The base-class logger CRITICAL level interface.
     def critical(self: object, msg: str) -> None:
-        self.__write__(level="critical", msg=msg)
+        self.write(loglev="critical", msg=msg)
 
     # The base-class logger DEBUG level interface.
     def debug(self: object, msg: str) -> None:
-        self.__write__(level="debug", msg=msg)
+        self.write(loglev="debug", msg=msg)
 
     # The base-class logger ERROR level interface.
     def error(self: object, msg: str) -> None:
-        self.__write__(level="error", msg=msg)
+        self.write(loglev="error", msg=msg)
 
     # The base-class logger INFO level interface.
     def info(self: object, msg: str) -> None:
-        self.__write__(level="info", msg=msg)
+        self.write(loglev="info", msg=msg)
 
     # The base-class logger WARNING level interface.
     def warn(self: object, msg: str) -> None:
-        self.__write__(level="warning", msg=msg)
+        self.write(loglev="warning", msg=msg)
