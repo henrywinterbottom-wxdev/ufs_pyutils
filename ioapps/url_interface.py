@@ -117,7 +117,7 @@ def get_contents(url: str) -> List:
     # except Exception:
     #    pass
 
-    # return data
+    return data
 
 
 # ----
