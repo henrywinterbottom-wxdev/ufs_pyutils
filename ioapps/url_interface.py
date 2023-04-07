@@ -104,10 +104,7 @@ def get_contents(url: List) -> Union[bytes, None]:
     """
 
     """
-
-    # downloader = DDownloader(verbose=False)
-
-    data = None
+    # data = None
 
     try:
         r = requests.get(url, stream=True)
