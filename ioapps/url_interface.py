@@ -74,6 +74,7 @@ __email__ = "henry.winterbottom@noaa.gov"
 # ----
 
 import os
+import requests
 import urllib.request
 from typing import List
 
@@ -194,7 +195,7 @@ def get_webtree(url: str) -> List:
 
     """
 
-    requests = urllib.request.get(url)
+    requests = requests.get(url)
     data = bs4.BeautifulSoupt(requests.text, "html.parser")
     print(data)
 
