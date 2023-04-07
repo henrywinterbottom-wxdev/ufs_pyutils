@@ -98,7 +98,8 @@ logger = Logger()
 # ----
 
 
-async def get_contents(urllist: List) -> List:
+# async def get_contents(urllist: List) -> List:
+def get_contents(urllist: List) -> List:
     """
 
     """
@@ -109,8 +110,8 @@ async def get_contents(urllist: List) -> List:
         try:
             print(url)
 
-            await downloader.crawl(url)
-            await downloader.download_files()
+            # await downloader.crawl(url)
+            # await downloader.download_files()
 
         except Exception:
             pass
