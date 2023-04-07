@@ -189,26 +189,6 @@ def get_weblist(url: str, ext: str = None, include_dirname: bool = False) -> Lis
 # ----
 
 
-def get_webtree(url: str) -> List:
-    """
-
-
-    """
-
-    webinfo = requests.get(url)
-    webdata = BeautifulSoup(webinfo.text, "html.parser")
-    for item in webdata.find_all("a"):
-        request = requests.get(url + item["href"])
-        for k, v in vars(request).items():
-
-            print(k, v)
-
-        quit()
-
-
-# ----
-
-
 def read_webfile(
     url: str,
     ignore_missing: bool = False,
