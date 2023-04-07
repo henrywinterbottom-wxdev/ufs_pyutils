@@ -85,7 +85,7 @@ from utils.logger_interface import Logger
 # ----
 
 # Define all available functions.
-__all__ = ["get_weblist", "read_webfile"]
+__all__ = ["get_contents", "get_weblist", "read_webfile"]
 
 # ----
 
@@ -93,6 +93,21 @@ logger = Logger()
 
 # ----
 
+
+def get_contents(url: str) -> List:
+    """
+
+    """
+
+    req = urllib.request.Request(url)
+
+    with urllib.request.urlopen(req) as resp:
+        data = resp.read()
+
+    return data
+
+
+# ----
 
 def get_weblist(url: str, ext: str = None, include_dirname: bool = False) -> List:
     """
