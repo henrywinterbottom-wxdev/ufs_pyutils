@@ -73,7 +73,7 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
-import asyncio
+# import asyncio
 
 import os
 import requests
@@ -99,27 +99,31 @@ logger = Logger()
 
 
 # async def get_contents(urllist: List) -> List:
-def get_contents(urllist: List) -> List:
+def get_contents(urllist: List):  # , url_filter: str) -> List:
     """
 
     """
 
-    downloader = DDownloader(verbose=False)
+    # downloader = DDownloader(verbose=False)
 
     for url in urllist:
-        try:
-            print(url)
-            req = urllib.request.Request(url)
-            with urllib.request.urlopen(req) as resp:
-                data = resp.read()
 
-            print(data)
+        r = requests.get(url, stream=True)
+        print(r.headers)
 
-            # await downloader.crawl(url)
-            # await downloader.download_files()
+        # if url_filter in url:
+        #    print(url)
+        #    req = urllib.request.Request(url)
+        #    with urllib.request.urlopen(req) as resp:
+        #        data = resp.read()#
 
-        except Exception:
-            pass
+        # print(data)
+
+        # await downloader.crawl(url)
+        # await downloader.download_files()
+
+        # except Exception:
+        #    pass
 
     # try:
     #    req = urllib.request.Request(url)
