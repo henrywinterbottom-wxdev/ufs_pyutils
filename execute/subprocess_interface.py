@@ -37,7 +37,7 @@ Functions
         This function defines the launcher and task attributes for the
         job type specified upon entry.
 
-    _launch(cmd, infile, errlog, outlog)
+    __launch__(cmd, infile, errlog, outlog)
 
         This function launches the command string arguments (`cmd`)
         and writes the output and error to the `outlog` and `errlog`
@@ -205,7 +205,7 @@ def __job_info__(job_type: str, app: str = None) -> Tuple[str, str]:
 # ----
 
 
-def _launch(cmd: List, infile: str, errlog: str, outlog: str) -> int:
+def __launch__(cmd: List, infile: str, errlog: str, outlog: str) -> int:
     """
     Description
     -----------
@@ -311,7 +311,8 @@ def _launch(cmd: List, infile: str, errlog: str, outlog: str) -> int:
             # Build the command line arguments assuming that no
             # wildcard values are included.
             if not has_wildcards:
-                proc = subprocess.Popen(cmd, stdin=stdin, stdout=stdout, stderr=stderr)
+                proc = subprocess.Popen(
+                    cmd, stdin=stdin, stdout=stdout, stderr=stderr)
 
         # Launch the executable and proceed accordingly.
         proc.wait()
@@ -499,6 +500,6 @@ def run(
     cmd = list(item for item in cmd if item is not None)
 
     # Launch the respective application.
-    returncode = _launch(cmd=cmd, infile=infile, errlog=errlog, outlog=outlog)
+    returncode = __launch__(cmd=cmd, infile=infile, errlog=errlog, outlog=outlog)
 
     return returncode

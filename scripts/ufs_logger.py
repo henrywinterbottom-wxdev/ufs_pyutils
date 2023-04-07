@@ -124,7 +124,7 @@ class UFSLogger:
 
     """
 
-    def __init__(self: object, options_obj: object):
+    def __init__(self: dataclass, options_obj: object):
         """
         Description
         -----------
@@ -147,7 +147,7 @@ class UFSLogger:
             "warn": logger.warn,
         }
 
-    def run(self: object) -> None:
+    def run(self: dataclass) -> None:
         """
         Description
         -----------
