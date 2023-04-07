@@ -106,8 +106,12 @@ async def get_contents(urllist: List) -> List:
     downloader = DDownloader()
 
     for url in urllist:
-        await downloader.crawl(url)
-        await downloader.download_files()
+        try:
+            await downloader.crawl(url)
+            await downloader.download_files()
+
+        except Exception:
+            pass
 
     # try:
     #    req = urllib.request.Request(url)
