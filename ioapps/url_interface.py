@@ -108,8 +108,12 @@ def get_contents(urllist: List):  # , url_filter: str) -> List:
 
     for url in urllist:
 
-        r = requests.get(url, stream=True)
-        print(r.headers)
+        try:
+            r = requests.get(url, stream=True)
+            print(r.headers)
+
+        except Exception:
+            pass
 
         # if url_filter in url:
         #    print(url)
