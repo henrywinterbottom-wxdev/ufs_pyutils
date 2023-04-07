@@ -103,15 +103,13 @@ async def get_contents(urllist: List) -> List:
 
     """
 
-    downloader = DDownloader()
+    downloader = DDownloader(verbose=False)
 
     for url in urllist:
         try:
             print(url)
 
-            crawl_obj = await downloader.crawl(url)
-            print(dir(crawl_obj))
-            quit()
+            await downloader.crawl(url)
             await downloader.download_files()
 
         except Exception:
