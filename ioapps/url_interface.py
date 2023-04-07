@@ -109,7 +109,8 @@ async def get_contents(urllist: List) -> List:
         try:
             print(url)
 
-            await downloader.crawl(url)
+            print(dir(await downloader.crawl(url)))
+            quit()
             await downloader.download_files()
 
         except Exception:
