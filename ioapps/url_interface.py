@@ -199,7 +199,7 @@ def get_webtree(url: str) -> List:
     webdata = BeautifulSoup(webinfo.text, "html.parser")
     for item in webdata.find_all("a"):
         request = requests.get(url + item["href"])
-        print((request.url))
+        print((request.raw))
 
 
 # ----
