@@ -64,7 +64,7 @@ import logging
 import sys
 from importlib import reload
 
-from utils.decorator_interface import private
+from utils.decorator_interface import privatemethod
 
 # ----
 
@@ -104,7 +104,7 @@ class Logger:
             "RESET": "\x1b[0m",
         }
 
-    @private
+    @privatemethod
     def level(self: object, loglev: str) -> object:
         """
         Description
@@ -142,7 +142,7 @@ class Logger:
 
         return level_obj
 
-    @private
+    @privatemethod
     def format(self: object, loglev: str) -> object:
         """
         Description
@@ -176,7 +176,7 @@ class Logger:
 
         return format_str
 
-    @private
+    @privatemethod
     def reset(self: object) -> None:
         """
         Description
@@ -194,7 +194,7 @@ class Logger:
         logging.shutdown()
         reload(logging)
 
-    @private
+    @privatemethod
     def write(self: object, loglev: str, msg: str = None) -> None:
         """
         Description

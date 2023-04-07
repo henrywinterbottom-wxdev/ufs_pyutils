@@ -79,6 +79,7 @@ from typing import Any, Dict, List, Union
 import yaml
 from tools import fileio_interface, parser_interface
 from utils.exceptions_interface import YAMLInterfaceError
+from utils.decorator_interface import privatemethod
 from utils.logger_interface import Logger
 from yaml import SafeLoader
 
@@ -109,7 +110,8 @@ class YAML:
         # Define the base-class attributes.
         self.logger = Logger()
 
-    def __yaml_obj__(self: object, attr_dict: Dict) -> object:
+    @privatemethod
+    def yaml_obj(self: object, attr_dict: Dict) -> object:
         """
         Description
         -----------
@@ -482,7 +484,7 @@ class YAML:
         # accordingly.
         if return_obj:
 
-            yaml_return = self.__yaml_obj__(attr_dict=yaml_dict_concat)
+            yaml_return = self.yaml_obj(attr_dict=yaml_dict_concat)
 
         if not return_obj:
 
