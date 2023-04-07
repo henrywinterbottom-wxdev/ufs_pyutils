@@ -148,7 +148,7 @@ def private_method(member: object) -> Callable:
 
     # Define the decorator function.
     @functools.wraps(member)
-    def decorator(*args):
+    def decorator(*func_args):
 
         # Define the names for the respective class and calling
         # functions.
@@ -157,10 +157,10 @@ def private_method(member: object) -> Callable:
 
         # Check that the method is not being called from outside the
         # base-class; proceed accordingly.
-        if (not caller in dir(args[0])) and (not caller in name):
+        if (not caller in dir(func_args[0])) and (not caller in name):
             msg = f"{name} called by {caller} is a private method. Aborting!!!"
             raise Exception(msg)
 
-        return member(*args)
+        return member(*func_args)
 
     return decorator
