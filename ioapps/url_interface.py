@@ -196,8 +196,10 @@ def get_webtree(url: str) -> List:
     """
 
     webinfo = requests.get(url)
-    data = BeautifulSoup(webinfo.text, "html.parser")
-    print(data)
+    webdata = BeautifulSoup(webinfo.text, "html.parser")
+    for item in webdata.find_all("a"):
+        request = requests.get(url + item["href"])
+        print(request.status_code)
 
 
 # ----
