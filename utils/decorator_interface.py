@@ -73,7 +73,7 @@ from collections.abc import Callable
 
 # ----
 
-__all__ = ["msg_except_handle", "private"]
+__all__ = ["msg_except_handle", "privatemethod"]
 
 # ----
 
@@ -121,7 +121,7 @@ def msg_except_handle(err_cls: object) -> Callable:
 # ----
 
 
-def private(member: object) -> Callable:
+def privatemethod(member: object) -> Callable:
     """
     Description
     -----------
