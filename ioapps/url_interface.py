@@ -99,48 +99,48 @@ logger = Logger()
 
 
 # async def get_contents(urllist: List) -> List:
-def get_contents(urllist: List):  # , url_filter: str) -> List:
+def get_contents(url: List):  # , url_filter: str) -> List:
     """
 
     """
 
     # downloader = DDownloader(verbose=False)
 
-    for url in urllist:
+    data = None
 
-        try:
-            r = requests.get(url, stream=True)
-            if 'Content-Length' in r.headers:
+    try:
+        r = requests.get(url, stream=True)
+        if 'Content-Length' in r.headers:
 
-                req = urllib.request.Request(url)
-                with urllib.request.urlopen(req) as resp:
-                    data = resp.read()
+            req = urllib.request.Request(url)
+            with urllib.request.urlopen(req) as resp:
+                data = resp.read()
 
-                print(data)
+    except Exception:
+        pass
 
-        except Exception:
-            pass
+    return data
 
-        # if url_filter in url:
-        #    print(url)
-        #    req = urllib.request.Request(url)
-        #    with urllib.request.urlopen(req) as resp:
-        #        data = resp.read()#
+    # if url_filter in url:
+    #    print(url)
+    #    req = urllib.request.Request(url)
+    #    with urllib.request.urlopen(req) as resp:
+    #        data = resp.read()#
 
-        # print(data)
+    # print(data)
 
-        # await downloader.crawl(url)
-        # await downloader.download_files()
+    # await downloader.crawl(url)
+    # await downloader.download_files()
 
-        # except Exception:
-        #    pass
+    # except Exception:
+    #    pass
 
     # try:
     #    req = urllib.request.Request(url)
     #    with urllib.request.urlopen(req) as resp:
     #        data = resp.read()
 
-        # print(data)
+    # print(data)
 
     # except ValueError:
     #    pass
