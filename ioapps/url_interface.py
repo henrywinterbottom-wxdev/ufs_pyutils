@@ -73,6 +73,8 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
+import asyncio
+
 import os
 import requests
 import urllib.request
@@ -96,14 +98,14 @@ logger = Logger()
 # ----
 
 
-def get_contents(url: str) -> List:
+async def get_contents(url: str) -> List:
     """
 
     """
 
     downloader = DDownloader()
 
-    downloader.crawl(url)
+    await downloader.crawl(url)
 
     try:
         req = urllib.request.Request(url)
