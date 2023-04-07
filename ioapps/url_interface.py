@@ -99,7 +99,8 @@ logger = Logger()
 
 
 # async def get_contents(urllist: List) -> List:
-def get_contents(url: List):  # , url_filter: str) -> List:
+# , url_filter: str) -> List:
+def get_contents(url: List) -> Union[bytes, None]:
     """
 
     """
