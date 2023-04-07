@@ -116,6 +116,8 @@ def get_contents(urllist: List):  # , url_filter: str) -> List:
                 with urllib.request.urlopen(req) as resp:
                     data = resp.read()
 
+                print(data)
+
         except Exception:
             pass
 
