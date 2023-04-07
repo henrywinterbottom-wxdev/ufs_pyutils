@@ -37,7 +37,7 @@ Functions
         This function provides a decorator to be used to raise
         specified exceptions
 
-    private_method(member):
+    private(member):
 
         This function provides a decorator to be used to desinated
         `private` methods within classes.
@@ -73,7 +73,7 @@ from collections.abc import Callable
 
 # ----
 
-__all__ = ["msg_except_handle", "private_method"]
+__all__ = ["msg_except_handle", "private"]
 
 # ----
 
@@ -121,7 +121,7 @@ def msg_except_handle(err_cls: object) -> Callable:
 # ----
 
 
-def private_method(member: object) -> Callable:
+def private(member: object) -> Callable:
     """
     Description
     -----------
@@ -140,7 +140,7 @@ def private_method(member: object) -> Callable:
     Returns
     -------
 
-    decorator: Callable
+    wrapper: Callable
 
         A Python decorator.
 
@@ -148,7 +148,7 @@ def private_method(member: object) -> Callable:
 
     # Define the decorator function.
     @functools.wraps(member)
-    def decorator(*func_args):
+    def wrapper(*func_args):
 
         # Define the names for the respective class and calling
         # functions.
@@ -163,4 +163,4 @@ def private_method(member: object) -> Callable:
 
         return member(*func_args)
 
-    return decorator
+    return wrapper
