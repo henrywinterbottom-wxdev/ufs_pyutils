@@ -98,24 +98,26 @@ logger = Logger()
 # ----
 
 
-async def get_contents(url: str) -> List:
+async def get_contents(urllist: List) -> List:
     """
 
     """
 
     downloader = DDownloader()
 
-    await downloader.crawl(url)
+    for url in urllist:
+        await downloader.crawl(url)
+        await downloader.download_files()
 
-    try:
-        req = urllib.request.Request(url)
-        with urllib.request.urlopen(req) as resp:
-            data = resp.read()
+    # try:
+    #    req = urllib.request.Request(url)
+    #    with urllib.request.urlopen(req) as resp:
+    #        data = resp.read()
 
-            # print(data)
+        # print(data)
 
-    except ValueError:
-        pass
+    # except ValueError:
+    #    pass
 
     # try:
     #    with urllib.request.urlopen(req) as resp:
