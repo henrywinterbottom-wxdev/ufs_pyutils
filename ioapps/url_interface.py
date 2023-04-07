@@ -99,9 +99,12 @@ def get_contents(url: str) -> List:
 
     """
 
-    req = urllib.request.Request(url)
+    try:
+        print(url)
+        req = urllib.request.Request(url)
 
-    print(url)
+    except ValueError:
+        pass
 
     # try:
     #    with urllib.request.urlopen(req) as resp:
@@ -111,7 +114,7 @@ def get_contents(url: str) -> List:
     # except Exception:
     #    pass
 
-    #return data
+    # return data
 
 
 # ----
