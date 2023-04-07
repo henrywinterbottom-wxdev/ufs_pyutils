@@ -110,7 +110,8 @@ def get_contents(urllist: List):  # , url_filter: str) -> List:
 
         try:
             r = requests.get(url, stream=True)
-            print(r.headers)
+            if 'Content-Length' in r.headers:
+                print(url)
 
         except Exception:
             pass
