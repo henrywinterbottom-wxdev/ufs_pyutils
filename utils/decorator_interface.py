@@ -157,7 +157,7 @@ def privatemethod(member: object) -> Callable:
 
         # Check that the method is not being called from outside the
         # base-class; proceed accordingly.
-        if (not caller in dir(args[0])) and (not caller in name):
+        if (caller not in dir(args[0])) and (caller not in name):
             msg = f"{name} called by {caller} is a private method. Aborting!!!"
             raise Exception(msg)
 
