@@ -82,6 +82,8 @@ from bs4 import BeautifulSoup
 from utils.exceptions_interface import URLInterfaceError
 from utils.logger_interface import Logger
 
+from directory_downloader import DDownloader
+
 # ----
 
 # Define all available functions.
@@ -98,6 +100,10 @@ def get_contents(url: str) -> List:
     """
 
     """
+
+    downloader = DDownloader()
+
+    downloader.crawl(url)
 
     try:
         req = urllib.request.Request(url)
