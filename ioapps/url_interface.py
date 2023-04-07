@@ -109,7 +109,8 @@ async def get_contents(urllist: List) -> List:
         try:
             print(url)
 
-            print(dir(await downloader.crawl(url)))
+            crawl_obj = await downloader.crawl(url)
+            print(dir(crawl_obj))
             quit()
             await downloader.download_files()
 
