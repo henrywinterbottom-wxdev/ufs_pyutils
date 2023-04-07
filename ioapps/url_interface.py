@@ -101,6 +101,9 @@ def get_contents(url: str) -> List:
 
     req = urllib.request.Request(url)
 
+    print(url)
+    quit()
+
     with urllib.request.urlopen(req) as resp:
         data = resp.read()
 
