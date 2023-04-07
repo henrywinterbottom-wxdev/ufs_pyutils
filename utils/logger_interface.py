@@ -130,7 +130,7 @@ class Logger:
         """
 
         # Check that the logger level type is supported.
-        if level.upper() not in self.colors_dict:
+        if loglev.upper() not in self.colors_dict:
             msg = f"Logger level {loglev.upper()} not supported. Aborting!!!"
             self.stream.write(
                 (self.colors_dict["ERROR"] + msg + self.colors_dict["RESET"])
