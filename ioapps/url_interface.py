@@ -196,7 +196,7 @@ def get_webtree(url: str) -> List:
     """
 
     webinfo = requests.get(url)
-    data = bs4.BeautifulSoupt(webinfo.text, "html.parser")
+    data = BeautifulSoup(webinfo.text, "html.parser")
     print(data)
 
 
