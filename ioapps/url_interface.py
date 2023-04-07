@@ -111,7 +111,10 @@ def get_contents(urllist: List):  # , url_filter: str) -> List:
         try:
             r = requests.get(url, stream=True)
             if 'Content-Length' in r.headers:
-                print(url)
+
+                req = urllib.request.Request(url)
+                with urllib.request.urlopen(req) as resp:
+                    data = resp.read()
 
         except Exception:
             pass
