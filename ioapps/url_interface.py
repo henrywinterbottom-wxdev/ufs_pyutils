@@ -107,6 +107,8 @@ async def get_contents(urllist: List) -> List:
 
     for url in urllist:
         try:
+            print(url)
+
             await downloader.crawl(url)
             await downloader.download_files()
 
