@@ -103,15 +103,15 @@ def get_contents(url: str) -> List:
 
     print(url)
 
-    try:
-        with urllib.request.urlopen(req) as resp:
-            data = resp.read()
+    # try:
+    #    with urllib.request.urlopen(req) as resp:
+    #        data = resp.read()#
 
-        # print(data)
-    except Exception:
-        pass
+    # print(data)
+    # except Exception:
+    #    pass
 
-    return data
+    #return data
 
 
 # ----
