@@ -74,7 +74,7 @@ __email__ = "henry.winterbottom@noaa.gov"
 # ----
 
 import os
-import urllib
+import urllib.request
 from typing import List
 
 from bs4 import BeautifulSoup
