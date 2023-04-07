@@ -185,6 +185,19 @@ def get_weblist(url: str, ext: str = None, include_dirname: bool = False) -> Lis
 
     return weblist
 
+# ----
+
+
+def get_webtree(url: str) -> List:
+    """
+
+
+    """
+
+    requests = urllib.requests.get(url)
+    data = bs4.BeautifulSoupt(requests.text, "html.parser")
+    print(data)
+    
 
 # ----
 
