@@ -109,6 +109,11 @@ def get_contents(urllist: List) -> List:
     for url in urllist:
         try:
             print(url)
+            req = urllib.request.Request(url)
+            with urllib.request.urlopen(req) as resp:
+                data = resp.read()
+
+            print(data)
 
             # await downloader.crawl(url)
             # await downloader.download_files()
