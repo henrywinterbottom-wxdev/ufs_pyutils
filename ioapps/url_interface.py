@@ -103,6 +103,9 @@ def get_contents(url: str) -> List:
         print(url)
         req = urllib.request.Request(url)
 
+        with urllib.request.urlopen(req) as resp:
+            data = resp.read()
+
     except ValueError:
         pass
 
