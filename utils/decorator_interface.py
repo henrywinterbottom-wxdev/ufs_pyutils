@@ -140,7 +140,7 @@ def private(member: object) -> Callable:
     Returns
     -------
 
-    wrapper: Callable
+    decorator: Callable
 
         A Python decorator.
 
@@ -148,7 +148,7 @@ def private(member: object) -> Callable:
 
     # Define the decorator function.
     @functools.wraps(member)
-    def wrapper(*args, **kwargs):
+    def decorator(*args, **kwargs):
 
         # Define the names for the respective class and calling
         # functions.
@@ -163,4 +163,4 @@ def private(member: object) -> Callable:
 
         return member(*args, **kwargs)
 
-    return wrapper
+    return decorator
