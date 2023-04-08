@@ -105,12 +105,14 @@ def get_contents(url: List) -> Union[bytes, None]:
 
     """
 
-    msg = f"Attempting to read URL path {url}."
-    logger.info(msg=msg)
+#    msg = f"Attempting to read URL path {url}."
+#    logger.info(msg=msg)
 
     try:
         r = requests.get(url, stream=True)
         if 'Content-Length' in r.headers:
+            msg = f"Collecting contents from URL {url}."
+            logger.info(msg=msg)
 
             req = urllib.request.Request(url)
             with urllib.request.urlopen(req) as resp:
