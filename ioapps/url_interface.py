@@ -100,7 +100,7 @@ logger = Logger()
 # ----
 
 
-def get_contents(url: List, fail_nonread: bool = False) -> Union[bytes, None]:
+def get_contents(url: List, fail_nonread: bool = False) -> Union[List, None]:
     """
 
     """
@@ -113,7 +113,7 @@ def get_contents(url: List, fail_nonread: bool = False) -> Union[bytes, None]:
 
             req = urllib.request.Request(url)
             with urllib.request.urlopen(req) as resp:
-                data = resp.read()
+                data = resp.read().decode("utf-8")
 
         else:
 
