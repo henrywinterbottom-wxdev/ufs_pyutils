@@ -80,6 +80,8 @@ import requests
 import urllib.request
 from typing import List, Union
 
+from requests.exceptions import MissingSchema
+
 from bs4 import BeautifulSoup
 from utils.exceptions_interface import URLInterfaceError
 from utils.logger_interface import Logger
@@ -105,16 +107,19 @@ def get_contents(url: List) -> Union[bytes, None]:
 
     """
 
-    data = None
+#    data = None
 
-#    try:
+    try:
 
-    r = requests.get(url, stream=True)
-    if 'Content-Length' in r.headers:
+        r = requests.get(url, stream=True)
+        if 'Content-Length' in r.headers:
 
-        req = urllib.request.Request(url)
-        with urllib.request.urlopen(req) as resp:
-            data = resp.read()
+            req = urllib.request.Request(url)
+            with urllib.request.urlopen(req) as resp:
+                data = resp.read()
+
+    except MissingSchema:
+        data = None
 
     # except Exception:
     #    data = None
