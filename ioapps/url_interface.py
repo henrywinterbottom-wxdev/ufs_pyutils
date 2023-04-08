@@ -118,7 +118,7 @@ def get_contents(url: List) -> Union[bytes, None]:
                 data = resp.read()
 
         else:
-            pass
+            data = None
 
     except MissingSchema:
         data = None
