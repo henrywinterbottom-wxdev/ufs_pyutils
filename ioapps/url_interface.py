@@ -105,11 +105,10 @@ def get_contents(url: List) -> Union[bytes, None]:
 
     """
 
-    data
+    data = bytes()
 
     try:
 
-        global data
         r = requests.get(url, stream=True)
         if 'Content-Length' in r.headers:
 
