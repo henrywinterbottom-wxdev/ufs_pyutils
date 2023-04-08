@@ -100,13 +100,10 @@ logger = Logger()
 # ----
 
 
-def get_contents(url: List) -> Union[bytes, None]:
+def get_contents(url: List, fail_nonread: bool = False) -> Union[bytes, None]:
     """
 
     """
-
-#    msg = f"Attempting to read URL path {url}."
-#    logger.info(msg=msg)
 
     try:
         r = requests.get(url, stream=True)
@@ -119,10 +116,15 @@ def get_contents(url: List) -> Union[bytes, None]:
                 data = resp.read()
 
         else:
-            msg = f"The URL path {url} is a non-readable path; returning NoneType."
-            logger.warn(msg=msg)
 
-            data = None
+            if fail_nonread:
+                msg = f"The URL path {url} is a non-readable path. Aborting!!!"
+                raise URLInterfaceError(msg=msg)
+
+            if not fail_nonread:
+                msg = f"The URL path {url} is a non-readable path; returning NoneType."
+                logger.warn(msg=msg)
+                data = None
 
     except MissingSchema:
         msg = (f"The schema for URL path {url} could not be determined; returning "
