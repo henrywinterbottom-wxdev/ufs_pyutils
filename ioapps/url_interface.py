@@ -105,7 +105,7 @@ def get_contents(url: List) -> Union[bytes, None]:
 
     """
 
-    data = bytes()
+    data = None
 
 #    try:
 
