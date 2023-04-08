@@ -78,9 +78,6 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
-# import asyncio
-
-# import os
 import requests
 import urllib.request
 from typing import List, Union
