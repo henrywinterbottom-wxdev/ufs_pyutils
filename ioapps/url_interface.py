@@ -110,13 +110,15 @@ def get_contents(url: List) -> Union[bytes, None]:
 #    data = None
 
     try:
-
         r = requests.get(url, stream=True)
         if 'Content-Length' in r.headers:
 
             req = urllib.request.Request(url)
             with urllib.request.urlopen(req) as resp:
                 data = resp.read()
+
+        else:
+            pass
 
     except MissingSchema:
         data = None
