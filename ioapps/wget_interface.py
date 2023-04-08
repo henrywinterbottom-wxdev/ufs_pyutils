@@ -138,7 +138,8 @@ def _check_wget_env() -> str:
 
 
 def get_webfile(url: str, path: str, ignore_missing: bool = False):
-    """Description
+    """
+    Description
     -----------
 
     This function collects the specified URL path using the Python
@@ -189,7 +190,8 @@ def get_webfile(url: str, path: str, ignore_missing: bool = False):
         logger.info(msg=msg)
         cmd = [f"{wget_exec}", f"{url}", "-O", f"{path}"]
 
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc = subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         proc.communicate()
         proc.wait()
 
@@ -296,7 +298,8 @@ def get_weblist(
         # Attempt to download the URL path.
         cmd = [f"{wget_exec}", f"{url}", "-O", f"{webpage}"]
 
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc = subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         proc.communicate()
         proc.wait()
 

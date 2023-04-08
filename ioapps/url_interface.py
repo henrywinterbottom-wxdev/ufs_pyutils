@@ -32,6 +32,12 @@ Description
 Functions
 ---------
 
+    get_contents(url, fail_nonread=False, fail_schema=False,
+                timeout=10)
+
+        This function attempts to collect the contents of a URL path
+        `url` specified upon entry.
+
     get_weblist(url, ext=None, include_dirname=False)
 
         This function builds a list of files beneath the specified URL
@@ -74,21 +80,124 @@ __email__ = "henry.winterbottom@noaa.gov"
 # ----
 
 import os
-import urllib
-from typing import List
+import urllib.request
+from typing import List, Union
 
+import requests
 from bs4 import BeautifulSoup
+from requests.exceptions import MissingSchema
 from utils.exceptions_interface import URLInterfaceError
 from utils.logger_interface import Logger
 
 # ----
 
 # Define all available functions.
-__all__ = ["get_weblist", "read_webfile"]
+__all__ = ["get_contents", "get_weblist", "read_webfile"]
 
 # ----
 
 logger = Logger()
+
+# ----
+
+
+def get_contents(
+    url: str, fail_nonread: bool = False, fail_schema: bool = False, timeout: int = 10
+) -> Union[str, None]:
+    """
+    Description
+    -----------
+
+    This function attempts to collect the contents of a URL path `url`
+    specified upon entry.
+
+    Parameters
+    ----------
+
+    url: str
+
+        A Python string specifying the URL path contents to be
+        collected.
+
+    Keywords
+    --------
+
+    fail_nonread: bool, optional
+
+        A Python boolean valued variable specifying whether to fail
+        when a URL path is non-readable and/or does not contain
+        readable contents.
+
+    fail_schema: bool, optional
+
+        A Python boolean valued variable specifying whether to fail if
+        a MissingSchema exception is raised by the requests package.
+
+    timeout: int, optional
+
+        A Python integer value specifying the duration period for
+        which to allow the URL request to be valid.
+
+    Returns
+    -------
+
+    data: Union[str, None]
+
+        A Python string containing the contents of the URL path `url`
+        specified upon entry; if the contents are unable to be
+        collected, and the keyword parameter arguments are specified
+        accordingly, NoneType is returned.
+
+    Raises
+    ------
+
+    URLInterfaceError:
+
+        - raised if the URL path is non-readable and `fail_nonread` is
+          `True` upon entry.
+
+        - raised if the schema for the URL path could not be
+          determined and `fail_schema` is `True` upon entry.
+
+    """
+
+    # Initialize the output string.
+    contents = None
+
+    # Parse the URL path and collect the contents of the respective
+    # URL; proceed acccordingly.
+    try:
+        request = requests.get(url, stream=True, timeout=timeout)
+        if "Content-Length" in request.headers:
+            msg = f"Collecting contents from URL {url}."
+            logger.info(msg=msg)
+            url_req = urllib.request.Request(url)
+            with urllib.request.urlopen(url_req) as url_resp:
+                contents = url_resp.read().decode("utf-8")
+
+        else:
+            if fail_nonread:
+                msg = f"The URL path {url} is a non-readable path. Aborting!!!"
+                raise URLInterfaceError(msg=msg)
+
+            if not fail_nonread:
+                msg = f"The URL path {url} is a non-readable path; returning NoneType."
+                logger.warn(msg=msg)
+
+    except MissingSchema as exc:
+        if fail_schema:
+            msg = f"The schema for URL path {url} could not be determined. Aborting!!!"
+            raise URLInterfaceError(msg=msg) from exc
+
+        if not fail_schema:
+            msg = (
+                f"The schema for URL path {url} could not be determined; returning "
+                "NoneType."
+            )
+            logger.warn(msg=msg)
+
+    return contents
+
 
 # ----
 
