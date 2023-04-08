@@ -100,14 +100,13 @@ logger = Logger()
 # ----
 
 
-# async def get_contents(urllist: List) -> List:
-# , url_filter: str) -> List:
 def get_contents(url: List) -> Union[bytes, None]:
     """
 
     """
 
-#    data = None
+    msg = f"Attempting to parse URL {url}."
+    logger.info(msg=msg)
 
     try:
         r = requests.get(url, stream=True)
@@ -118,6 +117,9 @@ def get_contents(url: List) -> Union[bytes, None]:
                 data = resp.read()
 
         else:
+            msg = f"The URL {url} is a non-readable path; returning NoneType."
+            logger.warn(msg=msg)
+
             data = None
 
     except MissingSchema:
