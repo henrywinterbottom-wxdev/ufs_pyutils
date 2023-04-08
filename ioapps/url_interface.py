@@ -32,7 +32,8 @@ Description
 Functions
 ---------
 
-    get_contents(url, fail_nonread = False, fail_schema = False)
+    get_contents(url, fail_nonread=False, fail_schema=False,
+                timeout=10)
 
         This function attempts to collect the contents of a URL path
         `url` specified upon entry.
@@ -78,13 +79,13 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
-import requests
+import os
 import urllib.request
 from typing import List, Union
 
-from requests.exceptions import MissingSchema
-
+import requests
 from bs4 import BeautifulSoup
+from requests.exceptions import MissingSchema
 from utils.exceptions_interface import URLInterfaceError
 from utils.logger_interface import Logger
 
@@ -100,8 +101,9 @@ logger = Logger()
 # ----
 
 
-def get_contents(url: str, fail_nonread: bool = False,
-                 fail_schema: bool = False) -> Union[str, None]:
+def get_contents(
+    url: str, fail_nonread: bool = False, fail_schema: bool = False, timeout: int = 10
+) -> Union[str, None]:
     """
     Description
     -----------
@@ -130,6 +132,11 @@ def get_contents(url: str, fail_nonread: bool = False,
 
         A Python boolean valued variable specifying whether to fail if
         a MissingSchema exception is raised by the requests package.
+
+    timeout: int, optional
+
+        A Python integer value specifying the duration period for
+        which to allow the URL request to be valid.
 
     Returns
     -------
@@ -160,8 +167,8 @@ def get_contents(url: str, fail_nonread: bool = False,
     # Parse the URL path and collect the contents of the respective
     # URL; proceed acccordingly.
     try:
-        request = requests.get(url, stream=True)
-        if 'Content-Length' in request.headers:
+        request = requests.get(url, stream=True, timeout=timeout)
+        if "Content-Length" in request.headers:
             msg = f"Collecting contents from URL {url}."
             logger.info(msg=msg)
             url_req = urllib.request.Request(url)
@@ -177,18 +184,20 @@ def get_contents(url: str, fail_nonread: bool = False,
                 msg = f"The URL path {url} is a non-readable path; returning NoneType."
                 logger.warn(msg=msg)
 
-    except MissingSchema:
+    except MissingSchema as exc:
         if fail_schema:
             msg = f"The schema for URL path {url} could not be determined. Aborting!!!"
-            raise URLInterfaceError(msg=msg)
+            raise URLInterfaceError(msg=msg) from exc
 
         if not fail_schema:
-            msg = (f"The schema for URL path {url} could not be determined; returning "
-                   "NoneType."
-                   )
+            msg = (
+                f"The schema for URL path {url} could not be determined; returning "
+                "NoneType."
+            )
             logger.warn(msg=msg)
 
     return contents
+
 
 # ----
 
@@ -284,6 +293,7 @@ def get_weblist(url: str, ext: str = None, include_dirname: bool = False) -> Lis
         raise URLInterfaceError(msg=msg) from errmsg
 
     return weblist
+
 
 # ----
 
