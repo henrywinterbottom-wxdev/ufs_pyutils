@@ -123,6 +123,11 @@ def get_contents(url: List) -> Union[bytes, None]:
             data = None
 
     except MissingSchema:
+        msg = (f"The schema for URL {url} could not be determined; returning "
+               "NoneType."
+               )
+        logger.warn(msg=msg)
+
         data = None
 
     # except Exception:
