@@ -101,12 +101,13 @@ logger = Logger()
 
 
 def get_contents(url: List, fail_nonread: bool = False,
-                 fail_schema: bool = False) -> Union[List, None]:
+                 fail_schema: bool = False) -> Union[str, None]:
     """
 
     """
 
-    data = None
+    # Initialize the output string.
+    contents = None
 
     try:
         r = requests.get(url, stream=True)
@@ -116,7 +117,7 @@ def get_contents(url: List, fail_nonread: bool = False,
 
             req = urllib.request.Request(url)
             with urllib.request.urlopen(req) as resp:
-                data = resp.read().decode("utf-8")
+                contents = resp.read().decode("utf-8")
 
         else:
 
@@ -139,7 +140,7 @@ def get_contents(url: List, fail_nonread: bool = False,
                    )
             logger.warn(msg=msg)
 
-    return data
+    return contents
 
 # ----
 
