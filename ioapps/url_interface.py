@@ -100,7 +100,8 @@ logger = Logger()
 # ----
 
 
-def get_contents(url: List, fail_nonread: bool = False) -> Union[List, None]:
+def get_contents(url: List, fail_nonread: bool = False,
+                 fail_schema: bool = False) -> Union[List, None]:
     """
 
     """
@@ -113,7 +114,7 @@ def get_contents(url: List, fail_nonread: bool = False) -> Union[List, None]:
 
             req = urllib.request.Request(url)
             with urllib.request.urlopen(req) as resp:
-                data = resp.read().decode("utf-8")
+                return resp.read().decode("utf-8")
 
         else:
 
@@ -124,20 +125,26 @@ def get_contents(url: List, fail_nonread: bool = False) -> Union[List, None]:
             if not fail_nonread:
                 msg = f"The URL path {url} is a non-readable path; returning NoneType."
                 logger.warn(msg=msg)
-                data = None
+                return None
 
     except MissingSchema:
-        msg = (f"The schema for URL path {url} could not be determined; returning "
-               "NoneType."
-               )
-        logger.warn(msg=msg)
+        if fail_schema:
+            msg = f"The schema for URL path {url} could not be determined. Aborting!!!"
+            raise URLInterfaceError(msg=msg)
 
-        data = None
+        if not fail_schema:
+            msg = (f"The schema for URL path {url} could not be determined; returning "
+                   "NoneType."
+                   )
+            logger.warn(msg=msg)
+            return None
+
+        # data = None
 
     # except Exception:
     #    data = None
 
-    return data
+    # return data
 
     # if url_filter in url:
     #    print(url)
