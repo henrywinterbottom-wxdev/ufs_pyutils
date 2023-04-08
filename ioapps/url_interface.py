@@ -105,7 +105,7 @@ def get_contents(url: List) -> Union[bytes, None]:
 
     """
 
-    msg = f"Attempting to parse URL {url}."
+    msg = f"Attempting to read URL path {url}."
     logger.info(msg=msg)
 
     try:
@@ -117,13 +117,13 @@ def get_contents(url: List) -> Union[bytes, None]:
                 data = resp.read()
 
         else:
-            msg = f"The URL {url} is a non-readable path; returning NoneType."
+            msg = f"The URL path {url} is a non-readable path; returning NoneType."
             logger.warn(msg=msg)
 
             data = None
 
     except MissingSchema:
-        msg = (f"The schema for URL {url} could not be determined; returning "
+        msg = (f"The schema for URL path {url} could not be determined; returning "
                "NoneType."
                )
         logger.warn(msg=msg)
