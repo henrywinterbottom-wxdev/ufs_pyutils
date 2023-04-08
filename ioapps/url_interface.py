@@ -114,7 +114,7 @@ def get_contents(url: List, fail_nonread: bool = False,
 
             req = urllib.request.Request(url)
             with urllib.request.urlopen(req) as resp:
-                return resp.read().decode("utf-8") as data
+                return data = resp.read().decode("utf-8") as data
 
         else:
 
@@ -125,7 +125,7 @@ def get_contents(url: List, fail_nonread: bool = False,
             if not fail_nonread:
                 msg = f"The URL path {url} is a non-readable path; returning NoneType."
                 logger.warn(msg=msg)
-                return None as data
+                return data = None
 
     except MissingSchema:
         if fail_schema:
@@ -137,7 +137,7 @@ def get_contents(url: List, fail_nonread: bool = False,
                    "NoneType."
                    )
             logger.warn(msg=msg)
-            return None as data
+            return data = None
 
 # ----
 
