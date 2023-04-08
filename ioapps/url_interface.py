@@ -114,7 +114,7 @@ def get_contents(url: List, fail_nonread: bool = False,
 
             req = urllib.request.Request(url)
             with urllib.request.urlopen(req) as resp:
-                return data = resp.read().decode("utf-8") as data
+                return data = resp.read().decode("utf-8")
 
         else:
 
