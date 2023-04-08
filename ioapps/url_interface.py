@@ -114,7 +114,7 @@ def get_contents(url: List, fail_nonread: bool = False,
 
             req = urllib.request.Request(url)
             with urllib.request.urlopen(req) as resp:
-                return resp.read().decode("utf-8")
+                return resp.read().decode("utf-8") as data
 
         else:
 
@@ -125,7 +125,7 @@ def get_contents(url: List, fail_nonread: bool = False,
             if not fail_nonread:
                 msg = f"The URL path {url} is a non-readable path; returning NoneType."
                 logger.warn(msg=msg)
-                return None
+                return None as data
 
     except MissingSchema:
         if fail_schema:
@@ -137,51 +137,10 @@ def get_contents(url: List, fail_nonread: bool = False,
                    "NoneType."
                    )
             logger.warn(msg=msg)
-            return None
-
-        # data = None
-
-    # except Exception:
-    #    data = None
-
-    # return data
-
-    # if url_filter in url:
-    #    print(url)
-    #    req = urllib.request.Request(url)
-    #    with urllib.request.urlopen(req) as resp:
-    #        data = resp.read()#
-
-    # print(data)
-
-    # await downloader.crawl(url)
-    # await downloader.download_files()
-
-    # except Exception:
-    #    pass
-
-    # try:
-    #    req = urllib.request.Request(url)
-    #    with urllib.request.urlopen(req) as resp:
-    #        data = resp.read()
-
-    # print(data)
-
-    # except ValueError:
-    #    pass
-
-    # try:
-    #    with urllib.request.urlopen(req) as resp:
-    #        data = resp.read()#
-
-    # print(data)
-    # except Exception:
-    #    pass
-
-    # return data
-
+            return None as data
 
 # ----
+
 
 def get_weblist(url: str, ext: str = None, include_dirname: bool = False) -> List:
     """
