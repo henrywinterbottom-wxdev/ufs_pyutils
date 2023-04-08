@@ -107,17 +107,17 @@ def get_contents(url: List) -> Union[bytes, None]:
 
     data = bytes()
 
-    try:
+#    try:
 
-        r = requests.get(url, stream=True)
-        if 'Content-Length' in r.headers:
+    r = requests.get(url, stream=True)
+    if 'Content-Length' in r.headers:
 
-            req = urllib.request.Request(url)
-            with urllib.request.urlopen(req) as resp:
-                data = resp.read()
+        req = urllib.request.Request(url)
+        with urllib.request.urlopen(req) as resp:
+            data = resp.read()
 
-    except Exception:
-        pass
+    # except Exception:
+    #    data = None
 
     return data
 
