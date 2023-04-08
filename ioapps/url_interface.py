@@ -109,15 +109,17 @@ def get_contents(url: List, fail_nonread: bool = False,
     # Initialize the output string.
     contents = None
 
+    # Parse the URL path and collect the contents of the respective
+    # URL; proceed acccordingly.
     try:
-        r = requests.get(url, stream=True)
-        if 'Content-Length' in r.headers:
+        request = requests.get(url, stream=True)
+        if 'Content-Length' in request.headers:
             msg = f"Collecting contents from URL {url}."
             logger.info(msg=msg)
 
-            req = urllib.request.Request(url)
-            with urllib.request.urlopen(req) as resp:
-                contents = resp.read().decode("utf-8")
+            url_req = urllib.request.Request(url)
+            with urllib.request.urlopen(url_req) as url_resp:
+                contents = url_resp.read().decode("utf-8")
 
         else:
 
