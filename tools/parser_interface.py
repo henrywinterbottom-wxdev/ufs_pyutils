@@ -80,7 +80,7 @@ Functions
 
     handler(func, handle: lambda errmsg: errmsg, return_none=False,
             raise_exeception=False, *args, **kwargs):
- 
+
         This method permits exceptions to raised(i.e., handled) within
         Python list comprehensions.
 
@@ -191,11 +191,15 @@ History
 
 # ----
 
+# pylint: disable=broad-except
+# pylint: disable=keyword-arg-before-vararg
 # pylint: disable=raise-missing-from
 # pylint: disable=too-many-arguments
 # pylint: disable=too-many-branches
 # pylint: disable=too-many-lines
+# pylint: disable=undefined-variable
 # pylint: disable=unnecessary-comprehension
+# pylint: disable=unused-argument
 
 # ----
 
@@ -760,12 +764,18 @@ def find_commonprefix(strings_list: List) -> str:
 
     return common_prefix
 
+
 # ----
 
 
-def handler(func: Callable, handle=lambda errmsg: errmsg,
-            return_none: bool = False, raise_exeception: bool = False,
-            *args, **kwargs):
+def handler(
+    func: Callable,
+    handle=lambda errmsg: errmsg,
+    return_none: bool = False,
+    raise_exeception: bool = False,
+    *args,
+    **kwargs,
+) -> Union[Any, None, Exception]:
     """
     Description
     -----------
@@ -813,20 +823,29 @@ def handler(func: Callable, handle=lambda errmsg: errmsg,
         Python type keyword arguments to be passed to the respective
         Python function `func`.
 
+    Returns
+    -------
+
+    value: Union[Any, None, Exception]
+
+        A Python variable type containing the returned expression from
+        the Python list evaluation of a function (`func`).
+
     """
 
     # Evaluate the function nested within a Python list comprehension;
     # proceed accordingly.
     try:
-        return func(*args, **kwargs)
+        value = func(*args, **kwargs)
 
     except Exception as errmsg:
         if return_none:
-            return None
+            value = None
 
         if raise_exception:
-            handle(errmsg)
+            value = handle(errmsg)
 
+    return value
 
 # ----
 
