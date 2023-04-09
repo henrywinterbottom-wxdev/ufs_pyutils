@@ -78,6 +78,12 @@ Functions
 
         This function returns the common prefix from a list of strings.
 
+    handler(func, handle: lambda errmsg: errmsg, return_none=False,
+            raise_exeception=False, *args, **kwargs):
+ 
+        This method permits exceptions to raised(i.e., handled) within
+        Python list comprehensions.
+
     list_get_type(in_list, dtype):
 
         This function parses a list and returns a list of values in
@@ -760,7 +766,57 @@ def find_commonprefix(strings_list: List) -> str:
 def handler(func: Callable, handle: lambda errmsg: errmsg,
             return_none: bool = False, raise_exeception: bool = False,
             *args, **kwargs):
+    """
+    Description
+    -----------
 
+    This method permits exceptions to raised (i.e., handled) within
+    Python list comprehensions.
+
+    Parameters
+    ----------
+
+    func: Callable
+
+        A Python function, often nested within a Python list
+        comprehension, to be evaluated.
+
+    handle: Callable
+
+        A Python lambda function to be evaluated within the list
+        comprehension.
+
+    Keywords
+    --------
+
+    return_none: bool, optional
+
+        A Python boolean valued variable specifying whether to return
+        None if an exception is encountered.
+
+    raise_exception: bool, optional
+
+        A Python boolean values variable specifying to whether to
+        raise the exception encountered while evaluating the function
+        within the Python list comprehension.
+
+    Other Parameters
+    ----------------
+
+    args: Tuple, optional
+
+        Python type arguments to be passed to the respective Python
+        function `func`.
+
+    kwargs: Dict, optional
+
+        Python type keyword arguments to be passed to the respective
+        Python function `func`.
+
+    """
+
+    # Evaluate the function nested within a Python list comprehension;
+    # proceed accordingly.
     try:
         return func(*args, **kwargs)
 
