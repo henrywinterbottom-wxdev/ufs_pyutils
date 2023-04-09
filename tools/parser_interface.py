@@ -222,6 +222,7 @@ __all__ = [
     "enviro_get",
     "enviro_set",
     "find_commonprefix",
+    "handler",
     "list_get_type",
     "list_replace_value",
     "match_list",
@@ -753,6 +754,23 @@ def find_commonprefix(strings_list: List) -> str:
 
     return common_prefix
 
+# ----
+
+
+def handler(func: Callable, handle: lambda errmsg, errmsg=str,
+            return_none: bool = False, raise_exeception: bool = False,
+            *args, **kwargs):
+
+    try:
+        return func(*args, **kwargs)
+
+    except Exception as errmsg:
+        if return_none:
+            return None
+
+        if raise_exception:
+            handle(errmsg)
+
 
 # ----
 
@@ -915,7 +933,8 @@ def object_append(object_in: object, object_key: str, dict_in: Dict) -> object:
         object_dict[key] = value
 
     # Build the output Python object.
-    object_out = object_setattr(object_in=object_out, key=object_key, value=object_dict)
+    object_out = object_setattr(
+        object_in=object_out, key=object_key, value=object_dict)
 
     return object_out
 
