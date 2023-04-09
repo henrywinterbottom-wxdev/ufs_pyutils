@@ -763,7 +763,7 @@ def find_commonprefix(strings_list: List) -> str:
 # ----
 
 
-def handler(func: Callable, handle: lambda errmsg: errmsg,
+def handler(func: Callable, handle=lambda err: err,
             return_none: bool = False, raise_exeception: bool = False,
             *args, **kwargs):
     """
