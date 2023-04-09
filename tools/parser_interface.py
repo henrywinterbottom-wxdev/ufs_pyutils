@@ -763,7 +763,9 @@ def find_commonprefix(strings_list: List) -> str:
 # ----
 
 
-def handler_none(func, handle=lambda err: err, *args, **kwargs):
+def handler(func: Callable, handle=lambda errmsg: errmsg,
+            return_none: bool = False, raise_exeception: bool = False,
+            *args, **kwargs):
     """
     Description
     -----------
@@ -819,10 +821,11 @@ def handler_none(func, handle=lambda err: err, *args, **kwargs):
         return func(*args, **kwargs)
 
     except Exception as errmsg:
-        return None
+        if return_none:
+            return None
 
-#        if raise_exception:
-#            handle(errmsg)
+        if raise_exception:
+            handle(errmsg)
 
 
 # ----
