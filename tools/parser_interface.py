@@ -205,7 +205,7 @@ import json
 import os
 import types
 from json.decoder import JSONDecodeError
-from typing import Any, Dict, Generator, List, Tuple, Union
+from typing import Any, Callable, Dict, Generator, List, Tuple, Union
 
 import numpy
 from utils.exceptions_interface import ParserInterfaceError
@@ -757,7 +757,7 @@ def find_commonprefix(strings_list: List) -> str:
 # ----
 
 
-def handler(func: Callable, handle: lambda errmsg, errmsg=str,
+def handler(func: Callable, handle: lambda errmsg, errmsg: str,
             return_none: bool = False, raise_exeception: bool = False,
             *args, **kwargs):
 
@@ -1167,7 +1167,8 @@ def match_list(
     # Define the local lists to be used for the matching application.
     lower_list = [word for word in in_list if word.islower()]
     upper_list = [word for word in in_list if word.isupper()]
-    mixed_list = [word for word in in_list if not word.islower() and not word.isupper()]
+    mixed_list = [word for word in in_list if not word.islower()
+                  and not word.isupper()]
     match_chk = False
 
     # If appropriate, seek exact matches; proceed accordingly.
@@ -1587,7 +1588,8 @@ def unique_list(in_list: List) -> List:
 
     """
     out_list = []
-    out_dict = collections.OrderedDict.fromkeys(x for x in in_list if x not in out_list)
+    out_dict = collections.OrderedDict.fromkeys(
+        x for x in in_list if x not in out_list)
 
     out_list = []
     for key in sorted(out_dict.keys()):
