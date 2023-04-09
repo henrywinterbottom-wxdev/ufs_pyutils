@@ -79,7 +79,7 @@ Functions
         This function returns the common prefix from a list of strings.
 
     handler(func, handle: lambda errmsg: errmsg, return_none=False,
-            raise_exeception=False, *args, **kwargs):
+            raise_exception=False, *args, **kwargs):
 
         This method permits exceptions to raised(i.e., handled) within
         Python list comprehensions.
@@ -199,7 +199,6 @@ History
 # pylint: disable=too-many-lines
 # pylint: disable=undefined-variable
 # pylint: disable=unnecessary-comprehension
-# pylint: disable=unused-argument
 
 # ----
 
@@ -772,7 +771,7 @@ def handler(
     func: Callable,
     handle=lambda errmsg: errmsg,
     return_none: bool = False,
-    raise_exeception: bool = False,
+    raise_exception: bool = False,
     *args,
     **kwargs,
 ) -> Union[Any, None, Exception]:
