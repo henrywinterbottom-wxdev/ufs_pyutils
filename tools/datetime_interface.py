@@ -50,7 +50,7 @@ Functions
         function) formatted according to the parameter values
         specified upon entry.
 
-    datestrcomps(datestr, frmttyp=None)
+    datestrcomps(datestr, frmttyp)
 
         This function returns a Python object containing the specified
         date string component values; the following attributes are
