@@ -101,6 +101,8 @@ RUN /miniconda/bin/pip install netcdf4==1.6.2 && \
     /miniconda/bin/pip install schema==0.7.5 && \
     /miniconda/bin/pip install xmltodict==0.13.0 && \
     /miniconda/bin/pip install lxml==4.9.2 && \
+    /miniconda/bin/pip install pytest==7.2.0 && \
+    /miniconda/bin/pip install pytest-order && \
     /miniconda/bin/conda clean --tarballs
 
 # ----
