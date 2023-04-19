@@ -128,6 +128,11 @@ Classes
         This is the base-class for exceptions encountered within the
         ioapps/tcvitalsinterface module; it is a sub-class of Error.
 
+    TemplateInterfaceError(msg)
+
+        This is the base-class for exceptions encountered within the
+        confs/template_interface module; it is a sub-class of Error.
+
     TimestampInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
@@ -203,6 +208,7 @@ __all__ = [
     "SubprocessInterfaceError",
     "TarFileInterfaceError",
     "TCVitalsInterfaceError",
+    "TemplateInterfaceError",
     "TimestampInterfaceError",
     "UFSLoggerError",
     "URLInterfaceError",
@@ -455,6 +461,19 @@ class TCVitalsInterfaceError(Error):
 
     This is the base-class for exceptions encountered within the
     ioapps/tcvitals_interface module; it is a sub-class of Error.
+
+    """
+
+# ----
+
+
+class TemplateInterfaceError(Error):
+    """
+    Description
+    -----------
+
+    This is the base-class for exceptions encountered within the
+    confs/template_interface module; it is a sub-class of Error.
 
     """
 

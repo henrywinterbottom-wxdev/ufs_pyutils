@@ -59,15 +59,15 @@ History
 
 # ----
 
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
-
-# ----
-
 # pylint: disable=broad-except
 # pylint: disable=too-many-ancestors
 # pylint: disable=too-many-arguments
+
+# ----
+
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
@@ -583,7 +583,7 @@ class YAML:
 
         This method ingests a YAML template file and parses a Python
         dictionary containing key and value pairs for template
-        variables to be replaced; the updated template to then written
+        variables to be replaced; the updated template is then written
         to the user-specified path.
 
         Parameters

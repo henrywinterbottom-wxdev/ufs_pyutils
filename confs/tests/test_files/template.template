@@ -1,0 +1,4 @@
+"BREAKFAST: Eggs? {{ EGGS }}, Ham?? {% HAM %}"
+"LUNCH: Just ham? <JUST_HAM>"
+"DINNER: Lots of [@DINNER]"
+"DESSERT: Do you want dessert? [@DESSERT]"
