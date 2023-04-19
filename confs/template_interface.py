@@ -69,7 +69,8 @@ from utils.logger_interface import Logger
 
 # -----
 
-TMPL_ITEM_LIST = ["[@%s]", "{@%s}", "{%%%s%%}", "{{%% %s %%}}", "<%s>"]
+TMPL_ITEM_LIST = ["[@%s]", "{@%s}", "{%%%s%%}", "{{%% %s %%}}", "<%s>",
+                  "{%% %s %%}", "{{ %s }}"]
 
 # ----
 
@@ -243,7 +244,8 @@ class Template:
                             value = self.f90_bool(value=value)
                         attr_value = value
 
-                        tmpl_str_out = tmpl_str_out.replace(check_str, str(attr_value))
+                        tmpl_str_out = tmpl_str_out.replace(
+                            check_str, str(attr_value))
 
                 except TypeError:
                     pass
@@ -267,12 +269,13 @@ class Template:
             f"{', '.join(tmpl_str_list)}."
         )
 
-        if fail_missing:
-            msg = msg + " Aborting!!!"
-            raise TemplateInterfaceError(msg=msg)
+        if (len(tmpl_str_list) > 0):
+            if fail_missing:
+                msg = msg + " Aborting!!!"
+                raise TemplateInterfaceError(msg=msg)
 
-        if not fail_missing:
-            self.logger.warn(msg=msg)
+            if not fail_missing:
+                self.logger.warn(msg=msg)
 
         return tmpl_str_out
 
