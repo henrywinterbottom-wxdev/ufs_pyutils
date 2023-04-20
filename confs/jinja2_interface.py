@@ -372,16 +372,59 @@ def _get_template_vars(tmpl_path: str) -> List:
 
 
 def _replace_tmplmarkers(tmpl_path: str) -> str:
-    """ """
+    """Description
+    -----------
 
-    virtfile = fileio_interface.virtual_file()
+    This function replaces specified non-Jinja2-formatted template
+    string-values with the respective Jinja2-formatted template
+    indicators; the updated template file is written to a temporary
+    (e.g., virtual) file path and returned to the calling function;
+    the non-Jinja2-formatted template string-values are defined bu the
+    `confs/template_interface.py` module attribute `TMPL_ITEM_LIST`.
 
-    print(virtfile)
+    Parameters
+    ----------
 
-    os.unlink()
+    tmpl_path: str
 
-    quit()
+        A Python string defining the path to the template file
+        containing non-Jinja2-formatted template string-values.
 
+    Returns
+    -------
+
+    virtfile: str
+
+        A Python string defining the path to the temporary (i.e.,
+        virtual) file path containing the Jinja2-formatted template
+        defined from the attributes contained within `tmpl_path` upon
+        entry.
+
+    """
+
+    # Read the non-Jinja2-formatted template file.
+    with open(tmpl_path, "r", encoding="utf-8") as file:
+        inputs = file.read().split("\n")
+
+    # Parse the contents of the non-Jinja2-formatted template file;
+    # update any encountered non-Jinja2-formatted template
+    # string-values with the appropriate Jinja2-formatted template
+    # string-values.
+    virtfile = fileio_interface.virtual_file().name
+
+    with open(virtfile, "w", encoding="utf-8") as file:
+        for string in inputs:
+            for item in TMPL_ITEM_LIST:
+                tmplstr = item.split("%s")
+
+                if (tmplstr[0] in string) and (tmplstr[1] in string):
+                    string = string.replace(tmplstr[0].strip(), "{{ ")
+                    string = string.replace(tmplstr[1].strip(), " }}")
+                    break
+
+            file.write(f"{string}\n")
+
+    return virtfile
 
 # ----
 
@@ -443,7 +486,6 @@ def write_from_template(
     """
 
     if rpl_tmpl_mrks:
-        print('here')
         tmpl_path = _replace_tmplmarkers(tmpl_path=tmpl_path)
 
     if fail_missing:
@@ -464,6 +506,9 @@ def write_from_template(
             f"error {errmsg}. Aborting!!!"
         )
         raise Jinja2InterfaceError(msg=msg)
+
+    if rpl_tmpl_mrks:
+        os.unlink(tmpl_path)
 
 
 # ----
