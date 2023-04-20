@@ -443,6 +443,7 @@ def write_from_template(
     """
 
     if rpl_tmpl_mrks:
+        print('here')
         tmpl_path = _replace_tmplmarkers(tmpl_path=tmpl_path)
 
     if fail_missing:
