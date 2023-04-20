@@ -388,9 +388,9 @@ def _replace_tmplmarkers(tmpl_path: str) -> str:
 
 def write_from_template(
         tmpl_path: str, output_file: str, in_dict: Dict, fail_missing: bool = False,
-        rpl_tmpl_mrks: False
-) -> None:
-    """Description
+        rpl_tmpl_mrks: False) -> None:
+    """
+    Description
     -----------
 
     This function writes a Jinja2-formatted file established from a
