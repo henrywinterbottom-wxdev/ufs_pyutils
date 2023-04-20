@@ -57,8 +57,19 @@ Functions
         This function collects the template variable names from a
         Jinja2-formatted template file.
 
+    _replace_tmplmarkser(tmpl_path)
+
+        This function replaces specified non-Jinja2-formatted template
+        string-values with the respective Jinja2-formatted template
+        indicators; the updated template file is written to a
+        temporary (e.g., virtual) file path and returned to the
+        calling function; the non-Jinja2-formatted template
+        string-values are defined bu the `confs/template_interface.py`
+        module attribute `TMPL_ITEM_LIST`.
+
     write_from_template(tmpl_path, output_file, in_dict,
-                        fail_missing=False)
+                        fail_missing=False, rpl_tmpl_mrks=False,
+                        f90_bool=False)
 
         This function writes a Jinja2-formatted file established from
         a templated Jinja2-formatted file.
@@ -85,6 +96,7 @@ History
 # pylint: disable=broad-except
 # pylint: disable=consider-using-f-string
 # pylint: disable=raise-missing-from
+# pylint: disable=too-many-arguments
 
 # ----
 
@@ -98,8 +110,11 @@ import os
 from typing import Dict, List, Tuple
 
 from jinja2 import Environment, FileSystemLoader, meta
+from tools import fileio_interface, parser_interface
 from utils.exceptions_interface import Jinja2InterfaceError
 from utils.logger_interface import Logger
+
+from confs.template_interface import TMPL_ITEM_LIST
 
 # ----
 
@@ -367,8 +382,73 @@ def _get_template_vars(tmpl_path: str) -> List:
 # ----
 
 
+def _replace_tmplmarkers(tmpl_path: str) -> str:
+    """
+    Description
+    -----------
+
+    This function replaces specified non-Jinja2-formatted template
+    string-values with the respective Jinja2-formatted template
+    indicators; the updated template file is written to a temporary
+    (e.g., virtual) file path and returned to the calling function;
+    the non-Jinja2-formatted template string-values are defined bu the
+    `confs/template_interface.py` module attribute `TMPL_ITEM_LIST`.
+
+    Parameters
+    ----------
+
+    tmpl_path: str
+
+        A Python string defining the path to the template file
+        containing non-Jinja2-formatted template string-values.
+
+    Returns
+    -------
+
+    virtfile: str
+
+        A Python string defining the path to the temporary (i.e.,
+        virtual) file path containing the Jinja2-formatted template
+        defined from the attributes contained within `tmpl_path` upon
+        entry.
+
+    """
+
+    # Read the non-Jinja2-formatted template file.
+    with open(tmpl_path, "r", encoding="utf-8") as file:
+        inputs = file.read().split("\n")
+
+    # Parse the contents of the non-Jinja2-formatted template file;
+    # update any encountered non-Jinja2-formatted template
+    # string-values with the appropriate Jinja2-formatted template
+    # string-values.
+    virtfile = fileio_interface.virtual_file().name
+
+    with open(virtfile, "w", encoding="utf-8") as file:
+        for string in inputs:
+            for item in TMPL_ITEM_LIST:
+                tmplstr = item.split("%s")
+
+                if (tmplstr[0] in string) and (tmplstr[1] in string):
+                    string = string.replace(tmplstr[0].strip(), "{{ ")
+                    string = string.replace(tmplstr[1].strip(), " }}")
+                    break
+
+            file.write(f"{string}\n")
+
+    return virtfile
+
+
+# ----
+
+
 def write_from_template(
-    tmpl_path: str, output_file: str, in_dict: Dict, fail_missing: bool = False
+    tmpl_path: str,
+    output_file: str,
+    in_dict: Dict,
+    fail_missing: bool = False,
+    rpl_tmpl_mrks: bool = False,
+    f90_bool: bool = False,
 ) -> None:
     """
     Description
@@ -406,6 +486,18 @@ def write_from_template(
         Jinja2-formatted file template variable key and value pairs
         (in_dict).
 
+    rpl_tmpl_mrks: bool, optional
+
+        A Python boolean valued variable specifying whether to replace
+        any pre-defined template markers (see
+        `confs/template_interface.py`, prior to populating the
+        Jinja2-formatted template.
+
+    f90_bool: bool
+
+        A Python boolean valued variable specifying whether to
+        transform boolean variables to a FORTRAN 90 format.
+
     Raises
     ------
 
@@ -416,8 +508,15 @@ def write_from_template(
 
     """
 
+    if rpl_tmpl_mrks:
+        tmpl_path = _replace_tmplmarkers(tmpl_path=tmpl_path)
+
     if fail_missing:
         _fail_missing_vars(tmpl_path=tmpl_path, in_dict=in_dict)
+
+    if f90_bool:
+        for (key, value) in in_dict.items():
+            in_dict[key] = parser_interface.f90_bool(value)
 
     # Open the Jinja2-formatted template file, update the Jinja2
     # template variable(s), and write the results to the output file
@@ -434,6 +533,9 @@ def write_from_template(
             f"error {errmsg}. Aborting!!!"
         )
         raise Jinja2InterfaceError(msg=msg)
+
+    if rpl_tmpl_mrks:
+        os.unlink(tmpl_path)
 
 
 # ----

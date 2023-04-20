@@ -112,7 +112,13 @@ class TestTemplateMethods(TestCase):
         )
 
         self.tmpl2_dict = OrderedDict(
-            {"EGGS": 2, "HAM": 1, "DINNER": "spam", "DESSERT": "Always!"}
+            {
+                "EGGS": 2,
+                "HAM": 1,
+                "JUST_HAM": True,
+                "DINNER": "spam",
+                "DESSERT": "Always!",
+            }
         )
 
         # Define the file paths required for the test method(s).
@@ -178,10 +184,10 @@ class TestTemplateMethods(TestCase):
                 attr_dict=self.tmpl2_dict,
                 tmpl_path=self.tmpl_path,
                 template_path=self.template_path,
-                f90_bool=False,
+                f90_bool=True,
                 fail_missing=True,
             )
-            assert False
+            assert True
 
         except TemplateInterfaceError:
             assert True

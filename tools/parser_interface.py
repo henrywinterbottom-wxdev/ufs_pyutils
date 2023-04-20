@@ -74,6 +74,12 @@ Functions
         This function defines the environment variable corresponding
         to the supported specified value.
 
+    f90_bool(value)
+
+        This method will transform boolean type values to a FORTRAN 90
+        boolean format; if the variable `value` specified upon entry
+        is not of boolean format the value is returned unaltered.
+
     find_commonprefix(strings_list)
 
         This function returns the common prefix from a list of strings.
@@ -230,6 +236,7 @@ __all__ = [
     "dict_replace_value",
     "enviro_get",
     "enviro_set",
+    "f90_bool",
     "find_commonprefix",
     "handler",
     "list_get_type",
@@ -725,6 +732,49 @@ def enviro_set(envvar: str, value: Union[bool, float, int, str]) -> None:
 
     if not isinstance(value, list):
         os.environ[envvar] = value
+
+
+# ----
+
+
+def f90_bool(value: Any) -> Any:
+    """
+    Description
+    -----------
+
+    This method will transform boolean type values to a FORTRAN 90
+    boolean format; if the variable `value` specified upon entry is
+    not of boolean format the value is returned unaltered.
+
+    Parameters
+    ----------
+
+    value: Any
+
+        A Python variable to be evaluated as a boolean type value; if
+        a boolean type the corresponding value is returned as a
+        FORTRAN 90 boolean format.
+
+    Returns
+    -------
+
+    value: Any
+
+        An evaluated Python variable; if `value` was boolean type upon
+        entry the returned value is of FORTRAN 90 boolean format; if
+        not, the unaltered input value is returned.
+
+    """
+
+    # Check the type for the respective input value; proceed
+    # accordingly.
+    if isinstance(value, bool):
+        if value:
+            value = "T"
+        if not value:
+            value = "F"
+
+    return value
 
 
 # ----

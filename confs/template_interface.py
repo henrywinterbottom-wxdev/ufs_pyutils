@@ -60,7 +60,7 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # -----
 
-from typing import Any, Dict
+from typing import Dict
 
 from tools import parser_interface
 from utils.decorator_interface import privatemethod
@@ -69,8 +69,16 @@ from utils.logger_interface import Logger
 
 # -----
 
-TMPL_ITEM_LIST = ["[@%s]", "{@%s}", "{%%%s%%}", "{{%% %s %%}}", "<%s>",
-                  "{%% %s %%}", "{{ %s }}"]
+TMPL_ITEM_LIST = [
+    "@[%s]",
+    "[@%s]",
+    "{@%s}",
+    "{%%%s%%}",
+    "{{%% %s %%}}",
+    "<%s>",
+    "{%% %s %%}",
+    "{{ %s }}",
+]
 
 # ----
 
@@ -95,46 +103,6 @@ class Template:
 
         # Define the base-class attributes.
         self.logger = Logger()
-
-    @staticmethod
-    def f90_bool(value: Any) -> Any:
-        """
-        Description
-        -----------
-
-        This method will transform boolean type values to a FORTRAN 90
-        boolean format; if the variable `value` specified upon entry
-        is not of boolean format the value is return unaltered.
-
-        Parameters
-        ----------
-
-        value: Any
-
-            A Python variable to be evaluated as a boolean type value;
-            if a boolean type the corresponding value is returned as a
-            FORTRAN 90 boolean format.
-
-        Returns
-        -------
-
-        value: Any
-
-            An evaluated Python variable; if `value` was boolean type
-            upon entry the returned value is of FORTRAN 90 boolean
-            format; if not, the unaltered input value is returned.
-
-        """
-
-        # Check the type for the respective input value; proceed
-        # accordingly.
-        if isinstance(value, bool):
-            if value:
-                value = "T"
-            if not value:
-                value = "F"
-
-        return value
 
     def read_tmpl(self: object, tmpl_path: str) -> str:
         """
@@ -241,11 +209,10 @@ class Template:
                     # Update value accordingly.
                     if value is not None:
                         if f90_bool:
-                            value = self.f90_bool(value=value)
+                            value = parser_interface.f90_bool(value=value)
                         attr_value = value
 
-                        tmpl_str_out = tmpl_str_out.replace(
-                            check_str, str(attr_value))
+                        tmpl_str_out = tmpl_str_out.replace(check_str, str(attr_value))
 
                 except TypeError:
                     pass
@@ -269,7 +236,7 @@ class Template:
             f"{', '.join(tmpl_str_list)}."
         )
 
-        if (len(tmpl_str_list) > 0):
+        if len(tmpl_str_list) > 0:
             if fail_missing:
                 msg = msg + " Aborting!!!"
                 raise TemplateInterfaceError(msg=msg)
