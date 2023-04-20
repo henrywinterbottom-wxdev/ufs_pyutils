@@ -98,7 +98,11 @@ import os
 from typing import Dict, List, Tuple
 
 from jinja2 import Environment, FileSystemLoader, meta
+from confs.template_interface import TMPL_ITEM_LIST
 from utils.exceptions_interface import Jinja2InterfaceError
+
+from tools import fileio_interface
+
 from utils.logger_interface import Logger
 
 # ----
@@ -180,7 +184,7 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
                 start = item.index(start_str)
                 stop = item.index(stop_str)
 
-                string = (item[start + len(start_str) : stop].rstrip()).lstrip()
+                string = (item[start + len(start_str): stop].rstrip()).lstrip()
                 variables.append(string)
 
     # Build the list of attribute variables.
@@ -321,7 +325,8 @@ def _get_template_file_attrs(tmpl_path: str) -> Tuple[str, str]:
     """
 
     # Collect the Jinja2-formatted template file attributes.
-    (dirname, basename) = [os.path.dirname(tmpl_path), os.path.basename(tmpl_path)]
+    (dirname, basename) = [os.path.dirname(
+        tmpl_path), os.path.basename(tmpl_path)]
 
     return (dirname, basename)
 
@@ -363,15 +368,29 @@ def _get_template_vars(tmpl_path: str) -> List:
 
     return variables
 
+# ----
+
+
+def _replace_tmplmarkers(tmpl_path: str) -> str:
+    """ """
+
+    virtfile = fileio_interface.virtual_file()
+
+    print(virtfile)
+
+    os.unlink()
+
+    quit()
+
 
 # ----
 
 
 def write_from_template(
-    tmpl_path: str, output_file: str, in_dict: Dict, fail_missing: bool = False
+        tmpl_path: str, output_file: str, in_dict: Dict, fail_missing: bool = False,
+        rpl_tmpl_mrks: False
 ) -> None:
-    """
-    Description
+    """Description
     -----------
 
     This function writes a Jinja2-formatted file established from a
@@ -406,6 +425,13 @@ def write_from_template(
         Jinja2-formatted file template variable key and value pairs
         (in_dict).
 
+    rpl_tmpl_mrks: bool, optional
+
+        A Python boolean valued variable specifying whether to replace
+        any pre-defined template markers (see
+        `confs/template_interface.py`, prior to populating the
+        Jinja2-formatted template.
+
     Raises
     ------
 
@@ -415,6 +441,9 @@ def write_from_template(
           Jinja2-formatted file.
 
     """
+
+    if rpl_tmpl_mrks:
+        tmpl_path = _replace_tmplmarkers(tmpl_path=tmpl_path)
 
     if fail_missing:
         _fail_missing_vars(tmpl_path=tmpl_path, in_dict=in_dict)
