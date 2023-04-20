@@ -78,8 +78,8 @@ from typing import Any, Dict, List, Union
 
 import yaml
 from tools import fileio_interface, parser_interface
-from utils.exceptions_interface import YAMLInterfaceError
 from utils.decorator_interface import privatemethod
+from utils.exceptions_interface import YAMLInterfaceError
 from utils.logger_interface import Logger
 from yaml import SafeLoader
 
@@ -436,8 +436,7 @@ class YAML:
         """
 
         # Define the YAML library loader type.
-        YAMLLoader.add_implicit_resolver(
-            "!ENV", YAMLLoader.envvar_matcher, None)
+        YAMLLoader.add_implicit_resolver("!ENV", YAMLLoader.envvar_matcher, None)
         YAMLLoader.add_constructor("!ENV", YAMLLoader.envvar_constructor)
 
         # Open and read the contents of the specified YAML-formatted
@@ -543,8 +542,7 @@ class YAML:
         """
 
         # Define the YAML library loader type.
-        YAMLLoader.add_implicit_resolver(
-            "!ENV", YAMLLoader.envvar_matcher, None)
+        YAMLLoader.add_implicit_resolver("!ENV", YAMLLoader.envvar_matcher, None)
         YAMLLoader.add_constructor("!ENV", YAMLLoader.envvar_constructor)
         YAMLLoader.add_constructor("!INC", YAMLLoader.include_constructor)
 
