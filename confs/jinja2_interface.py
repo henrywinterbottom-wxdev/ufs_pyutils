@@ -167,7 +167,7 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
     # Check that the Python dictionary is not empty; proceed
     # accordingly.
     if not in_dict:
-        msg = "The Python dictionary provided upon entry is empty. Aborting!!!"
+        msg = "The Python dictionary `in_dict` provided upon entry is empty. Aborting!!!"
         raise Jinja2InterfaceError(msg=msg)
 
     # Collect the variables within the Jinja2-formatted template file.
@@ -200,6 +200,7 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
 
     # Build the list of attribute variables.
     compare_variables = []
+
     for item in list(in_dict):
         if isinstance(item, tuple):
             compare_variables.append(item[0])
@@ -211,6 +212,9 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
     missing_vars = [
         variable for variable in variables if variable not in compare_variables
     ]
+
+    print(missing_vars)
+    quit()
 
     # If Jinja2-formatted template file variables have not been
     # defined, proceed accordingly.
@@ -515,8 +519,8 @@ def write_from_template(
     if rpl_tmpl_mrks:
         tmpl_path = _replace_tmplmarkers(tmpl_path=tmpl_path)
 
-    # if fail_missing:
-    #    _fail_missing_vars(tmpl_path=tmpl_path, in_dict=in_dict)
+    if fail_missing:
+        _fail_missing_vars(tmpl_path=tmpl_path, in_dict=in_dict)
 
     if f90_bool:
         for (key, value) in in_dict.items():
