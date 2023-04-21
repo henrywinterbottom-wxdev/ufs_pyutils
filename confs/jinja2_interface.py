@@ -195,7 +195,7 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
                 start = item.index(start_str)
                 stop = item.index(stop_str)
 
-                string = (item[start + len(start_str) : stop].rstrip()).lstrip()
+                string = (item[start + len(start_str): stop].rstrip()).lstrip()
                 variables.append(string)
 
     # Build the list of attribute variables.
@@ -336,7 +336,8 @@ def _get_template_file_attrs(tmpl_path: str) -> Tuple[str, str]:
     """
 
     # Collect the Jinja2-formatted template file attributes.
-    (dirname, basename) = [os.path.dirname(tmpl_path), os.path.basename(tmpl_path)]
+    (dirname, basename) = [os.path.dirname(
+        tmpl_path), os.path.basename(tmpl_path)]
 
     return (dirname, basename)
 
@@ -523,6 +524,9 @@ def write_from_template(
     # path.
     try:
         tmpl = _get_template(tmpl_path=tmpl_path)
+
+        print(tmpl)
+        quit()
 
         with open(output_file, "w", encoding="utf-8") as file:
             file.write(tmpl.render(in_dict, env=os.environ))
