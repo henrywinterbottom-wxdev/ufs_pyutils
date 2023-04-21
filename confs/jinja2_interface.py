@@ -525,7 +525,7 @@ def write_from_template(
     try:
         tmpl = _get_template(tmpl_path=tmpl_path)
 
-        print(tmpl)
+        print(vars(tmpl))
         quit()
 
         with open(output_file, "w", encoding="utf-8") as file:
