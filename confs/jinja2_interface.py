@@ -515,8 +515,8 @@ def write_from_template(
     if rpl_tmpl_mrks:
         tmpl_path = _replace_tmplmarkers(tmpl_path=tmpl_path)
 
-    if fail_missing:
-        _fail_missing_vars(tmpl_path=tmpl_path, in_dict=in_dict)
+    # if fail_missing:
+    #    _fail_missing_vars(tmpl_path=tmpl_path, in_dict=in_dict)
 
     if f90_bool:
         for (key, value) in in_dict.items():
@@ -527,9 +527,6 @@ def write_from_template(
     # path.
     try:
         tmpl = _get_template(tmpl_path=tmpl_path)
-
-        print(dir(tmpl))
-        quit()
 
         with open(output_file, "w", encoding="utf-8") as file:
             file.write(tmpl.render(in_dict, env=os.environ))
