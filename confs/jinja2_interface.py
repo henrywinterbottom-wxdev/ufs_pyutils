@@ -69,7 +69,7 @@ Functions
 
     write_from_template(tmpl_path, output_file, in_dict,
                         fail_missing=False, rpl_tmpl_mrks=False,
-                        f90_bool=False)
+                        f90_bool=False, skip_missing=False)
 
         This function writes a Jinja2-formatted file established from
         a templated Jinja2-formatted file.
@@ -97,6 +97,7 @@ History
 # pylint: disable=consider-using-f-string
 # pylint: disable=raise-missing-from
 # pylint: disable=too-many-arguments
+# pylint: disable=too-many-locals
 
 # ----
 
@@ -128,7 +129,9 @@ logger = Logger()
 # ----
 
 
-def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
+def _find_missing_vars(
+    tmpl_path: str, in_dict: Dict, fail_missing: bool = False
+) -> List:
     """
     Description
     -----------
@@ -152,6 +155,25 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
         A Python dictionary containing the Jinja2 template key and
         value pairs.
 
+    Keywords
+    --------
+
+    fail_missing: bool, optional
+
+        A Python boolean valued variable specifying whether to raise a
+        Jinja2InterfaceError exception if a Jinja2-formatted template
+        variable has not been specified within the Python dictionary
+        containing the Jinja2 template key and value pairs.
+
+    Returns
+    -------
+
+    missing_vars_list: List
+
+        A Python list containing (any) Jinja2-formatted template
+        variables that have not been specified within the Python
+        dictionary containing the Jinja2 template key and value pairs.
+
     Raises
     ------
 
@@ -160,74 +182,87 @@ def _fail_missing_vars(tmpl_path: str, in_dict: Dict) -> None:
         - raised if variables within the Jinja2-formatted template
           file have not been specified within the Python dictionary
           containing the Jinja2-formatted file template variable key
-          and value pairs (in_dict).
+          and value pairs (in_dict); raised only if `fail_missing` is
+          `True` upon entry.
 
     """
 
     # Check that the Python dictionary is not empty; proceed
     # accordingly.
     if not in_dict:
-        msg = "The Python dictionary `in_dict` provided upon entry is empty. Aborting!!!"
+        msg = (
+            "The Python dictionary `in_dict` provided upon entry is empty. Aborting!!!"
+        )
         raise Jinja2InterfaceError(msg=msg)
 
     # Collect the variables within the Jinja2-formatted template file.
     variables = _get_template_vars(tmpl_path=tmpl_path)
 
-    # If variables are collected, check again by search for the
-    # Jinja2-formatted template variables; proceed accordingly.
-    if len(variables) == 0:
-
-        # Initialize the variables.
-        variables = []
-
-        start_str = "{{"
-        stop_str = "}}"
-
-        # Collect all data from the Jinja2-formatted file.
-        with open(tmpl_path, "r", encoding="utf-8") as file:
-            data = file.read().split("\n")
-
-        # Search for Jinja2-formatted template variables; proceed
-        # accordingly; ignoring template variable with default values.
-        for item in data:
-            if (start_str and stop_str in item) and ("or" not in item):
-
-                start = item.index(start_str)
-                stop = item.index(stop_str)
-
-                string = (item[start + len(start_str): stop].rstrip()).lstrip()
-                variables.append(string)
-
     # Build the list of attribute variables.
-    compare_variables = []
-
-    for item in list(in_dict):
-        if isinstance(item, tuple):
-            compare_variables.append(item[0])
-        else:
-            compare_variables.append(item)
+    compare_variables = _get_defvars(in_dict=in_dict)
 
     # Compare the respective variable lists and find unique (i.e.,
     # missing variables).
-    missing_vars = [
+    missing_vars_list = [
         variable for variable in variables if variable not in compare_variables
     ]
 
-    print(missing_vars)
-    quit()
-
-    # If Jinja2-formatted template file variables have not been
-    # defined, proceed accordingly.
-    if len(missing_vars) != 0:
+    if len(missing_vars_list) != 0:
         msg = (
-            "The following variables have not been defined within the "
-            f"Jinja2-formatted template file {tmpl_path}:\n"
+            "The following Jinja2-templated variables have not been "
+            f"defined: {', '.join(missing_vars_list)}."
         )
-        for missing_var in missing_vars:
-            msg = msg + f"{missing_var}\n"
+        if fail_missing:
+            msg = msg + " Aborting!!!"
+            raise Jinja2InterfaceError(msg=msg)
 
-        msg = msg + "Aborting!!!"
-        raise Jinja2InterfaceError(msg=msg)
+        logger.warn(msg=msg)
+
+    return missing_vars_list
+
+
+# ----
+
+
+def _get_defvars(in_dict: Dict) -> List:
+    """
+    Description
+    -----------
+
+    This function defines a list of the variables provided to populate
+    the respective template; the variable names are collected from the
+    key values of the input Python dictionary `in_dict`.
+
+    Parameters
+    ----------
+
+    in_dict: Dict
+
+        A Python dictionary containing the variables to be used to
+        populate the Jinja2-formatted template.
+
+    Returns
+    -------
+
+    defvars_list: List
+
+        A Python list of the variables defined within the Python
+        dictionary, to populate the Jinja2-formatted template, key and
+        value pairs.
+
+    """
+
+    # Define a list of the specified variables to populate the
+    # respective template.
+    defvars_list = []
+
+    for item in list(in_dict):
+        if isinstance(item, tuple):
+            defvars_list.append(item[0])
+        else:
+            defvars_list.append(item)
+
+    return defvars_list
 
 
 # ----
@@ -381,6 +416,31 @@ def _get_template_vars(tmpl_path: str) -> List:
     # Collect the templated variable names.
     variables = list(meta.find_undeclared_variables(env.parse(tmpl)))
 
+    # If variables are collected, check again by search for the
+    # Jinja2-formatted template variables; proceed accordingly.
+    if len(variables) == 0:
+
+        # Initialize the variables.
+        variables = []
+
+        start_str = "{{"
+        stop_str = "}}"
+
+        # Collect all data from the Jinja2-formatted file.
+        with open(tmpl_path, "r", encoding="utf-8") as file:
+            data = file.read().split("\n")
+
+        # Search for Jinja2-formatted template variables; proceed
+        # accordingly; ignoring template variable with default values.
+        for item in data:
+            if (start_str and stop_str in item) and ("or" not in item):
+
+                start = item.index(start_str)
+                stop = item.index(stop_str)
+
+                string = (item[start + len(start_str): stop].rstrip()).lstrip()
+                variables.append(string)
+
     return variables
 
 
@@ -454,6 +514,7 @@ def write_from_template(
     fail_missing: bool = False,
     rpl_tmpl_mrks: bool = False,
     f90_bool: bool = False,
+    skip_missing: bool = False,
 ) -> None:
     """
     Description
@@ -477,8 +538,8 @@ def write_from_template(
 
     in_dict: Dict
 
-        A Python dictionary containing the Jinja2-formatted file
-        template variable key and value pairs.
+        A Python dictionary containing the template variable key and
+        value pairs.
 
     Keywords
     --------
@@ -489,7 +550,7 @@ def write_from_template(
         variables within the Jinja2-formatted template file have not
         been specified within the Python dictionary containing the
         Jinja2-formatted file template variable key and value pairs
-        (in_dict).
+        (`in_dict`).
 
     rpl_tmpl_mrks: bool, optional
 
@@ -498,10 +559,18 @@ def write_from_template(
         `confs/template_interface.py`, prior to populating the
         Jinja2-formatted template.
 
-    f90_bool: bool
+    f90_bool: bool, optional
 
         A Python boolean valued variable specifying whether to
         transform boolean variables to a FORTRAN 90 format.
+
+    skip_missing: bool, optional
+
+        A Python boolean valued variable specifying whether to skip
+        (i.e., exclude from output) template variables that are not
+        specified within Python dictionary containing the
+        Jinja2-formatted file template variable key and value pairs
+        (`in_dict`).
 
     Raises
     ------
@@ -513,15 +582,34 @@ def write_from_template(
 
     """
 
+    # Format the template and attribute values accordingly.
     if rpl_tmpl_mrks:
         tmpl_path = _replace_tmplmarkers(tmpl_path=tmpl_path)
-
-    if fail_missing:
-        _fail_missing_vars(tmpl_path=tmpl_path, in_dict=in_dict)
 
     if f90_bool:
         for (key, value) in in_dict.items():
             in_dict[key] = parser_interface.f90_bool(value)
+
+    # Determine what, if any, variables have not been specified with
+    # corresponding Python dictionary `in_dict` key and value pairs.
+    missing_vars_list = _find_missing_vars(
+        tmpl_path=tmpl_path, in_dict=in_dict, fail_missing=fail_missing
+    )
+
+    # Read the original template and remove any strings containing
+    # matches to those in `missing_vars_list`; proceed accordingly.
+    if skip_missing:
+        with open(tmpl_path, "r", encoding="utf-8") as file:
+            tmpl_in_list = file.read().split("\n")
+
+        with open(tmpl_path, "w", encoding="utf-8") as file:
+            for tmpl_var in tmpl_in_list:
+                if not any(
+                    missing_var
+                    for missing_var in missing_vars_list
+                    if missing_var in tmpl_var
+                ):
+                    file.write(f"{tmpl_var}\n")
 
     # Open the Jinja2-formatted template file, update the Jinja2
     # template variable(s), and write the results to the output file
@@ -539,7 +627,7 @@ def write_from_template(
         )
         raise Jinja2InterfaceError(msg=msg)
 
-    if rpl_tmpl_mrks:
+    if rpl_tmpl_mrks or skip_missing:
         os.unlink(tmpl_path)
 
 
