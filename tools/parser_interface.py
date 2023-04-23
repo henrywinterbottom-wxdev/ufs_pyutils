@@ -63,6 +63,12 @@ Functions
         This function replaces strings within a (nested) Python
         dictionary and returns the updated (nested) Python dictionary.
 
+    dict_toobject(in_dict)
+
+        This funcction converts and returns the Python dictionary
+        `in_dict`, specified upon entry, to a Python Namespace
+        `out_obj`.
+
     enviro_get(envvar)
 
         This function retrieves the environment variable corresponding
@@ -219,6 +225,7 @@ import copy
 import json
 import os
 import types
+from argparse import Namespace
 from json.decoder import JSONDecodeError
 from typing import Any, Callable, Dict, Generator, List, Tuple, Union
 
@@ -234,6 +241,7 @@ __all__ = [
     "dict_key_value",
     "dict_merge",
     "dict_replace_value",
+    "dict_toobject",
     "enviro_get",
     "enviro_set",
     "f90_bool",
@@ -660,6 +668,42 @@ def dict_replace_value(in_dict: Dict, old: str, new: str) -> Dict:
         out_dict[key] = value
 
     return out_dict
+
+
+# ----
+
+
+def dict_toobject(in_dict: Dict) -> Namespace:
+    """
+    Description
+    -----------
+
+    This funcction converts and returns the Python dictionary
+    `in_dict`, specified upon entry, to a Python Namespace `out_obj`.
+
+    Parameters
+    ----------
+
+    in_dict: Dict
+
+        A Python dictionary containing the attribute key and value
+        pairs to be cast as a Python Namespace.
+
+    Returns
+    -------
+
+    out_obj: Namespace
+
+        A Python Namespace defined by casting the Python dictionary
+        `in_dict` specified upon input to the respective Python
+        Namespace.
+
+    """
+
+    # Define the Python namespace
+    out_obj = Namespace(**in_dict)
+
+    return out_obj
 
 
 # ----
