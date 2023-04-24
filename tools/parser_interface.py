@@ -544,7 +544,7 @@ def dict_key_value(
 # ----
 
 
-def dict_merge(dict1: Dict, dict2: Dict) -> Generator[Dict, Dict, Dict]:
+def dict_merge(dict1: Dict, dict2: Dict) -> Generator[Dict]:
     """
     Description
     -----------
@@ -1102,7 +1102,8 @@ def object_append(object_in: object, object_key: str, dict_in: Dict) -> object:
         object_dict[key] = value
 
     # Build the output Python object.
-    object_out = object_setattr(object_in=object_out, key=object_key, value=object_dict)
+    object_out = object_setattr(
+        object_in=object_out, key=object_key, value=object_dict)
 
     return object_out
 
