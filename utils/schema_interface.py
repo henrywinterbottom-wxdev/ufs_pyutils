@@ -66,7 +66,7 @@ Functions
         multitype:
             variable7: str, int
             variable8: float, bool, str
-        
+
     check_opts(key, valid_opts, data, check_and=False)
 
         This function checks that key and value pair is valid relative
@@ -108,15 +108,11 @@ __email__ = "henry.winterbottom@noaa.gov"
 # ----
 
 from pydoc import locate
-
 from typing import Dict, List
 
-from schema import And, Optional, Or, Schema
-
-from tools import parser_interface
-
-
 from confs.yaml_interface import YAML
+from schema import And, Optional, Or, Schema
+from tools import parser_interface
 
 from utils.exceptions_interface import SchemaInterfaceError
 
@@ -160,6 +156,7 @@ def __andopts__(key: str, valid_opts: List) -> Dict:
     schema_dict = {f"{key}": And(str, lambda opt: opt in valid_opts)}
 
     return schema_dict
+
 
 # ----
 
@@ -238,57 +235,68 @@ def build_schema(yaml_path: str) -> Dict:
     schema_dict = {}
 
     required_dict = parser_interface.dict_key_value(
-        dict_in=yaml_dict, key="required", force=True)
+        dict_in=yaml_dict, key="required", force=True
+    )
     if required_dict is not None:
         for (required_key, required_value) in required_dict.items():
             schema_dict[required_key] = locate(required_value)
 
     # Define any optional schema attributes; proceed accordingly.
     optional_dict = parser_interface.dict_key_value(
-        dict_in=yaml_dict, key="optional", force=True)
+        dict_in=yaml_dict, key="optional", force=True
+    )
     if optional_dict is not None:
         for varname in optional_dict:
 
             varname_dict = parser_interface.dict_key_value(
-                dict_in=optional_dict, key=varname, force=True)
+                dict_in=optional_dict, key=varname, force=True
+            )
             if varname_dict is None:
-                msg = (f"The schema entry for optional variable {varname} in "
-                       f"YAML-formatted file path {yaml_path} is not defined "
-                       f"correctly; expected Dict but received NoneType. "
-                       "Aborting!!!"
-                       )
+                msg = (
+                    f"The schema entry for optional variable {varname} in "
+                    f"YAML-formatted file path {yaml_path} is not defined "
+                    f"correctly; expected Dict but received NoneType. "
+                    "Aborting!!!"
+                )
                 raise SchemaInterfaceError(msg=msg)
 
             varname_obj = parser_interface.dict_toobject(in_dict=varname_dict)
-            schema_dict[Optional(varname, default=varname_obj.default)] = \
-                locate(varname_obj.type)
+            schema_dict[Optional(varname, default=varname_obj.default)] = locate(
+                varname_obj.type
+            )
 
     # Define any schema attributes permitted to have multiple
     # supported Python data types; proceed accordingly.
     multitype_dict = parser_interface.dict_key_value(
-        dict_in=yaml_dict, key="multitype", force=True)
+        dict_in=yaml_dict, key="multitype", force=True
+    )
     if multitype_dict is not None:
         for varname in multitype_dict:
 
             if not isinstance(multitype_dict[varname], str):
-                msg = (f"Multiple type variable {varname} in YAML-formatted file path "
-                       f"{yaml_path} is not valid; expected str but received "
-                       f"{type(multitype_dict[varname])}. Aborting!!!"
-                       )
+                msg = (
+                    f"Multiple type variable {varname} in YAML-formatted file path "
+                    f"{yaml_path} is not valid; expected str but received "
+                    f"{type(multitype_dict[varname])}. Aborting!!!"
+                )
                 raise SchemaInterfaceError(msg=msg)
 
             if len(multitype_dict[varname]) <= 1:
-                msg = ("Multi-type variables must contain 2 or more supported Python types; "
-                       f"for variable {varname} in YAML-formatted file path {yaml_path} "
-                       f"received {multitype_dict[varname]}. Aborting!!!"
-                       )
+                msg = (
+                    "Multi-type variables must contain 2 or more supported Python types; "
+                    f"for variable {varname} in YAML-formatted file path {yaml_path} "
+                    f"received {multitype_dict[varname]}. Aborting!!!"
+                )
                 raise SchemaInterfaceError(msg=msg)
 
-            type_gen = (locate(vartype.strip())
-                        for vartype in multitype_dict[varname].split(","))
+            type_gen = (
+                locate(vartype.strip())
+                for vartype in multitype_dict[varname].split(",")
+            )
 
-            schema_dict[varname] = Or(*(
-                next(type_gen) for vartype in multitype_dict[varname].split(",")))
+            schema_dict[varname] = Or(
+                *(next(type_gen) for vartype in multitype_dict[varname].split(","))
+            )
 
     return schema_dict
 
