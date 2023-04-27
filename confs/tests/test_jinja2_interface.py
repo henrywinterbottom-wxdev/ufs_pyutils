@@ -141,7 +141,7 @@ class TestJinja2Methods(TestCase):
         -----------
 
         This method provides a unit-test for the jinja2_interface
-        module write_from_template function.
+        module `write_from_template` function.
 
         """
 

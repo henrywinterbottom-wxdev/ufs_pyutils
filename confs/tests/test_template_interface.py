@@ -125,7 +125,8 @@ class TestTemplateMethods(TestCase):
         dirpath = os.path.join(os.getcwd(), "tests")
         self.tmpl_check = os.path.join(dirpath, "test_files", "template.check")
         self.tmpl_path = os.path.join(dirpath, "template.test")
-        self.template_path = os.path.join(dirpath, "test_files", "template.template")
+        self.template_path = os.path.join(
+            dirpath, "test_files", "template.template")
 
         # Define the message to accompany any unit-test failures.
         self.unit_test_msg = "The unit-test for template_interface failed."
@@ -157,7 +158,7 @@ class TestTemplateMethods(TestCase):
         Description
         -----------
 
-        This method provides a unit-test for the yaml_interface
+        This method provides a unit-test for the template_interface
         module.
 
         """
