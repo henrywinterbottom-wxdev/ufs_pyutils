@@ -409,7 +409,7 @@ def validate_opts(cls_schema: Dict, cls_opts: Dict) -> None:
     try:
 
         # Validate the schema.
-        schema.validate([cls_opts])
+        schema.validate([cls_opts], ignore_extra_keys=True)
 
     except Exception as errmsg:
 
