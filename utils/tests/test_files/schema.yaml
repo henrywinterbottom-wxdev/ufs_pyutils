@@ -1,0 +1,19 @@
+required:
+     variable1: bool
+     variable2: float
+     variable3: int
+
+optional:
+     variable4:
+          type: bool
+          default: False
+     variable5:
+          type: bool
+          default: True
+     variable6:
+          type: float
+          default: 1.0
+
+multitype:
+     variable7: str, int
+     variable8: float, bool, str

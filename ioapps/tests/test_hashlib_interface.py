@@ -188,7 +188,7 @@ class TestHashLibMethods(TestCase):
         -----------
 
         This method provides a unit-test for the hashlib_interface
-        get_hash function.
+        `get_hash` function.
 
         """
 

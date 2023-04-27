@@ -169,7 +169,7 @@ class TestTCVitalsMethods(TestCase):
         -----------
 
         This method provides a unit-test for the tcvitals_interface
-        write_tcvfile function.
+        `write_tcvfile` function.
 
         """
 
@@ -191,7 +191,7 @@ class TestTCVitalsMethods(TestCase):
         -----------
 
         This method provides a unit-test for the tcvitals_interface
-        write_tcvstr function.
+        `write_tcvstr` function.
 
         """
 
@@ -245,7 +245,8 @@ class TestTCVitalsMethods(TestCase):
             tcvstr = tcvitals_interface.write_tcvstr(
                 tcvit_obj=tcvit_obj).split()[:-1]
 
-            assert tcvstr == list(tc.split()), self.unit_test_msg.format("write_tcvstr")
+            assert tcvstr == list(
+                tc.split()), self.unit_test_msg.format("write_tcvstr")
 
 
 # ----

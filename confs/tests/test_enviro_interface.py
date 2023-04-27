@@ -103,7 +103,7 @@ class TestEnviroMethods(TestCase):
         -----------
 
         This method provides a unit-test for the enviro_interface
-        enviro_to_obj function.
+        `enviro_to_obj` function.
 
         """
 
