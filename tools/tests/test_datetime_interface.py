@@ -100,7 +100,7 @@ class TestDateTimeMethods(TestCase):
         -----------
 
         This method provides a unit test for the datetime_interface
-        datestrcomps function.
+        `datestrcomps` function.
 
         """
 
@@ -150,7 +150,7 @@ class TestDateTimeMethods(TestCase):
         -----------
 
         This method provides a unit test for the datetime_interface
-        datestrfrmt function.
+        `datestrfrmt` function.
 
         """
 
@@ -189,7 +189,7 @@ class TestDateTimeMethods(TestCase):
         -----------
 
         This method provides a unit test for the datetime_interface
-        datestrupdate function.
+        `datestrupdate` function.
 
         """
 
@@ -220,7 +220,7 @@ class TestDateTimeMethods(TestCase):
         -----------
 
         This method provides a unit test for the datetime_interface
-        elapsed_seconds function.
+        `elapsed_seconds` function.
 
         """
 
