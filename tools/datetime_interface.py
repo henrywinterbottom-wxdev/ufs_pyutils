@@ -84,8 +84,8 @@ Functions
         date string (date_string; formatted as %Y-%m-%d_%H:%M:%S,
         assuming the POSIX convention)
 
-        cycle string (cycle_string; formatted as %Y%m%d%H, assuming
-        the POSIX convention)
+        cycle string (cycle_string; formatted as %Y%m%d%H%M%S,
+        assuming the POSIX convention)
 
         Julian date (julian_day)
 
