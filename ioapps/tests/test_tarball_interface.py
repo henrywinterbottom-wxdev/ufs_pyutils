@@ -147,7 +147,7 @@ class TesTarFileMethods(TestCase):
         -----------
 
         This method provides a unit-test for the tarfile_interface
-        read_tarfile function.
+        `read_tarfile` function.
 
         """
 
@@ -173,7 +173,7 @@ class TesTarFileMethods(TestCase):
         -----------
 
         This method provides a unit-test for the tarfile_interface
-        write_tarfile function.
+        `write_tarfile` function.
 
         """
 

@@ -60,7 +60,6 @@ History
 
 # pylint: disable=too-many-instance-attributes
 
-
 # ----
 
 __author__ = "Henry R. Winterbottom"
@@ -187,7 +186,7 @@ class TestNetCDF4Methods(TestCase):
         -----------
 
         This method provides a unit-test for the netcdf4_interface
-        nccheck function.
+        `nccheck` function.
 
         """
 
@@ -204,7 +203,7 @@ class TestNetCDF4Methods(TestCase):
         -----------
 
         This method provides a unit-test for the netcdf4_interface
-        ncreaddim function.
+        `ncreaddim` function.
 
         """
 
@@ -224,7 +223,7 @@ class TestNetCDF4Methods(TestCase):
         -----------
 
         This smethod provides a unit-test for the netcdf4_interface
-        ncwrite function.
+        `ncreadvar` function.
 
         """
 
@@ -247,7 +246,7 @@ class TestNetCDF4Methods(TestCase):
         -----------
 
         This smethod provides a unit-test for the netcdf4_interface
-        ncvarexist function.
+        `ncvarexist` function.
 
         """
 
@@ -274,7 +273,7 @@ class TestNetCDF4Methods(TestCase):
         -----------
 
         This method provides a unit-test for the netcdf4_interface
-        ncwrite function.
+        `ncwrite` function.
 
         """
 
