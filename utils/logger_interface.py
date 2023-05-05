@@ -237,7 +237,7 @@ class Logger:
         )
 
         # Write the respective logger level message.
-        if self.caller_name not None:
+        if self.caller_name is not None:
             msg = f"{self.caller_name}: " + msg
         getattr(log, f"{loglev}")(msg)
 
