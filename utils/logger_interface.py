@@ -76,6 +76,15 @@ class Logger:
 
     This is the base-class object for all logger-type messages.
 
+    Keywords
+    --------
+
+    caller_name: str
+
+        A Python string usually designating the caller instance name
+        to appended to the message string (`msg`); if NoneType upon
+        entry the `msg` is not modified.
+
     """
 
     def __init__(self: object, caller_name: str = None):
