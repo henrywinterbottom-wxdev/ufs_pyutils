@@ -78,7 +78,7 @@ class Logger:
 
     """
 
-    def __init__(self: object):
+    def __init__(self: object, caller_name: str = None):
         """
         Description
         -----------
@@ -91,6 +91,7 @@ class Logger:
         self.log_format = "%(asctime)s :: %(levelname)s :: %(message)s"
         self.date_format = "%Y-%m-%d %H:%M:%S"
         self.stream = sys.stdout
+        self.caller_name = caller_name
 
         # Define the logger object format string colors; note that all
         # supported base-class logger level types must be defined
@@ -236,6 +237,8 @@ class Logger:
         )
 
         # Write the respective logger level message.
+        if self.caller_name not None:
+            msg = f"{self.caller_name}: " + msg
         getattr(log, f"{loglev}")(msg)
 
     # The base-class logger CRITICAL level interface.
