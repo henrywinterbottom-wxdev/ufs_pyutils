@@ -17,7 +17,8 @@
 
 # =========================================================================
 
-"""Module
+"""
+Module
 ------
 
     test_schema_interface.py
@@ -65,6 +66,7 @@ import os
 import unittest
 from unittest import TestCase
 
+from confs.yaml_interface import YAML
 from utils import schema_interface
 from utils.exceptions_interface import SchemaInterfaceError
 
@@ -103,8 +105,6 @@ class TestSchemaMethods(TestCase):
             "variable4": True,
             "variable5": False,
             "variable6": -1.0,
-            "variable7": "ham",
-            "variable8": True,
         }
 
         self.test2_schema_dict = {
@@ -114,16 +114,12 @@ class TestSchemaMethods(TestCase):
             "variable4": True,
             "variable5": False,
             "variable6": -1.0,
-            "variable7": "ham",
-            "variable8": True,
         }
 
         self.test3_schema_dict = {
             "variable1": False,
             "variable2": 10.0,
             "variable3": 4,
-            "variable7": "ham",
-            "variable8": True,
         }
 
         # Define the message to accompany any unit-test failures.
@@ -140,7 +136,8 @@ class TestSchemaMethods(TestCase):
         """
 
         # Define the schema attributes.
-        schema_dict = schema_interface.build_schema(yaml_path=self.yaml_path)
+        schema_def_dict = YAML().read_yaml(yaml_file=self.yaml_path)
+        schema_dict = schema_interface.build_schema(schema_def_dict=schema_def_dict)
 
         # Perform the schema validation unit-tests; check that the
         # schema is valid.
