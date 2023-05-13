@@ -124,6 +124,8 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
+import textwrap
+
 from collections import OrderedDict
 from pydoc import locate
 from typing import Dict, List
@@ -184,7 +186,8 @@ def __andopts__(key: str, valid_opts: List) -> Dict:
 # ----
 
 
-def __buildtbl__(cls_schema: Dict, cls_opts: Dict, logger_method: str) -> None:
+def __buildtbl__(cls_schema: Dict, cls_opts: Dict, logger_method: str,
+                 width: int) -> None:
     """
     Description
     -----------
@@ -211,6 +214,13 @@ def __buildtbl__(cls_schema: Dict, cls_opts: Dict, logger_method: str) -> None:
         A Python string specifying the logger method to be usedf to
         write the schema attributes table.
 
+    width: int
+
+        A Python integer defining the maximum number of characters
+        (including spaces) for a string; this applies only to
+        instances (if any) of strings to be wrapped among multiple
+        rows of the table.
+
     Raises
     ------
 
@@ -221,23 +231,48 @@ def __buildtbl__(cls_schema: Dict, cls_opts: Dict, logger_method: str) -> None:
 
     """
 
-    # Build the table attributes.
+    # Define the table attributes.
     header = ["Variable", "Type", "Optional", "Value"]
     table = []
+
+    # Build the table; proceed accordingly.
     for (cls_key, _) in OrderedDict(cls_schema).items():
-        if "bool" in cls_schema[cls_key].__name__:
-            value = str(bool(cls_opts[cls_key]))
-        else:
-            value = cls_opts[cls_key.key]
 
+        # Determine required versus optional-type variables; proceed
+        # accordingly.
         if isinstance(cls_key, Optional):
-            msg = [cls_key.key, cls_schema[cls_key].__name__, "True", value]
+            cls_str = cls_key.key
+            value = cls_opts[cls_key.key]
+            optional = True
+        else:
+            cls_str = cls_key
+            value = cls_opts[cls_key]
+            optional = False
 
-        if not isinstance(cls_key, Optional):
-            msg = [cls_key, cls_schema[cls_key].__name__, "False", value]
-        table.append(msg)
+        # Define a Python string defining the schema attribute data
+        # type; proceed accordingly.
+        dtype = cls_schema[cls_key].__name__
+        if "bool" in dtype:
+            value = str(value)
+        elif "str" in dtype:
+            str_list = textwrap.wrap(value, width=width)
+        else:
+            pass
 
-    # Write the table using the logger method.
+        # Define the table attributes for the respective schema
+        # attribute; proceed accordingly.
+        if "str" in dtype:
+            value = str_list[0]
+            msg = [cls_key, cls_schema[cls_key].__name__, f"{optional}", value]
+            table.append(msg)
+            for item in str_list[1::]:
+                msg = [None, None, None, item]
+                table.append(msg)
+        else:
+            msg = [cls_str, cls_schema[cls_key].__name__, f"{optional}", value]
+            table.append(msg)
+
+    # Define and write the table using the specified logger method.
     msg = (
         "\n\n"
         + tabulate(
@@ -245,7 +280,7 @@ def __buildtbl__(cls_schema: Dict, cls_opts: Dict, logger_method: str) -> None:
             header,
             tablefmt="outline",
             numalign=("center", "center", "center", "center"),
-            colalign=("center", "center", "center", "center"),
+            colalign=("center", "center", "center", "left"),
             disable_numparse=True,
         )
         + "\n\n"
@@ -310,14 +345,14 @@ def build_schema(schema_def_dict: Dict) -> Dict:
     Description
     -----------
 
-    This function builds a schema provided a YAML-formatted file
+    This function builds a schema provided a Python dictionary
     containing the variable types and attributes (if necessary);
     supported schema types are mandatory (e.g., `required = True`) and
     optional (e.g., `required = False` or is not defined within the
     schema definitions (`schema_def_dict` key and value pairs.
 
-    The YAML-formatted file containing the schema attributes should be
-    formatted similar to the example below.
+    A YAML-formatted file snippet describing the schema attributes is
+    as follows.
 
     variable1:
         required: False
@@ -545,6 +580,7 @@ def validate_schema(
     ignore_extra_keys: bool = True,
     write_table: bool = True,
     logger_method: str = "info",
+    width: int = 50
 ) -> Dict:
     """
     Description
@@ -588,6 +624,13 @@ def validate_schema(
         A Python string specifying the logger method to be usedf to
         write the schema attributes table.
 
+    width: int, optional
+
+        A Python integer defining the maximum number of characters
+        (including spaces) for a string; this applies only to
+        instances (if any) of strings to be wrapped among multiple
+        rows of the table.
+
     Returns
     -------
 
@@ -623,7 +666,8 @@ def validate_schema(
     schema.validate([cls_opts])
     if write_table:
         __buildtbl__(
-            cls_schema=cls_schema, cls_opts=cls_opts, logger_method=logger_method
+            cls_schema=cls_schema, cls_opts=cls_opts, logger_method=logger_method,
+            width=width
         )
 
     return cls_opts
