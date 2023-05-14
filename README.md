@@ -2,7 +2,7 @@
 ![Linux](https://img.shields.io/badge/linux-ubuntu%7Ccentos-lightgrey)
 ![Python Version](https://img.shields.io/badge/python-3.5|3.6|3.7-blue)
 
-![Dependencies](https://img.shields.io/badge/dependencies-astropy_boto3_bs4_croniter_lxml_netcdf4_numpy_pyyaml_schema_xmltodict-orange)
+![Dependencies](https://img.shields.io/badge/dependencies-astropy_boto3_bs4_croniter_lxml_netcdf4_numpy_pyyaml_schema_tabulate_xmltodict-orange)
 
 [![Build Tests](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/buildtest.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/buildtest.yaml)
 [![Unit Tests](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/unittests.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/unittests.yaml)
@@ -53,6 +53,7 @@ installation attributes are provided in the table below.
 | [`numpy`](https://github.com/numpy/numpy) | <div align="left">`pip install numpy==1.22.4`</div> |
 | [`pyyaml`](https://github.com/yaml/pyyaml) | <div align="left">`conda install -c anaconda pyyaml==6.0`</div> |
 | [`schema`](https://github.com/keleshev/schema) | <div align="left">`pip install schema==0.7.5`</div> |
+| [`tabulate`](https://github.com/gregbanks/python-tabulate) | <div align="left">`pip install tabulate==0.9.0`</div> | 
 | [`xmltodict`](https://github.com/martinblech/xmltodict) | <div align="left">`pip install xmltodict==0.13.0`</div> |
 
 </div>
