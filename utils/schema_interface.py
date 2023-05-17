@@ -235,7 +235,8 @@ def __buildtbl__(
     """
 
     # Define the table attributes.
-    header = ["Variable", "Type", "Optional", "Default Value", "Assigned Value"]
+    header = ["Variable", "Type", "Optional",
+              "Default Value", "Assigned Value"]
     table = []
 
     # Build the table; proceed accordingly.
@@ -272,18 +273,25 @@ def __buildtbl__(
         # Define the table attributes for the respective schema
         # attribute; proceed accordingly.
         if "str" in dtype:
+
             if optional:
-                default = defstr_list[0]
+                try:
+                    default = defstr_list[0]
+                except TypeError:
+                    default = defstr_list
             else:
                 default = None
             value = str_list[0]
-            msg = [cls_str, cls_schema[cls_key].__name__, f"{optional}", default, value]
+            msg = [cls_str, cls_schema[cls_key].__name__,
+                   f"{optional}", default, value]
+            print(msg)
             table.append(msg)
             for (_, item) in enumerate(str_list[1::]):
                 msg = [None, None, None, None, item]
                 table.append(msg)
         else:
-            msg = [cls_str, cls_schema[cls_key].__name__, f"{optional}", default, value]
+            msg = [cls_str, cls_schema[cls_key].__name__,
+                   f"{optional}", default, value]
             table.append(msg)
 
     # Define and write the table using the specified logger method.
@@ -442,7 +450,8 @@ def build_schema(schema_def_dict: Dict) -> Dict:
         if required:
             schema_attr_dict[schema_key] = locate(dtype)
         else:
-            schema_attr_dict[Optional(schema_key, default=default)] = locate(dtype)
+            schema_attr_dict[Optional(
+                schema_key, default=default)] = locate(dtype)
 
     return schema_attr_dict
 
@@ -560,7 +569,8 @@ def validate_opts(
     """
 
     # Define the schema.
-    schema = __def_schema__(schema_dict=cls_schema, ignore_extra_keys=ignore_extra_keys)
+    schema = __def_schema__(schema_dict=cls_schema,
+                            ignore_extra_keys=ignore_extra_keys)
 
     # Check that the class attributes are valid; proceed accordingly.
     try:
@@ -647,7 +657,8 @@ def validate_schema(
     """
 
     # Define the schema.
-    schema = __def_schema__(schema_dict=cls_schema, ignore_extra_keys=ignore_extra_keys)
+    schema = __def_schema__(schema_dict=cls_schema,
+                            ignore_extra_keys=ignore_extra_keys)
 
     # Check that any optional schema attributes have been specified by
     # the calling class attributes (`cls_opts`); if not, assign the
