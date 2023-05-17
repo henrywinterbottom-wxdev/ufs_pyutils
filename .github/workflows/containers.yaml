@@ -86,7 +86,7 @@ jobs:
     - name: Build the Docker images.
       run: |
            cd $GITHUB_WORKSPACE/ufs_pyutils/Docker
-           docker build -f ubuntu20.04-miniconda-ufs_pyutils.docker --tag ubuntu20.04-miniconda-ufs_pyutils:latest .
-           docker build -f ubuntu20.04.hello_world.docker --tag ubuntu20.04.hello_world.docker:latest .
+           docker build -f ubuntu20.04-miniconda-ufs_pyutils.dockerfile --tag ubuntu20.04-miniconda-ufs_pyutils:latest .
+           docker build -f ubuntu20.04.hello_world.dockerfile --tag ubuntu20.04.hello_world:latest .
 
            
