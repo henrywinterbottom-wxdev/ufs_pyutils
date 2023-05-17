@@ -1,6 +1,6 @@
 # =========================================================================
 
-# Docker Recipe File: Docker/ubuntu20.04.hello_world.docker
+# Docker Recipe File: Docker/ubuntu20.04.hello_world.dockerfile
 
 # Email: henry.winterbottom@noaa.gov
 
@@ -30,9 +30,7 @@
 
 #    The Docker container image should be built as follows.
 
-#    user@host:$ docker build -f ubuntu20.04.hello_world.docker --tag ubuntu20.04.hello_world:<TAG> .
-
-#    user@host:$ docker tag ubuntu20.04.hello_world:<TAG> <DOCKER LOGIN>/ubuntu20.04.hello_world:<TAG>
+#    user@host:$ docker build -f ubuntu20.04.hello_world.dockerfile --tag <DOCKER LOGIN>/ubuntu20.04.hello_world:<TAG> .
 
 #    user@host:$ docker push <DOCKER LOGIN>/ubuntu20.04.hello_world:<TAG>
 
@@ -63,7 +61,7 @@
 
 # Define the container base information.
 FROM ubuntu:20.04
-MAINTAINER "Henry R. Winterbottom (Henry.Winterbottom@noaa.gov)"
+LABEL noaaufsrnr/ubuntu20.04.hello_world.image.authors="Henry.Winterbottom@noaa.gov"
 
 # Define the application launched upon container execution.
 ENTRYPOINT ["echo", "HELLO UFS TOOLS USER!!!"]

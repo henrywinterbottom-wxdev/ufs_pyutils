@@ -1,6 +1,6 @@
 # =========================================================================
 
-# Docker Recipe File: Docker/el7-miniconda-ufs_pyutils.docker
+# Docker Recipe File: Docker/ubuntu20.04-miniconda-ufs_pyutils.dockerfile
 
 # Email: henry.winterbottom@noaa.gov
 
@@ -21,13 +21,7 @@
 #    This Docker recipe file builds a Docker image containing the
 #    following packages.
 
-#    - AMD 64 CentOS 7 base Linux image;
-
-#    - Docker Engine (https://docs.docker.com/engine/);
-
-#    - GO programming language (https://go.dev/; required by Singularity);
-
-#    - Singularity (https://sylabs.io/singularity/).
+#    - Ubuntu 20.08 base Linux image;
 
 #    - Miniconda Python 3.9+ stack;
 
@@ -38,11 +32,9 @@
 
 #    The Docker container image should be built as follows.
 
-#    user@host:$ docker build -f el7-miniconda-ufs_pyutils.docker --tag el7-miniconda-ufs_pyutils:<TAG> .
+#    user@host:$ docker build -f ubuntu20.04-miniconda-ufs_pyutils.dockerfile --tag noaaufsrnr/ubuntu20.04-miniconda-ufs_pyutils:<TAG> .
 
-#    user@host:$ docker tag el7-miniconda-ufs_pyutils:<TAG> <DOCKER LOGIN>/el7-miniconda-ufs_pyutils:<TAG>
-
-#    user@host:$ docker push <DOCKER LOGIN>/el7-miniconda-ufs_pyutils:<TAG>
+#    user@host:$ docker push <DOCKER LOGIN>/ubuntu20.04-miniconda-ufs_pyutils:<TAG>
 
 #    where <TAG> is the tag identifier/name for the respective image
 #    and <DOCKER LOGIN> is the user Docker Hub login name.
@@ -50,17 +42,17 @@
 # Author(s)
 # ---------
 
-#    Henry R. Winterbottom; 14 January 2023 
+#    Henry R. Winterbottom; 17 January 2023 
 
 # History
 # -------
 
-#    2023-01-14: Henry R. Winterbottom -- Initial implementation.
+#    2023-01-17: Henry R. Winterbottom -- Initial implementation.
 
 # Base Image Attributes
 # ---------------------
 
-#    Image and Tag: noaaufsrnr/el7-docker-singularity:latest
+#    Image and Tag: ubuntu:20.04
 
 # External Package Dependencies
 # -----------------------------
@@ -69,16 +61,24 @@
 
 #    ufs_pyutils; https://github.com/HenryWinterbottom-NOAA/ufs_pyutils
 
-# Container Image Downloads
-# -------------------------
+# Latest Container Image Downloads
+# --------------------------------
 
-#    Docker Hub: docker pull noaaufsrnr/el7-miniconda-ufs_pyutils.docker:<TAG>
+#    Docker Hub: docker pull noaaufsrnr/ubuntu20.04-miniconda-ufs_pyutils:<TAG>
 
 # ----
 
 # Define the container base information.
-FROM noaaufsrnr/el7-docker-singularity:latest
-MAINTAINER "Henry R. Winterbottom (Henry.Winterbottom@noaa.gov)"
+FROM ubuntu:20.04
+LABEL noaaufsrnr/ubuntu20.04-miniconda_ufs_pyutils.image.authors="Henry.Winterbottom@noaa.gov"
+
+# ----
+
+# Build the Linux platform.
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends wget && \
+    apt-get install -y git && \
+    rm -rf /var/lib/apt/lists/*
 
 # ----
 
