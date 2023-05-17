@@ -284,7 +284,6 @@ def __buildtbl__(
             value = str_list[0]
             msg = [cls_str, cls_schema[cls_key].__name__,
                    f"{optional}", default, value]
-            print(msg)
             table.append(msg)
             for (_, item) in enumerate(str_list[1::]):
                 msg = [None, None, None, None, item]
