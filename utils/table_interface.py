@@ -32,7 +32,7 @@ Description
 Functions
 ---------
 
-    __buildtbl__(table_obj, logger_method)
+    __buildtbl__(table_obj)
 
         This function builds composes a table using to be returned by
         the specified logger method.
@@ -48,7 +48,7 @@ Functions
         This method determines and returns the total number of columns
         for the respective table.
 
-    compose(table_obj, logger_method="info")
+    compose(table_obj)
 
         This method composes and outputs the specified table in
         accordance with the attributes specified within the
@@ -90,7 +90,7 @@ logger = Logger(caller_name=__name__)
 # ----
 
 
-def __buildtbl__(table_obj: SimpleNamespace, logger_method) -> SimpleNamespace:
+def __buildtbl__(table_obj: SimpleNamespace) -> str:
     """
     Description
     -----------
@@ -106,32 +106,26 @@ def __buildtbl__(table_obj: SimpleNamespace, logger_method) -> SimpleNamespace:
         A Python SimpleNamespace object containing the table
         attributes.
 
-    logger_method: str
+    Returns
+    -------
 
-        A Python string specifying the logger-type for the logger
-        message containing the respective table.
+    table: str
+
+        A Python string containing the composed table.
 
     """
 
     # Build the table accordingly.
-    msg = (
-        "\n\n"
-        + tabulate(
-            table_obj.table,
-            table_obj.header,
-            tablefmt=table_obj.tablefmt,
-            numalign=table_obj.numalign,
-            colalign=table_obj.colalign,
-            disable_numparse=table_obj.disable_numparse,
-        )
-        + "\n\n"
+    table = tabulate(
+        table_obj.table,
+        table_obj.header,
+        tablefmt=table_obj.tablefmt,
+        numalign=table_obj.numalign,
+        colalign=table_obj.colalign,
+        disable_numparse=table_obj.disable_numparse,
     )
 
-    # Write the table using the specified logger method.
-    logmethod = parser_interface.object_getattr(
-        object_in=logger, key=logger_method.lower(), force=True
-    )
-    logmethod(msg=msg)
+    return table
 
 
 # ----
@@ -239,7 +233,7 @@ def __getncols__(table_obj: SimpleNamespace) -> int:
 # ----
 
 
-def compose(table_obj: SimpleNamespace, logger_method: str = "info") -> None:
+def compose(table_obj: SimpleNamespace) -> str:
     """
     Description
     -----------
@@ -256,16 +250,17 @@ def compose(table_obj: SimpleNamespace, logger_method: str = "info") -> None:
         A Python SimpleNamespace object containing the table
         attributes.
 
-    Keywords
-    --------
+    Returns
+    -------
 
-    logger_method: str, optional
+    table: str
 
-        A Python string specifying the logger-type for the logger
-        message containing the respective table.
+        A Python object containing the composed table.
 
     """
 
     # Evaluate the schema and compose the respective table.
     table_obj = __chkschema__(table_obj=table_obj)
-    __buildtbl__(table_obj=table_obj, logger_method=logger_method)
+    table = __buildtbl__(table_obj=table_obj)
+
+    return table
