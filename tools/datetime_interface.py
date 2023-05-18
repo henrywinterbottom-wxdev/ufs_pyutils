@@ -108,6 +108,13 @@ Functions
         positive and negative values for `offset_seconds` is
         supported.
 
+    datestr_list(datestr_start, datestr_stop, offset_seconds,
+                 in_frmttyp, out_frmttyp)
+
+        This function defines and returns a list of timestamp strings
+        in accordance with the parameter attributes specified upon
+        entry.
+
     datestrupdate(datestr, in_frmttyp, out_frmttyp,
                   offset_seconds=None)
 
@@ -165,6 +172,11 @@ import datetime
 import sqlite3
 import time
 
+from typing import List
+from types import SimpleNamespace
+
+from utils.exceptions_interface import DateTimeInterfaceError
+
 import croniter
 from utils import timestamp_interface
 
@@ -178,6 +190,7 @@ __all__ = [
     "current_date",
     "datestrcomps",
     "datestrfrmt",
+    "datestrlist",
     "datestrupdate",
     "elapsed_seconds",
     "epoch_to_datestr",
@@ -325,7 +338,7 @@ def current_date(frmttyp: str, is_utc: bool = False) -> str:
 # ----
 
 
-def datestrcomps(datestr: str, frmttyp: str) -> object:
+def datestrcomps(datestr: str, frmttyp: str) -> SimpleNamespace:
     """
     Description
     -----------
@@ -334,45 +347,46 @@ def datestrcomps(datestr: str, frmttyp: str) -> object:
     date string component values; the following attributes are
     returned:
 
-    year (year)
+       - year (year)
 
-    month of year (month)
+       - month of year (month)
 
-    day of month (day)
+       - day of month (day)
 
-    hour of day (hour)
+       - hour of day (hour)
 
-    minute of hour (minute)
+       - minute of hour (minute)
 
-    second of minute (second)
+       - second of minute (second)
 
-    full month name (month_name_long)
+       - full month name (month_name_long)
 
-    abbreviated month name (month_name_short)
+       - abbreviated month name (month_name_short)
 
-    full day name (weekday_long)
+       - full day name (weekday_long)
 
-    abbreviated day name (weekday_short)
+       - abbreviated day name (weekday_short)
 
-    2-digit century (e.g., 2015 is 20; century_short)
+       - 2-digit century (e.g., 2015 is 20; century_short)
 
-    2-digit year (e.g., year without the century value; year_short)
+       - 2-digit year (e.g., year without the century value;
+         year_short)
 
-    date string (date_string; formatted as %Y-%m-%d_%H:%M:%S, assuming
-    the POSIX convention)
+       - date string (date_string; formatted as %Y-%m-%d_%H:%M:%S,
+         assuming the POSIX convention)
 
-    cycle string (cycle_string; formatted as %Y%m%d%H, assuming the
-    POSIX convention)
+       - cycle string (cycle_string; formatted as %Y%m%d%H, assuming
+         the POSIX convention)
 
-    Julian date (julian_day)
+       - Julian date (julian_day)
 
-    The HH:MM:SS as the total elapsed seconds, formatted as 5-digit
-    integer (total_seconds_of_day)
+       - The HH:MM:SS as the total elapsed seconds, formatted as
+         5-digit integer (total_seconds_of_day)
 
-    The day of the year (day_of_year); begins from day 1 of respective
-    year.
+       - The day of the year (day_of_year); begins from day 1 of
+         respective year.
 
-    epoch (seconds since 0000 UTC 01 January 1970).
+       - epoch (seconds since 0000 UTC 01 January 1970).
 
     Parameters
     ----------
@@ -389,17 +403,15 @@ def datestrcomps(datestr: str, frmttyp: str) -> object:
     Returns
     -------
 
-    date_comps_obj: object
+    date_comps_obj: SimpleNamespace
 
-        A Python object containing the date string component values
-        for the user specfied date string.
+        A Python SimpleNamespace object containing the date string
+        component values for the user specfied date string.
 
     """
 
     # Initialize the Python datetime objects.
-    def date_comps_obj():
-        return None
-
+    date_comps_obj = parser_interface.object_define()
     dateobj = _get_dateobj(datestr, frmttyp)
 
     # Loop through timestamp attributes and append values to local
@@ -535,6 +547,85 @@ def datestrfrmt(datestr: str, frmttyp: str, offset_seconds: int = None) -> str:
 
     return outdatestr
 
+# ----
+
+
+def datestrlist(datestr_start: str, datestr_stop: str, offset_seconds: int,
+                in_frmttyp: str, out_frmttyp: str) -> List:
+    """
+    Description
+    -----------
+
+    This function defines and returns a list of timestamp strings in
+    accordance with the parameter attributes specified upon entry.
+
+    Parameters
+    ----------
+
+    datestr_start: str
+
+        A Python string defining the start timestamp for the interval.
+
+    datestr_stop: str
+
+        A Python string defining the stop timestamp for the interval.
+
+    offset_seconds: int
+
+        A Python integer defining the interval in seconds for
+        timestamp string definition within the interval defined by
+        `datestr_start` and `datestr_stop` upon entry.
+
+    in_frmttyp: str
+
+        A Python string specifying the POSIX convention for the
+        `datestr_start` and `datestr_stop` variables upon input.
+
+    out_frmttyp: str
+
+        A Python string specifying the POSIX convention for format of
+        the timestamps within the returned list.
+
+    Returns
+    -------
+
+    datestr_list: List
+
+        A Python list of formatted timestamp strings comprising the
+        interval defined by `datestr_start`, `datestr_stop`, and
+        `offset_seconds` upon entry.
+
+    Raises
+    ------
+
+    DateTimeInterfaceError:
+
+        - raised if the `offset_seconds` parameter is less than or
+          equal to 0 upon entry.
+
+    """
+
+    # Define and return a list of timestamp strings in accordance with
+    # the parameter attributes specified upon entry.
+    if offset_seconds <= 0:
+        msg = (f"For timestamp lists the `offset_seconds` parameter must be "
+               f"greater than 0; received {offset_seconds} upon entry. "
+               "Aborting!!!"
+               )
+        raise DateTimeInterfaceError(msg=msg)
+
+    # Define the components of the respective date strings.
+    start_comps = datestrcomps(datestr=datestr_start, frmttyp=in_frmttyp)
+    stop_comps = datestrcomps(datestr=datestr_stop, frmttyp=in_frmttyp)
+    ndatestr = int((stop_comps.epoch - start_comps.epoch)/offset_seconds) + 1
+
+    # Define the list of datestrings.
+    datestr_list = [datestrupdate(datestr=datestr_start, in_frmttyp=in_frmttyp, out_frmttyp=out_frmttyp,
+                                  offset_seconds=(idx*offset_seconds)) for
+                    idx in range(ndatestr)
+                    ]
+
+    return datestr_list
 
 # ----
 
