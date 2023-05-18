@@ -122,7 +122,7 @@ def __buildtbl__(table_obj: SimpleNamespace) -> str:
         tablefmt=table_obj.tablefmt,
         numalign=table_obj.numalign,
         colalign=table_obj.colalign,
-        disable_numparse=table_obj.disable_numparse
+        disable_numparse=table_obj.disable_numparse,
     )
 
     return table
