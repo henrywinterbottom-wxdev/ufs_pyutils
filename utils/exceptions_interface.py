@@ -57,6 +57,11 @@ Classes
         This is the base-class for exceptions encountered within the
         utils/curl_interface module; it is a sub-class of Error.
 
+    DateTimeInterfaceError(msg)
+
+        This is the base-class for exceptions encountered within the
+        tools/datetime_interface module; it is a sub-class of Error.
+
     EnviroInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
@@ -194,6 +199,7 @@ __all__ = [
     "Boto3InterfaceError",
     "ContainerInterfaceError",
     "CurlInterfaceError",
+    "DateTimeInterfaceError",
     "EnviroInterfaceError",
     "GRIBInterfaceError",
     "HashLibInterfaceError",
@@ -279,6 +285,19 @@ class CurlInterfaceError(Error):
 
     This is the base-class for exceptions encountered within the
     ioapps/curl_interface module; it is a sub-class of Error.
+
+    """
+
+# ----
+
+
+class DateTimeInterfaceError(Error):
+    """
+    Description
+    -----------
+
+    This is the base-class for exceptions encountered within the
+    tools/datetime_interface module; it is a sub-class of Error.
 
     """
 

@@ -618,7 +618,8 @@ def get(
     profile_name: str = None,
     resource: str = "s3",
 ) -> object:
-    """Description
+    """
+    Description
     -----------
 
     This function downloads objects from a user specified resource
