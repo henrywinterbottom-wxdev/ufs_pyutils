@@ -78,6 +78,12 @@ Functions
         This function checks that key and value pair is valid relative
         to the list of accepted values.
 
+    validate_keys(varkeys, mandkeys)
+
+        This function checks whether each of the mandatory attribute
+        keys list (`mandkeys`) are specified in the variable attribute
+        keys list (`varkeys`).
+
     validate_opts(cls_schema, cls_opts)
 
         This function validates the calling class schema; if the
@@ -115,6 +121,7 @@ History
 # ----
 
 # pylint: disable=broad-except
+# pylint: disable=simplifiable-if-expression
 # pylint: disable=too-many-arguments
 # pylint: disable=too-many-branches
 # pylint: disable=too-many-locals
@@ -142,7 +149,13 @@ from utils.logger_interface import Logger
 # ----
 
 # Define all available attributes.
-__all__ = ["build_schema", "check_opts", "validate_opts", "validate_schema"]
+__all__ = [
+    "build_schema",
+    "check_opts",
+    "validate_keys",
+    "validate_opts",
+    "validate_schema",
+]
 
 # ----
 
@@ -235,8 +248,7 @@ def __buildtbl__(
     """
 
     # Define the table attributes.
-    header = ["Variable", "Type", "Optional",
-              "Default Value", "Assigned Value"]
+    header = ["Variable", "Type", "Optional", "Default Value", "Assigned Value"]
     table = []
 
     # Build the table; proceed accordingly.
@@ -282,15 +294,13 @@ def __buildtbl__(
             else:
                 default = None
             value = str_list[0]
-            msg = [cls_str, cls_schema[cls_key].__name__,
-                   f"{optional}", default, value]
+            msg = [cls_str, cls_schema[cls_key].__name__, f"{optional}", default, value]
             table.append(msg)
             for (_, item) in enumerate(str_list[1::]):
                 msg = [None, None, None, None, item]
                 table.append(msg)
         else:
-            msg = [cls_str, cls_schema[cls_key].__name__,
-                   f"{optional}", default, value]
+            msg = [cls_str, cls_schema[cls_key].__name__, f"{optional}", default, value]
             table.append(msg)
 
     # Define and write the table using the specified logger method.
@@ -449,8 +459,7 @@ def build_schema(schema_def_dict: Dict) -> Dict:
         if required:
             schema_attr_dict[schema_key] = locate(dtype)
         else:
-            schema_attr_dict[Optional(
-                schema_key, default=default)] = locate(dtype)
+            schema_attr_dict[Optional(schema_key, default=default)] = locate(dtype)
 
     return schema_attr_dict
 
@@ -524,6 +533,48 @@ def check_opts(key: str, valid_opts: List, data: Dict, check_and: bool = False) 
 # ----
 
 
+def validate_keys(varkeys: List, mandkeys: List) -> bool:
+    """
+    Description
+    -----------
+
+    This function checks whether each of the mandatory attribute keys
+    list (`mandkeys`) are specified in the variable attribute keys
+    list (`varkeys`).
+
+    Parameters
+    ----------
+
+    varkeys: List
+
+        A Python list containing the variable attribute keys.
+
+    mandkeys: List
+
+        A Python list containing mandatory keys to be sought in the
+        variable attribute keys list (`varkeys`).
+
+    Returns
+    -------
+
+    validate: bool
+
+        A Python boolean valued variable specifying whether each of
+        the mandatory keys in `mandkeys` is within the variable keys
+        list `varkeys`.
+
+    """
+
+    # Compare/validate whether all of the `mandkeys` list contents are
+    # present.
+    validate = all(True if key in varkeys else False for key in mandkeys)
+
+    return validate
+
+
+# ----
+
+
 def validate_opts(
     cls_schema: Dict, cls_opts: Dict, ignore_extra_keys: bool = True
 ) -> None:
@@ -568,8 +619,7 @@ def validate_opts(
     """
 
     # Define the schema.
-    schema = __def_schema__(schema_dict=cls_schema,
-                            ignore_extra_keys=ignore_extra_keys)
+    schema = __def_schema__(schema_dict=cls_schema, ignore_extra_keys=ignore_extra_keys)
 
     # Check that the class attributes are valid; proceed accordingly.
     try:
@@ -656,8 +706,7 @@ def validate_schema(
     """
 
     # Define the schema.
-    schema = __def_schema__(schema_dict=cls_schema,
-                            ignore_extra_keys=ignore_extra_keys)
+    schema = __def_schema__(schema_dict=cls_schema, ignore_extra_keys=ignore_extra_keys)
 
     # Check that any optional schema attributes have been specified by
     # the calling class attributes (`cls_opts`); if not, assign the
