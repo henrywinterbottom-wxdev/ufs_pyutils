@@ -65,7 +65,7 @@ from utils.logger_interface import Logger
 
 # ----
 
-logger = Logger()
+logger = Logger(caller_name=__name__)
 
 # ----
 

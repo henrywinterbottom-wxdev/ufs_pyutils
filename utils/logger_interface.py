@@ -32,7 +32,7 @@ Description
 Classes
 -------
 
-    Logger()
+    Logger(caller_name=None)
 
         This is the base-class for all Python logging instances.
 
