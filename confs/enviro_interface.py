@@ -66,7 +66,12 @@ from utils.logger_interface import Logger
 
 # ----
 
-logger = Logger()
+# Define all available functions.
+__all__ = ["enviro_to_obj"]
+
+# ----
+
+logger = Logger(caller_name=__name__)
 
 # ----
 
