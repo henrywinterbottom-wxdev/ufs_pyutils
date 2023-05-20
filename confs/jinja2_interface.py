@@ -124,7 +124,7 @@ __all__ = ["write_from_template", "write_jinja2"]
 
 # ----
 
-logger = Logger()
+logger = Logger(caller_name=__name__)
 
 # ----
 
@@ -375,8 +375,7 @@ def _get_template_file_attrs(tmpl_path: str) -> Tuple[str, str]:
     """
 
     # Collect the Jinja2-formatted template file attributes.
-    (dirname, basename) = [os.path.dirname(
-        tmpl_path), os.path.basename(tmpl_path)]
+    (dirname, basename) = [os.path.dirname(tmpl_path), os.path.basename(tmpl_path)]
 
     return (dirname, basename)
 
@@ -438,7 +437,7 @@ def _get_template_vars(tmpl_path: str) -> List:
                 start = item.index(start_str)
                 stop = item.index(stop_str)
 
-                string = (item[start + len(start_str): stop].rstrip()).lstrip()
+                string = (item[start + len(start_str) : stop].rstrip()).lstrip()
                 variables.append(string)
 
     return variables

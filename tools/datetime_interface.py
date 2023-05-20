@@ -171,14 +171,12 @@ __email__ = "henry.winterbottom@noaa.gov"
 import datetime
 import sqlite3
 import time
-
-from typing import List
 from types import SimpleNamespace
-
-from utils.exceptions_interface import DateTimeInterfaceError
+from typing import List
 
 import croniter
 from utils import timestamp_interface
+from utils.exceptions_interface import DateTimeInterfaceError
 
 from tools import parser_interface
 
@@ -547,11 +545,17 @@ def datestrfrmt(datestr: str, frmttyp: str, offset_seconds: int = None) -> str:
 
     return outdatestr
 
+
 # ----
 
 
-def datestrlist(datestr_start: str, datestr_stop: str, offset_seconds: int,
-                in_frmttyp: str, out_frmttyp: str) -> List:
+def datestrlist(
+    datestr_start: str,
+    datestr_stop: str,
+    offset_seconds: int,
+    in_frmttyp: str,
+    out_frmttyp: str,
+) -> List:
     """
     Description
     -----------
@@ -608,24 +612,31 @@ def datestrlist(datestr_start: str, datestr_stop: str, offset_seconds: int,
     # Define and return a list of timestamp strings in accordance with
     # the parameter attributes specified upon entry.
     if offset_seconds <= 0:
-        msg = (f"For timestamp lists the `offset_seconds` parameter must be "
-               f"greater than 0; received {offset_seconds} upon entry. "
-               "Aborting!!!"
-               )
+        msg = (
+            f"For timestamp lists the `offset_seconds` parameter must be "
+            f"greater than 0; received {offset_seconds} upon entry. "
+            "Aborting!!!"
+        )
         raise DateTimeInterfaceError(msg=msg)
 
     # Define the components of the respective date strings.
     start_comps = datestrcomps(datestr=datestr_start, frmttyp=in_frmttyp)
     stop_comps = datestrcomps(datestr=datestr_stop, frmttyp=in_frmttyp)
-    ndatestr = int((stop_comps.epoch - start_comps.epoch)/offset_seconds) + 1
+    ndatestr = int((stop_comps.epoch - start_comps.epoch) / offset_seconds) + 1
 
     # Define the list of datestrings.
-    datestr_list = [datestrupdate(datestr=datestr_start, in_frmttyp=in_frmttyp, out_frmttyp=out_frmttyp,
-                                  offset_seconds=(idx*offset_seconds)) for
-                    idx in range(ndatestr)
-                    ]
+    datestr_list = [
+        datestrupdate(
+            datestr=datestr_start,
+            in_frmttyp=in_frmttyp,
+            out_frmttyp=out_frmttyp,
+            offset_seconds=(idx * offset_seconds),
+        )
+        for idx in range(ndatestr)
+    ]
 
     return datestr_list
+
 
 # ----
 
@@ -696,8 +707,7 @@ def datestrupdate(
 
     for item in comps_list:
         if f"<{item}>" in outdatestr:
-            time_attr = parser_interface.object_getattr(
-                date_comps_obj, key=item)
+            time_attr = parser_interface.object_getattr(date_comps_obj, key=item)
             outdatestr = outdatestr.replace(f"<{item}>", time_attr)
 
     return outdatestr
@@ -799,7 +809,6 @@ def epoch_to_datestr(epoch_seconds: int, out_frmttyp: str = None) -> str:
     # Define the epoch time (seconds) date-string.
     datestr = out_frmttyp or timestamp_interface.GLOBAL
 
-    epoch_datestr = datetime.datetime.fromtimestamp(
-        epoch_seconds).strftime(datestr)
+    epoch_datestr = datetime.datetime.fromtimestamp(epoch_seconds).strftime(datestr)
 
     return epoch_datestr

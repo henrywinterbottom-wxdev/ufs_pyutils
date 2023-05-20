@@ -51,6 +51,12 @@ History
 
 # ----
 
+__author__ = "Henry R. Winterbottom"
+__maintainer__ = "Henry R. Winterbottom"
+__email__ = "henry.winterbottom@noaa.gov"
+
+# ----
+
 import hashlib
 
 from tools import parser_interface
@@ -60,12 +66,6 @@ from utils.exceptions_interface import HashLibInterfaceError
 
 # Define all available functions.
 __all__ = ["get_hash"]
-
-# ----
-
-__author__ = "Henry R. Winterbottom"
-__maintainer__ = "Henry R. Winterbottom"
-__email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 

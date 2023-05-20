@@ -81,7 +81,7 @@ __all__ = ["read_json", "write_json"]
 
 # ----
 
-logger = Logger()
+logger = Logger(caller_name=__name__)
 
 # ----
 

@@ -114,7 +114,7 @@ __all__ = ["app_path", "chown", "get_app_path", "get_pid", "sleep", "task_exit",
 
 # ----
 
-logger = Logger()
+logger = Logger(caller_name=__name__)
 
 # ----
 

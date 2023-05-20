@@ -114,7 +114,7 @@ __all__ = ["read_xml", "write_xml"]
 
 # ----
 
-logger = Logger()
+logger = Logger(caller_name=__name__)
 
 # ----
 
@@ -126,13 +126,7 @@ XML_SCHAR_DICT = {
 
 # Define the Python dictionary containing the special symbols (keys)
 # and their substitution values (values).
-XML_SSYMS_DICT = {
-    "&amp;": "&",
-    "&apos;": "'",
-    "&gt;": ">",
-    "&lt;": "<",
-    "&quot;": "\""
-}
+XML_SSYMS_DICT = {"&amp;": "&", "&apos;": "'", "&gt;": ">", "&lt;": "<", "&quot;": '"'}
 
 # ----
 
@@ -364,8 +358,7 @@ def write_xml(
         tree = etree.XML(xml_str, parser=parser)
 
         xml_str = etree.tostring(tree, xml_declaration=True, doctype=doctype)
-        xml_str = minidom.parseString(xml_str).toprettyxml(
-            indent=indent * " ", newl="")
+        xml_str = minidom.parseString(xml_str).toprettyxml(indent=indent * " ", newl="")
 
         msg = f"Writing XML-formatted file path {xml_path}."
         logger.info(msg=msg)

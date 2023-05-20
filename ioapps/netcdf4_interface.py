@@ -197,7 +197,7 @@ __all__ = [
 
 # ----
 
-logger = Logger()
+logger = Logger(caller_name=__name__)
 
 # ----
 

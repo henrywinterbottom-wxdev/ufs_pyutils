@@ -96,7 +96,7 @@ __all__ = ["get_contents", "get_weblist", "read_webfile"]
 
 # ----
 
-logger = Logger()
+logger = Logger(caller_name=__name__)
 
 # ----
 
