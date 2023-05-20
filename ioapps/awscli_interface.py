@@ -112,7 +112,7 @@ __all__ = ["exist_awspath", "list_awspath", "put_awsfile"]
 
 # ----
 
-logger = Logger()
+logger = Logger(caller_name=__name__)
 
 # ----
 

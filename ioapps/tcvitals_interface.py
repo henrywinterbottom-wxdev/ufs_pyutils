@@ -111,7 +111,7 @@ __all__ = ["read_tcvfile", "scale_tcvrec", "write_tcvfile", "write_tcvstr"]
 
 # ----
 
-logger = Logger()
+logger = Logger(caller_name=__name__)
 
 # ----
 

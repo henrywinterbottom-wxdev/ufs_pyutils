@@ -87,7 +87,7 @@ __all__ = ["read_tarfile", "write_tarfile"]
 
 # ----
 
-logger = Logger()
+logger = Logger(caller_name=__name__)
 
 # ----
 

@@ -89,7 +89,7 @@ __all__ = ["get_webfile", "get_weblist"]
 
 # ----
 
-logger = Logger()
+logger = Logger(caller_name=__name__)
 
 # ----
 

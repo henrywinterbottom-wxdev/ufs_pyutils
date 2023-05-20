@@ -114,7 +114,7 @@ __all__ = ["read_xml", "write_xml"]
 
 # ----
 
-logger = Logger()
+logger = Logger(caller_name=__name__)
 
 # ----
 

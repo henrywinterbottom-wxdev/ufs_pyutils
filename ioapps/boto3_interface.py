@@ -143,7 +143,7 @@ __all__ = ["filelist", "get", "put"]
 
 # ----
 
-logger = Logger()
+logger = Logger(caller_name=__name__)
 
 # ----
 
