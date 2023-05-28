@@ -715,7 +715,7 @@ def validate_schema(
         if isinstance(cls_key, Optional):
             if cls_key.key not in cls_opts:
                 msg = (
-                    f"Schema optional value {cls_key.key} has not be defined; setting to "
+                    f"Schema optional value {cls_key.key} has not been defined; setting to "
                     f"default value {cls_key.default}."
                 )
                 logger.warn(msg=msg)
