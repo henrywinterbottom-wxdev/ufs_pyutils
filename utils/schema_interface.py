@@ -48,6 +48,17 @@ Functions
         This function defines the schema object in accordance with the
         specified parameters.
 
+     __get_dtype__(cls_schema, cls_opts, cls_key)
+
+        This function defines and returns a Python string indicating
+        the respective schema attribute data type.
+
+    __get_tblrow__(table, dtype, cls_str, default, value, optional,
+                   width)
+
+        This function defines the attributes a row of the table to be
+        generated via the `tabulate` interface.
+
     build_schema(schema_def_dict)
 
         This function builds a schema provided a YAML-formatted file
@@ -121,10 +132,13 @@ History
 # ----
 
 # pylint: disable=broad-except
+# pylint: disable=self-assigning-variable
 # pylint: disable=simplifiable-if-expression
 # pylint: disable=too-many-arguments
 # pylint: disable=too-many-branches
 # pylint: disable=too-many-locals
+# pylint: disable=unused-variable
+# pylint: disable=useless-else-on-loop
 
 # ----
 
@@ -137,9 +151,9 @@ __email__ = "henry.winterbottom@noaa.gov"
 import textwrap
 from collections import OrderedDict
 from pydoc import locate
-from typing import Dict, List
+from typing import Any, Dict, List, Union
 
-from schema import And, Optional, Schema
+from schema import And, Optional, Or, Schema
 from tabulate import tabulate
 from tools import parser_interface
 
@@ -248,7 +262,8 @@ def __buildtbl__(
     """
 
     # Define the table attributes.
-    header = ["Variable", "Type", "Optional", "Default Value", "Assigned Value"]
+    header = ["Variable", "Type", "Optional",
+              "Default Value", "Assigned Value"]
     table = []
 
     # Build the table; proceed accordingly.
@@ -261,53 +276,30 @@ def __buildtbl__(
             value = cls_opts[cls_key.key]
             default = cls_key.default
             optional = True
+
         else:
             cls_str = cls_key
             value = cls_opts[cls_key]
             default = None
             optional = False
 
-        # Define a Python string defining the schema attribute data
-        # type; proceed accordingly.
-        dtype = cls_schema[cls_key].__name__
-        if "bool" in dtype:
-            default = str(default)
-            value = str(value)
-        elif "str" in dtype:
-            str_list = textwrap.wrap(value, width=width)
-            try:
-                defstr_list = textwrap.wrap(default, width=width)
-            except AttributeError:
-                defstr_list = None
-        else:
-            pass
-
-        # Define the table attributes for the respective schema
-        # attribute; proceed accordingly.
-        if "str" in dtype:
-
-            if optional:
-                try:
-                    default = defstr_list[0]
-                except TypeError:
-                    default = defstr_list
-            else:
-                default = None
-            value = str_list[0]
-            msg = [cls_str, cls_schema[cls_key].__name__, f"{optional}", default, value]
-            table.append(msg)
-            for (_, item) in enumerate(str_list[1::]):
-                msg = [None, None, None, None, item]
-                table.append(msg)
-        else:
-            msg = [cls_str, cls_schema[cls_key].__name__, f"{optional}", default, value]
-            table.append(msg)
+        # Get the respective data type and update the table.
+        dtype = __get_dtype__(cls_schema=cls_schema, cls_key=cls_key)
+        table = __get_tblrow__(
+            table=table,
+            dtype=dtype,
+            cls_str=cls_str,
+            default=default,
+            value=value,
+            optional=optional,
+            width=width,
+        )
 
     # Define and write the table using the specified logger method.
     msg = (
         "\n\n"
         + tabulate(
-            table,
+            list(set(tuple(item) for item in table)),
             header,
             tablefmt="outline",
             numalign=("center", "center", "center", "center", "center"),
@@ -366,6 +358,174 @@ def __def_schema__(schema_dict: Dict, ignore_extra_keys: bool = True) -> Schema:
     schema = Schema([schema_dict], ignore_extra_keys=ignore_extra_keys)
 
     return schema
+
+
+# ----
+
+
+def __get_dtype__(
+        cls_schema: Dict, cls_key: Union[Any, Optional]) -> str:
+    """
+    Description
+    -----------
+
+    This function defines and returns a Python string indicating the
+    respective schema attribute data type.
+
+    Parameters
+    ----------
+
+    cls_schema: Dict
+
+        A Python dictionary containing the calling class schema.
+
+    cls_opts: Dict
+
+        A Python dictionary containing the options (i.e., parameter
+        arguments, keyword arguments, etc.,) passed to the respective
+        calling class.
+
+    cls_key: Union[Any, Optional]
+
+        A Python data type class.
+
+    Returns
+    -------
+
+    dtype: str
+
+        A Python string indicating the respective schema attribute
+        data type.
+
+    """
+
+    # Define a Python string indicating the respective schema
+    # attribute data type; proceed accordingly.
+    if isinstance(cls_schema[cls_key], Or):
+        data_type = cls_schema[cls_key].args[0]
+        dtype = [
+            item for item in ["bool", "float", "int", "str"] if item in str(data_type)
+        ][0]
+    else:
+        dtype = cls_schema[cls_key].__name__
+
+    return dtype
+
+
+# ----
+
+
+def __get_tblrow__(
+    table: List,
+    dtype: Any,
+    cls_str: str,
+    default: Any,
+    value: Any,
+    optional: bool,
+    width: int,
+) -> List:
+    """
+    Description
+    -----------
+
+    This function defines the attributes a row of the table to be
+    generated via the `tabulate` interface.
+
+    Parameters
+    ----------
+
+    table: List
+
+        A Python list containing the (current) contents of the table
+        to be generated via the `tabulate` interface; this parameter
+        (list) will be updated (appended) accordingly within this
+        function.
+
+    dtype: str
+
+        A Python string indicating the respective schema attribute
+        data type.
+
+    cls_str: str
+
+        A Python string specifying a relevant table attribute.
+
+    default: Any
+
+        A Python variable specifying the default value for a table
+        attribute.
+
+    value: Any
+
+        A Python variable specifying the assigned valued for a table
+        attribute.
+
+    optional: bool
+
+        A Python boolean valued variable specifying whether the
+        respective table attribute is an optional attribute.
+
+    width: int
+
+        A Python integer defining the maximum number of characters
+        (including spaces) for a string; this applies only to
+        instances (if any) of strings to be wrapped among multiple
+        rows of the table.
+
+    Returns
+    -------
+
+    table: List
+
+        A Python list containing the updated table contents in
+        accordance with the parameter attributes upon entry.
+
+    """
+
+    # Define the table attributes for the respective schema attribute;
+    # proceed accordingly.
+    if dtype is not None:
+        if "bool" in dtype:
+            default = str(default)
+            value = str(value)
+        elif "str" in dtype and default is not None:
+            str_list = textwrap.wrap(value, width=width)
+            try:
+                defstr_list = textwrap.wrap(default, width=width)
+            except AttributeError:
+                defstr_list = None
+        else:
+            str_list = [None]
+            defstr_list = [None]
+
+        if optional:
+            try:
+                default = default
+            except TypeError:
+                default = textwrap.wrap(default, width=width)
+                value = str_list[0]
+        else:
+            default = None
+
+        if any(
+            [isinstance(value, (bool, float, int, str))]
+            + [isinstance(default, (bool, float, int, str))]
+        ):
+            msg = [cls_str, dtype, f"{optional}", default, value]
+            table.append(msg)
+    else:
+        if any(
+            [isinstance(value, (bool, float, int, str))]
+            + [isinstance(default, (bool, float, int, str))]
+        ):
+            for (_, item) in enumerate(str_list[1::]):
+                msg = [None, None, None, None, item]
+                table.append(msg)
+            else:
+                msg = [cls_str, dtype, f"{optional}", default, value]
+                table.append(msg)
+
+    return table
 
 
 # ----
@@ -459,7 +619,15 @@ def build_schema(schema_def_dict: Dict) -> Dict:
         if required:
             schema_attr_dict[schema_key] = locate(dtype)
         else:
-            schema_attr_dict[Optional(schema_key, default=default)] = locate(dtype)
+            if isinstance(default, locate(dtype)):
+                schema_attr_dict[Optional(
+                    schema_key, default=default)] = locate(dtype)
+            elif isinstance(default, type(None)):
+                schema_attr_dict[Optional(schema_key, default=default)] = Or(
+                    locate(dtype), None
+                )
+            else:
+                pass
 
     return schema_attr_dict
 
@@ -520,12 +688,8 @@ def check_opts(key: str, valid_opts: List, data: Dict, check_and: bool = False) 
     # Check that the respective key and value pair is valid; proceed
     # accordingly.
     try:
-
-        # Validate the schema.
         schema.validate([data])
-
     except Exception as errmsg:
-
         msg = f"Schema validation failed with error {errmsg}. Aborting!!!"
         raise SchemaInterfaceError(msg=msg) from errmsg
 
@@ -619,16 +783,13 @@ def validate_opts(
     """
 
     # Define the schema.
-    schema = __def_schema__(schema_dict=cls_schema, ignore_extra_keys=ignore_extra_keys)
+    schema = __def_schema__(schema_dict=cls_schema,
+                            ignore_extra_keys=ignore_extra_keys)
 
     # Check that the class attributes are valid; proceed accordingly.
     try:
-
-        # Validate the schema.
         schema.validate([cls_opts])
-
     except Exception as errmsg:
-
         msg = f"Schema validation failed with error {errmsg}. Aborting!!!"
         raise SchemaInterfaceError(msg=msg) from errmsg
 
@@ -706,7 +867,8 @@ def validate_schema(
     """
 
     # Define the schema.
-    schema = __def_schema__(schema_dict=cls_schema, ignore_extra_keys=ignore_extra_keys)
+    schema = __def_schema__(schema_dict=cls_schema,
+                            ignore_extra_keys=ignore_extra_keys)
 
     # Check that any optional schema attributes have been specified by
     # the calling class attributes (`cls_opts`); if not, assign the
@@ -719,19 +881,24 @@ def validate_schema(
                     f"default value {cls_key.default}."
                 )
                 logger.warn(msg=msg)
-
                 cls_opts[cls_key.key] = cls_key.default
+
+    cls_opts = parser_interface.dict_formatter(in_dict=cls_opts)
 
     # Validate the schema and build and write a table containing the
     # calling class attributes; proceed accordingly.
-    schema.validate([cls_opts])
-    if write_table:
-        __buildtbl__(
-            cls_schema=cls_schema,
-            cls_opts=cls_opts,
-            logger_method=logger_method,
-            width=width,
-        )
+    try:
+        schema.validate([cls_opts])
+        if write_table:
+            __buildtbl__(
+                cls_schema=cls_schema,
+                cls_opts=cls_opts,
+                logger_method=logger_method,
+                width=width,
+            )
+    except Exception as errmsg:
+        msg = f"Schema validation failed with error {errmsg}. Aborting!!!"
+        raise SchemaInterfaceError(msg=msg) from errmsg
 
     msg = "Schema successfully validated."
     logger.info(msg=msg)

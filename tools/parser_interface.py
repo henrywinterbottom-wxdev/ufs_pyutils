@@ -224,9 +224,8 @@ import collections
 import copy
 import json
 import os
-import types
-from argparse import Namespace
 from json.decoder import JSONDecodeError
+from types import SimpleNamespace
 from typing import Any, Callable, Dict, Generator, List, Tuple, Union
 
 import numpy
@@ -673,7 +672,7 @@ def dict_replace_value(in_dict: Dict, old: str, new: str) -> Dict:
 # ----
 
 
-def dict_toobject(in_dict: Dict) -> Namespace:
+def dict_toobject(in_dict: Dict) -> SimpleNamespace:
     """
     Description
     -----------
@@ -701,7 +700,7 @@ def dict_toobject(in_dict: Dict) -> Namespace:
     """
 
     # Define the Python namespace
-    out_obj = Namespace(**in_dict)
+    out_obj = SimpleNamespace(**in_dict)
 
     return out_obj
 
@@ -1199,7 +1198,7 @@ def object_define() -> object:
     """
 
     # Initialize an empty Python object/namespace.
-    empty_obj = types.SimpleNamespace()
+    empty_obj = SimpleNamespace()
 
     return empty_obj
 
