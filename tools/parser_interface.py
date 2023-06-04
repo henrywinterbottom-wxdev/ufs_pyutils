@@ -224,8 +224,7 @@ import collections
 import copy
 import json
 import os
-import types
-from argparse import Namespace
+from types import SimpleNamespace
 from json.decoder import JSONDecodeError
 from typing import Any, Callable, Dict, Generator, List, Tuple, Union
 
@@ -673,7 +672,7 @@ def dict_replace_value(in_dict: Dict, old: str, new: str) -> Dict:
 # ----
 
 
-def dict_toobject(in_dict: Dict) -> Namespace:
+def dict_toobject(in_dict: Dict) -> SimpleNamespace:
     """
     Description
     -----------
@@ -701,7 +700,7 @@ def dict_toobject(in_dict: Dict) -> Namespace:
     """
 
     # Define the Python namespace
-    out_obj = Namespace(**in_dict)
+    out_obj = SimpleNamespace(**in_dict)
 
     return out_obj
 
@@ -1102,7 +1101,8 @@ def object_append(object_in: object, object_key: str, dict_in: Dict) -> object:
         object_dict[key] = value
 
     # Build the output Python object.
-    object_out = object_setattr(object_in=object_out, key=object_key, value=object_dict)
+    object_out = object_setattr(
+        object_in=object_out, key=object_key, value=object_dict)
 
     return object_out
 
@@ -1199,7 +1199,7 @@ def object_define() -> object:
     """
 
     # Initialize an empty Python object/namespace.
-    empty_obj = types.SimpleNamespace()
+    empty_obj = SimpleNamespace()
 
     return empty_obj
 
@@ -1335,7 +1335,8 @@ def match_list(
     # Define the local lists to be used for the matching application.
     lower_list = [word for word in in_list if word.islower()]
     upper_list = [word for word in in_list if word.isupper()]
-    mixed_list = [word for word in in_list if not word.islower() and not word.isupper()]
+    mixed_list = [word for word in in_list if not word.islower()
+                  and not word.isupper()]
     match_chk = False
 
     # If appropriate, seek exact matches; proceed accordingly.
@@ -1755,7 +1756,8 @@ def unique_list(in_list: List) -> List:
 
     """
     out_list = []
-    out_dict = collections.OrderedDict.fromkeys(x for x in in_list if x not in out_list)
+    out_dict = collections.OrderedDict.fromkeys(
+        x for x in in_list if x not in out_list)
 
     out_list = []
     for key in sorted(out_dict.keys()):
