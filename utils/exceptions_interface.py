@@ -46,6 +46,11 @@ Classes
         This is the base-class for exceptions encountered within the
         utils/boto3_interface module; it is a sub-class of Error.
 
+    CLIInterfaceError(msg)
+
+        This is the base-class for exceptions encountered within the
+        execute/cli_interface module; it is a sub-class of Error.
+
     ContainerInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
@@ -197,6 +202,7 @@ __all__ = [
     "ArgumentsInterfaceError",
     "AWSCLIInterfaceError",
     "Boto3InterfaceError",
+    "CLIInterfaceError",
     "ContainerInterfaceError",
     "CurlInterfaceError",
     "DateTimeInterfaceError",
@@ -261,6 +267,20 @@ class Boto3InterfaceError(Error):
 
     This is the base-class for exceptions encountered within the
     ioapps/boto3_interface module; it is a sub-class of Error.
+
+    """
+
+
+# ----
+
+
+class CLIInterfaceError(Error):
+    """
+    Description
+    -----------
+
+    This is the base-class for exceptions encountered within the
+    execute/cli_interface module; it is a sub-class of Error.
 
     """
 
