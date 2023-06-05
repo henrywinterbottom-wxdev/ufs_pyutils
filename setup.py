@@ -85,19 +85,21 @@ classifiers = [
 
 # Define the package dependencies.
 install_requires = [
-    "astropy==5.2",
-    "boto3==1.24.28",
-    "bs4==0.0.1",
-    "croniter==1.3.8",
-    "jinja2==3.1.2",
-    "lxml==4.9.2",
     "netcdf4==1.6.2",
     "numpy==1.22.4",
+    "astropy==5.2",
+    "bs4==0.0.1",
+    "croniter==1.3.8",
+    "pyyaml==6.0",
+    "boto3==1.24.28",
+    "schema==0.7.5",
+    "jinja2==3.1.2",
+    "lxml==4.9.2",
     "pytest==7.2.0",
     "pytest-order==1.0.1",
-    "pyyaml==6.0",
-    "schema==0.7.5",
     "xmltodict==0.13.0",
+    "tabulate==0.9.0",
+    "rich_argparse==1.1.1",
 ]
 
 # ----
