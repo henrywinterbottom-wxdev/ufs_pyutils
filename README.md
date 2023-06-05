@@ -7,7 +7,7 @@
 [![Dependencies](https://img.shields.io/badge/dependencies-bs4-orange)](https://github.com/waylan/beautifulsoup)
 [![Dependencies](https://img.shields.io/badge/dependencies-croniter-orange)](https://github.com/kiorky/croniter)
 [![Dependencies](https://img.shields.io/badge/dependencies-lxml-orange)](https://github.com/lxml/lxml)
-[![Dependencies](https://img.shields.io/badge/dependencies-netcdf4-orange)](https://github.com/Unidata/netcdf4-python-orange)(https://github.com/Unidata/netcdf4-python)
+[![Dependencies](https://img.shields.io/badge/dependencies-netcdf4-orange)](https://github.com/Unidata/netcdf4-python)
 [![Dependencies](https://img.shields.io/badge/dependencies-numpy-orange)](https://github.com/numpy/numpy)
 [![Dependencies](https://img.shields.io/badge/dependencies-pyyaml-orange)](https://github.com/yaml/pyyaml)
 [![Dependencies](https://img.shields.io/badge/dependencies-rich__argparse-orange)](https://github.com/hamdanal/rich-argparse)
