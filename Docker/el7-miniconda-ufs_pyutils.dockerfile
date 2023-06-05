@@ -80,32 +80,21 @@ LABEL noaaufsrnr/el7-miniconda-ufs_pyutils.image.authors="Henry.Winterbottom@noa
 
 # ----
 
+# Download and setup ufs_pyutils
+RUN git clone https://github.com/HenryWinterbottom-NOAA/ufs_pyutils /ufs_pyutils
+
+# ----
+
 # Download and install Miniconda.
 RUN wget --no-check-certificate https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Linux-x86_64.sh && \
     sh Miniconda3-py39_4.10.3-Linux-x86_64.sh -b -p /miniconda && \
     rm Miniconda3-py39_4.10.3-Linux-x86_64.sh
 
 # Patch the Miniconda install for the respective application.
-RUN /miniconda/bin/pip install netcdf4==1.6.2 && \
-    /miniconda/bin/pip install numpy==1.22.4 && \
-    /miniconda/bin/pip install astropy==5.2 && \
-    /miniconda/bin/pip install bs4==0.0.1 && \
-    /miniconda/bin/pip install croniter==1.3.8 && \
-    /miniconda/bin/pip install jinja2==3.1.2 && \
+RUN /miniconda/bin/pip install -r /ufs_pyutils/requirements.txt && \
     /miniconda/bin/conda install -c anaconda pyyaml==6.0 && \
     /miniconda/bin/conda install -c anaconda boto3==1.24.28 && \
-    /miniconda/bin/pip install schema==0.7.5 && \
-    /miniconda/bin/pip install tabulate==0.9.0 && \
-    /miniconda/bin/pip install xmltodict==0.13.0 && \
-    /miniconda/bin/pip install lxml==4.9.2 && \
-    /miniconda/bin/pip install pytest==7.2.0 && \
-    /miniconda/bin/pip install pytest-order==1.0.1 && \
     /miniconda/bin/conda clean --tarballs
-
-# ----
-
-# Download and setup ufs_pyutils
-RUN git clone https://github.com/HenryWinterbottom-NOAA/ufs_pyutils /ufs_pyutils
 
 # ----
 
