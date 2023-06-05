@@ -2,7 +2,7 @@
 ![Linux](https://img.shields.io/badge/Linux-ubuntu%7Ccentos-lightgrey)
 ![Python Version](https://img.shields.io/badge/Python-3.5|3.6|3.7-blue)
 
-[![Dependencies](https://img.shields.io/badge/dependencies-astropy-orange)](https://github.com/astropy/astropy)
+[![Dependencies](https://img.shields.io/badge/Dependencies-astropy-orange)](https://github.com/astropy/astropy)
 [![](https://img.shields.io/badge/boto3-orange)](https://github.com/boto/boto3)
 [![](https://img.shields.io/badge/bs4-orange)](https://github.com/waylan/beautifulsoup)
 [![](https://img.shields.io/badge/croniter-orange)](https://github.com/kiorky/croniter)
