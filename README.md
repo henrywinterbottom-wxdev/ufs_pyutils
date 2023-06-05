@@ -1,6 +1,6 @@
-[![License](https://img.shields.io/badge/license-LGPL_v2.1-black)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/blob/develop/LICENSE)
-![Linux](https://img.shields.io/badge/linux-ubuntu%7Ccentos-lightgrey)
-![Python Version](https://img.shields.io/badge/python-3.5|3.6|3.7-blue)
+[![License](https://img.shields.io/badge/License-LGPL_v2.1-black)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/blob/develop/LICENSE)
+![Linux](https://img.shields.io/badge/Linux-ubuntu%7Ccentos-lightgrey)
+![Python Version](https://img.shields.io/badge/Python-3.5|3.6|3.7-blue)
 
 [![Dependencies](https://img.shields.io/badge/dependencies-astropy-orange)](https://github.com/astropy/astropy)
 [![](https://img.shields.io/badge/boto3-orange)](https://github.com/boto/boto3)
