@@ -106,7 +106,7 @@ __all__ = ["init", "options"]
 RichHelpFormatter.styles["argparse.args"] = "green"
 RichHelpFormatter.styles["argparse.metavar"] = "cyan"
 RichHelpFormatter.styles["argparse.text"] = "default"
-RichHelpFormatter.styles["argparse.help"] = "violet"
+RichHelpFormatter.styles["argparse.help"] = "blue_violet"
 
 # ----
 
@@ -152,7 +152,8 @@ def __checkschema__(
     """
 
     # Validate the CLI argument schema.
-    cls_schema = schema_interface.build_schema(YAML().read_yaml(yaml_file=schema_path))
+    cls_schema = schema_interface.build_schema(
+        YAML().read_yaml(yaml_file=schema_path))
     cls_opts = parser_interface.object_todict(object_in=options_obj)
     options_obj = schema_interface.validate_schema(
         cls_schema=cls_schema,
@@ -423,7 +424,8 @@ def options(
             )
             raise CLIInterfaceError(msg=msg)
 
-        options_dict = __checkschema__(options_obj=options_obj, schema_path=schema_path)
+        options_dict = __checkschema__(
+            options_obj=options_obj, schema_path=schema_path)
         options_obj = parser_interface.dict_toobject(in_dict=options_dict)
 
     return options_obj
