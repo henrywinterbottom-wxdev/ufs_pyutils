@@ -2,29 +2,12 @@
 ![Linux](https://img.shields.io/badge/linux-ubuntu%7Ccentos-lightgrey)
 ![Python Version](https://img.shields.io/badge/python-3.5|3.6|3.7-blue)
 
-![Dependencies](https://img.shields.io/badge/dependencies-astropy_boto3_bs4_croniter_lxml_netcdf4_numpy_pyyaml_schema_tabulate_xmltodict-orange)
+![Dependencies](https://img.shields.io/badge/dependencies-astropy_boto3_bs4_croniter_lxml_netcdf4_numpy_pyyaml_rich_argparse_schema_tabulate_xmltodict-orange)
 
 [![Build Tests](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/buildtest.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/buildtest.yaml)
 [![Unit Tests](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/unittests.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/unittests.yaml)
 [![Python Coding Standards](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/pycodestyle.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/pycodestyle.yaml)
 [![Container Builds](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/containers.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/containers.yaml)
-
-# Disclaimer
-
-The United States Department of Commerce (DOC) GitHub project code is
-provided on an "as is" basis and the user assumes responsibility for
-its use. DOC has relinquished control of the information and no longer
-has responsibility to protect the integrity, confidentiality, or
-availability of the information. Any claims against the Department of
-Commerce stemming from the use of its GitHub project will be governed
-by all applicable Federal law. Any reference to specific commercial
-products, processes, or services by service mark, trademark,
-manufacturer, or otherwise, does not constitute or imply their
-endorsement, recommendation or favoring by the Department of
-Commerce. The Department of Commerce seal and logo, or the seal and
-logo of a DOC bureau, shall not be used in any manner to imply
-endorsement of any commercial product or activity by DOC or the United
-States Government.
 
 # Cloning
 
@@ -52,6 +35,7 @@ installation attributes are provided in the table below.
 | [`netcdf4`](https://github.com/Unidata/netcdf4-python) | <div align="left">`pip install netcdf4==1.6.2`</div> |
 | [`numpy`](https://github.com/numpy/numpy) | <div align="left">`pip install numpy==1.22.4`</div> |
 | [`pyyaml`](https://github.com/yaml/pyyaml) | <div align="left">`conda install -c anaconda pyyaml==6.0`</div> |
+| [`rich_argparse`](https://github.com/hamdanal/rich-argparse) | <div align="left">`pip install rich_argparse==1.1.1`</div> |
 | [`schema`](https://github.com/keleshev/schema) | <div align="left">`pip install schema==0.7.5`</div> |
 | [`tabulate`](https://github.com/gregbanks/python-tabulate) | <div align="left">`pip install tabulate==0.9.0`</div> | 
 | [`xmltodict`](https://github.com/martinblech/xmltodict) | <div align="left">`pip install xmltodict==0.13.0`</div> |
@@ -86,7 +70,7 @@ For additional information and options for building Python packages, see [here](
 A Docker image exist containing the applications in this repository and can be collected as follows.
 
 ~~~
-user@host:$ docker pull noaaufsrnr/el7-miniconda.ufs_pyutils:latest
+user@host:$ docker pull noaaufsrnr/ubuntu20.04-miniconda-ufs_pyutils:latest
 ~~~
 
 A corresponding Singularity image may be built as follows.
