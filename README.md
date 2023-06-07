@@ -13,6 +13,7 @@
 [![](https://img.shields.io/badge/rich__argparse-orange)](https://github.com/hamdanal/rich-argparse)
 [![](https://img.shields.io/badge/schema-orange)](https://github.com/keleshev/schema)
 [![](https://img.shields.io/badge/tabulate-orange)](https://github.com/gregbanks/python-tabulate)
+[![](https://img.shields.io/badge/xarray-orange)](https://github.com/pydata/xarray)
 [![](https://img.shields.io/badge/xmltodict-orange)](https://github.com/martinblech/xmltodict)
 
 [![Build Tests](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/buildtest.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/buildtest.yaml)
@@ -48,7 +49,8 @@ installation attributes are provided in the table below.
 | [`pyyaml`](https://github.com/yaml/pyyaml) | <div align="left">`conda install -c anaconda pyyaml==6.0`</div> |
 | [`rich_argparse`](https://github.com/hamdanal/rich-argparse) | <div align="left">`pip install rich_argparse==1.1.1`</div> |
 | [`schema`](https://github.com/keleshev/schema) | <div align="left">`pip install schema==0.7.5`</div> |
-| [`tabulate`](https://github.com/gregbanks/python-tabulate) | <div align="left">`pip install tabulate==0.9.0`</div> | 
+| [`tabulate`](https://github.com/gregbanks/python-tabulate) | <div align="left">`pip install tabulate==0.9.0`</div> |
+| [`xarray`](https://github.com/pydata/xarray) | <div align="left">`pip install xarray==0.16.2`</div> |
 | [`xmltodict`](https://github.com/martinblech/xmltodict) | <div align="left">`pip install xmltodict==0.13.0`</div> |
 
 </div>

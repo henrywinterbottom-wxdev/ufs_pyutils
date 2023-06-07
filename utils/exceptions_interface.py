@@ -163,6 +163,11 @@ Classes
         This is the base-class for exceptions encountered within the
         ioapps/wget_interface module; it is a sub-class of Error.
 
+    XArrayInterfaceError(msg)
+
+        This is the base-class for exceptions encountered within the
+        ioapps/xarray_interface module; it is a sub-class of Error.
+
     XMLInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
@@ -225,6 +230,7 @@ __all__ = [
     "UFSLoggerError",
     "URLInterfaceError",
     "WgetInterfaceError",
+    "XArrayInterfaceError",
     "XMLInterfaceError",
     "YAMLInterfaceError",
 ]
@@ -589,6 +595,20 @@ class WgetInterfaceError(Error):
 
     This is the base-class for exceptions encountered within the
     ioapps/wget_interface module; it is a sub-class of Error.
+
+    """
+
+
+# ----
+
+
+class XArrayInterfaceError(Error):
+    """
+    Description
+    -----------
+
+    This is the base-class for exceptions encountered within the
+    ioapps/xarray_interface module; it is a sub-class of Error.
 
     """
 

@@ -100,6 +100,7 @@ install_requires = [
     "xmltodict==0.13.0",
     "tabulate==0.9.0",
     "rich_argparse==1.1.1",
+    "xarray==0.16.2",
 ]
 
 # ----
