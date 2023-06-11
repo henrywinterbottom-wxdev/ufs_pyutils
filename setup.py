@@ -121,5 +121,4 @@ setup(
     license=LICENSE,
     classifiers=classifiers,
     install_requires=install_requires,
-    packages=["ufs_pyutils"],
 )
