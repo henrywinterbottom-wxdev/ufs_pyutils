@@ -93,6 +93,7 @@ install_requires = [
     "pyyaml==6.0",
     "boto3==1.24.28",
     "schema==0.7.5",
+    "xarray==0.16.2",
     "jinja2==3.1.2",
     "lxml==4.9.2",
     "pytest==7.2.0",
@@ -100,7 +101,6 @@ install_requires = [
     "xmltodict==0.13.0",
     "tabulate==0.9.0",
     "rich_argparse==1.1.1",
-    "xarray==0.16.2",
 ]
 
 # ----
