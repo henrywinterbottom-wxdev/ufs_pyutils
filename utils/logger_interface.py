@@ -60,11 +60,10 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
-from abc import abstractmethod
 import logging
 import sys
+from abc import abstractmethod
 from importlib import reload
-
 from typing import Generic
 
 from utils.decorator_interface import privatemethod
@@ -210,8 +209,9 @@ class Logger:
         reload(logging)
 
     @privatemethod
-    def write(self: Generic, loglev: str, msg: str = None,
-              custom_loglev: str = None) -> None:
+    def write(
+        self: Generic, loglev: str, msg: str = None, custom_loglev: str = None
+    ) -> None:
         """
         Description
         -----------
@@ -290,8 +290,7 @@ class Logger:
     # The base-class logger STATUS level interface.
     @abstractmethod
     def status(self: object, msg: str) -> None:
-        self.write(loglev="info", msg=msg,
-                   custom_loglev="STATUS")
+        self.write(loglev="info", msg=msg, custom_loglev="STATUS")
 
     # The base-class logger WARNING level interface.
     @abstractmethod
