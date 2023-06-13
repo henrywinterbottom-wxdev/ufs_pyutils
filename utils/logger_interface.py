@@ -60,9 +60,12 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
+from abc import abstractmethod
 import logging
 import sys
 from importlib import reload
+
+from typing import Generic
 
 from utils.decorator_interface import privatemethod
 
@@ -87,7 +90,7 @@ class Logger:
 
     """
 
-    def __init__(self: object, caller_name: str = None):
+    def __init__(self: Generic, caller_name: str = None):
         """
         Description
         -----------
@@ -106,16 +109,52 @@ class Logger:
         # supported base-class logger level types must be defined
         # here.
         self.colors_dict = {
-            "CRITICAL": "\x1b[1;43m",
+            "CRITICAL": "\x1b[1;41m",
             "DEBUG": "\x1b[38;5;46m",
             "INFO": "\x1b[37;21m",
             "ERROR": "\x1b[1;41m",
             "WARNING": "\x1b[38;5;226m",
             "RESET": "\x1b[0m",
+            "STATUS": "\033[1;36m",
         }
 
     @privatemethod
-    def level(self: object, loglev: str) -> object:
+    def format(self: Generic, loglev: str) -> str:
+        """
+        Description
+        -----------
+
+        This method defines the logger message string format in
+        accordance with the logger level specified upon entry.
+
+        Parameters
+        ----------
+
+        loglev: str
+
+            A Python string defining the logger level; case
+            insensitive.
+
+        Returns
+        -------
+
+        format_str: str
+
+            A Python string defining the logger message string format.
+
+        """
+
+        # Define the format string for the respective logger message.
+        format_str = (
+            self.colors_dict[loglev.upper()]
+            + self.log_format
+            + self.colors_dict["RESET"]
+        )
+
+        return format_str
+
+    @privatemethod
+    def level(self: Generic, loglev: str) -> object:
         """
         Description
         -----------
@@ -153,41 +192,7 @@ class Logger:
         return level_obj
 
     @privatemethod
-    def format(self: object, loglev: str) -> object:
-        """
-        Description
-        -----------
-
-        This method defines the logger message string format in
-        accordance with the logger level specified upon entry.
-
-        Parameters
-        ----------
-
-        loglev: str
-
-            A Python string defining the logger level; case
-            insensitive.
-
-        Returns
-        -------
-
-        format_str: str
-
-            A Python string defining the logger message string format.
-
-        """
-
-        format_str = (
-            self.colors_dict[loglev.upper()]
-            + self.log_format
-            + self.colors_dict["RESET"]
-        )
-
-        return format_str
-
-    @privatemethod
-    def reset(self: object) -> None:
+    def reset(self: Generic) -> None:
         """
         Description
         -----------
@@ -205,7 +210,8 @@ class Logger:
         reload(logging)
 
     @privatemethod
-    def write(self: object, loglev: str, msg: str = None) -> None:
+    def write(self: Generic, loglev: str, msg: str = None,
+              custom_loglev: str = None) -> None:
         """
         Description
         -----------
@@ -228,17 +234,28 @@ class Logger:
             A Python string containing a message to accompany the
             logging level.
 
+        Keywords
+        --------
+
+        custom_loglev: str, optional
+
+            A Python string specifying a custom logger level; if
+            specified a matching (case-insensitive) key must be define
+            within the base-class attribute `colors_dict`.
+
         """
 
         # Reset the Python logging library.
         self.reset()
 
         # Define the attributes of and the logger object.
-        log = logging
+        # log = logging
         level_obj = self.level(loglev=loglev)
-        format_str = self.format(loglev=loglev)
-
-        log.basicConfig(
+        if custom_loglev is not None:
+            format_str = self.format(loglev=custom_loglev)
+        else:
+            format_str = self.format(loglev=loglev)
+        logging.basicConfig(
             stream=self.stream,
             level=level_obj,
             datefmt=self.date_format,
@@ -248,24 +265,35 @@ class Logger:
         # Write the respective logger level message.
         if self.caller_name is not None:
             msg = f"{self.caller_name}: " + msg
-        getattr(log, f"{loglev}")(msg)
+        getattr(logging, f"{loglev}")(msg)
 
     # The base-class logger CRITICAL level interface.
+    @abstractmethod
     def critical(self: object, msg: str) -> None:
         self.write(loglev="critical", msg=msg)
 
     # The base-class logger DEBUG level interface.
+    @abstractmethod
     def debug(self: object, msg: str) -> None:
         self.write(loglev="debug", msg=msg)
 
     # The base-class logger ERROR level interface.
+    @abstractmethod
     def error(self: object, msg: str) -> None:
         self.write(loglev="error", msg=msg)
 
     # The base-class logger INFO level interface.
+    @abstractmethod
     def info(self: object, msg: str) -> None:
         self.write(loglev="info", msg=msg)
 
+    # The base-class logger STATUS level interface.
+    @abstractmethod
+    def status(self: object, msg: str) -> None:
+        self.write(loglev="info", msg=msg,
+                   custom_loglev="STATUS")
+
     # The base-class logger WARNING level interface.
+    @abstractmethod
     def warn(self: object, msg: str) -> None:
         self.write(loglev="warning", msg=msg)
