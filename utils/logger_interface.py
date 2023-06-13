@@ -153,7 +153,7 @@ class Logger:
         return format_str
 
     @privatemethod
-    def level(self: Generic, loglev: str) -> object:
+    def level(self: Generic, loglev: str) -> int:
         """
         Description
         -----------
@@ -171,9 +171,10 @@ class Logger:
         Returns
         -------
 
-        level_obj: object
+        level: int
 
-            A Python logging level object.
+            A Python integer corresponding to the respective logger
+            level `loglev`.
 
         """
 
@@ -186,9 +187,9 @@ class Logger:
             raise KeyError
 
         # Define the logging level object.
-        level_obj = getattr(logging, f"{loglev.upper()}")
+        level = getattr(logging, f"{loglev.upper()}")
 
-        return level_obj
+        return level
 
     @privatemethod
     def reset(self: Generic) -> None:
@@ -250,14 +251,14 @@ class Logger:
 
         # Define the attributes of and the logger object.
         # log = logging
-        level_obj = self.level(loglev=loglev)
+        level = self.level(loglev=loglev)
         if custom_loglev is not None:
             format_str = self.format(loglev=custom_loglev)
         else:
             format_str = self.format(loglev=loglev)
         logging.basicConfig(
             stream=self.stream,
-            level=level_obj,
+            level=level,
             datefmt=self.date_format,
             format=format_str,
         )
