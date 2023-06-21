@@ -74,14 +74,15 @@ __email__ = "henry.winterbottom@noaa.gov"
 import os
 import re
 import sys
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, Generic
+from types import SimpleNamespace
 
 import yaml
 from tools import fileio_interface, parser_interface
 from utils.decorator_interface import privatemethod
 from utils.exceptions_interface import YAMLInterfaceError
 from utils.logger_interface import Logger
-from yaml import SafeLoader
+from yaml import SafeLoader, FullLoader
 
 # ----
 
@@ -98,7 +99,7 @@ class YAML:
 
     """
 
-    def __init__(self: object):
+    def __init__(self: Generic):
         """
         Description
         -----------
@@ -108,10 +109,11 @@ class YAML:
         """
 
         # Define the base-class attributes.
-        self.logger = Logger(caller_name=f"{__name__}.{self.__class__.__name__}")
+        self.logger = Logger(
+            caller_name=f"{__name__}.{self.__class__.__name__}")
 
     @privatemethod
-    def yaml_obj(self: object, attr_dict: Dict) -> object:
+    def yaml_obj(self: Generic, attr_dict: Dict) -> SimpleNamespace:
         """
         Description
         -----------
@@ -131,10 +133,10 @@ class YAML:
         Returns
         -------
 
-        yaml_obj: object
+        yaml_obj: SimpleNamespace
 
-            A Python object containing the attributes collected from
-            the Python dictionary provided upon entry.
+            A Python SimpleNamespace object containing the attributes
+            collected from the Python dictionary provided upon entry.
 
         """
 
@@ -146,14 +148,13 @@ class YAML:
             value = parser_interface.dict_key_value(
                 dict_in=attr_dict, key=attr, no_split=True
             )
-
             yaml_obj = parser_interface.object_setattr(
                 object_in=yaml_obj, key=attr, value=value
             )
 
         return yaml_obj
 
-    def check_yaml(self: object, attr_value: str) -> bool:
+    def check_yaml(self: Generic, attr_value: str) -> bool:
         """
         Description
         -----------
@@ -184,14 +185,13 @@ class YAML:
         try:
             YAMLLoader(attr_value)
             check = True
-
         except AttributeError:
             check = False
 
         return check
 
     def concat_yaml(
-        self: object,
+        self: Generic,
         yaml_file_list: List,
         yaml_file_out: str,
         fail_nonvalid: bool = True,
@@ -248,7 +248,6 @@ class YAML:
         # Read the contents of the respective YAML-formatted files and
         # aggregate the values into a composite Python dictionary.
         yaml_dict_concat = {}
-
         for yaml_file in yaml_file_list:
 
             # Check that the respective YAML file path exists; proceed
@@ -261,9 +260,7 @@ class YAML:
                     # YAML-formatted file; proceed accordingly.
                     # yaml_dict.update(self.read_yaml(yaml_file=yaml_file))
                     yaml_dict = self.read_yaml(yaml_file=yaml_file)
-
                     try:
-
                         yaml_dict_concat.update(
                             dict(
                                 parser_interface.dict_merge(
@@ -271,32 +268,25 @@ class YAML:
                                 )
                             )
                         )
-
                     except Exception:
                         pass
-
                 except ValueError as errmsg:
-
                     if fail_nonvalid:
                         msg = f"{yaml_file} is not a valid YAML file. Aborting!!!"
                         raise YAMLInterfaceError(msg=msg) from errmsg
-
                     if not fail_nonvalid:
                         msg = (
                             f"{yaml_file} is not a valid YAML file and will not "
                             "be processed."
                         )
                         self.logger.warn(msg=msg)
-
             if not exist:
-
                 if ignore_missing:
                     msg = (
                         f"The file path {yaml_file} does not exist and "
                         "will not be processed."
                     )
                     self.logger.warn(msg=msg)
-
                 if not ignore_missing:
                     msg = f"The file path {yaml_file} does not exist. " "Aborting!!!"
                     raise YAMLInterfaceError(msg=msg)
@@ -306,7 +296,7 @@ class YAML:
         self.write_yaml(yaml_file=yaml_file_out, in_dict=yaml_dict_concat)
 
     def dict_to_yaml(
-        self: object,
+        self: Generic,
         yaml_dict: Dict,
         default_flow_style: bool = False,
         indent: int = 4,
@@ -372,7 +362,6 @@ class YAML:
         # in accordance with the parameters collected upon entry.
         if level is None:
             sys.stdout.write(yaml_dump)
-
         if level is not None:
 
             # Dump the contents of the Python dictionary using the
@@ -383,7 +372,7 @@ class YAML:
             logger(msg=(nspace * "\n" + yaml_dump))
 
     def read_concat_yaml(
-        self: object, yaml_file: str, return_obj: bool = False
+        self: Generic, yaml_file: str, return_obj: bool = False
     ) -> Union[Dict, object]:
         """
         Description
@@ -436,13 +425,17 @@ class YAML:
         """
 
         # Define the YAML library loader type.
-        YAMLLoader.add_implicit_resolver("!ENV", YAMLLoader.envvar_matcher, None)
+        YAMLLoader.add_implicit_resolver(
+            "!ENV", YAMLLoader.envvar_matcher, None)
         YAMLLoader.add_constructor("!ENV", YAMLLoader.envvar_constructor)
 
         # Open and read the contents of the specified YAML-formatted
         # file path.
         with open(yaml_file, "r", encoding="utf-8") as stream:
-            yaml_full_dict = yaml.load(stream, Loader=YAMLLoader)
+            try:
+                yaml_full_dict = yaml.load(stream, Loader=YAMLLoader)
+            except yaml.composer.ComposerError:
+                yaml_full_dict = yaml.load_all(stream, yaml.FullLoader)
 
         # For each attribute within the parsed YAML-formatted file,
         # determine whether a given file is a YAML-formatted file and
@@ -464,7 +457,6 @@ class YAML:
                 exist = fileio_interface.fileexist(path=attr_value)
                 if exist:
                     yaml_dict = self.read_yaml(yaml_file=attr_value)
-
                     yaml_dict_concat.update(
                         dict(
                             parser_interface.dict_merge(
@@ -472,27 +464,22 @@ class YAML:
                             )
                         )
                     )
-
                 if not exist:
                     yaml_dict_concat[attr_key] = attr_value
-
             if not is_yaml:
                 yaml_dict_concat[attr_key] = attr_value
 
         # Define the Python data type to be returned; proceed
         # accordingly.
         if return_obj:
-
             yaml_return = self.yaml_obj(attr_dict=yaml_dict_concat)
-
         if not return_obj:
-
             yaml_return = yaml_dict_concat
 
         return yaml_return
 
     def read_yaml(
-        self: object, yaml_file: str, return_obj: bool = False
+        self: Generic, yaml_file: str, return_obj: bool = False
     ) -> Union[Dict, object]:
         """
         Description
@@ -542,14 +529,22 @@ class YAML:
         """
 
         # Define the YAML library loader type.
-        YAMLLoader.add_implicit_resolver("!ENV", YAMLLoader.envvar_matcher, None)
+        YAMLLoader.add_implicit_resolver(
+            "!ENV", YAMLLoader.envvar_matcher, None)
         YAMLLoader.add_constructor("!ENV", YAMLLoader.envvar_constructor)
         YAMLLoader.add_constructor("!INC", YAMLLoader.include_constructor)
 
         # Open and read the contents of the specified YAML-formatted
         # file path.
         with open(yaml_file, "r", encoding="utf-8") as stream:
-            yaml_dict = yaml.load(stream, Loader=YAMLLoader)
+            try:
+                yaml_dict = yaml.load(stream, Loader=YAMLLoader)
+            except Exception:
+                data = yaml.load_all(stream, Loader=FullLoader)
+                print(data.__next__())
+                # yaml_dict = yaml.safe_load_all(stream)
+                # print(yaml_dict.__iter__())
+                quit()
 
         # Define the Python data type to be returned; proceed
         # accordingly.
@@ -565,15 +560,13 @@ class YAML:
                     object_in=yaml_obj, key=key, value=value
                 )
             yaml_return = yaml_obj
-
         if not return_obj:
-
             yaml_return = yaml_dict
 
         return yaml_return
 
     def write_tmpl(
-        self: object, yaml_dict: Dict, yaml_path: str, yaml_template: str
+        self: Generic, yaml_dict: Dict, yaml_path: str, yaml_template: str
     ) -> None:
         """
         Description
@@ -622,7 +615,7 @@ class YAML:
                 file.write(f"{item}\n")
 
     def write_yaml(
-        self: object,
+        self: Generic,
         yaml_file: str,
         in_dict: Dict,
         default_flow_style: bool = False,
@@ -671,7 +664,6 @@ class YAML:
             fileopt = "a"
         if not append:
             fileopt = "w"
-
         with open(yaml_file, fileopt, encoding="utf-8") as file:
             yaml.dump(in_dict, file, default_flow_style=default_flow_style)
 
@@ -704,7 +696,7 @@ class YAMLLoader(SafeLoader):
 
         return os.path.expandvars(node.value)
 
-    def include_constructor(self: object, node: Any) -> Any:
+    def include_constructor(self: SafeLoader, node: Any) -> Any:
         """
         Description
         -----------
@@ -715,6 +707,5 @@ class YAMLLoader(SafeLoader):
         """
 
         filename = self.construct_scalar(node)
-
         with open(filename, "r", encoding="utf-8") as file:
             return yaml.load(file, YAMLLoader)
