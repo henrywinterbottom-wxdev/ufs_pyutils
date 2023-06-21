@@ -157,7 +157,6 @@ def dataset(ncfile: str, varobj_list: List, unlimitdim: str = None) -> None:
                 "Aborting!!!"
             )
             raise XArrayInterfaceError(msg=msg) from errmsg
-
     dataset.close()
 
 
@@ -262,12 +261,12 @@ def read(ncfile: str, ncvarname: str) -> Dataset:
 # ----
 
 
-def varobj(varval: numpy.array, coords: Dict, dims: List, ncvarname: str) -> object:
+def varobj(varval: numpy.array, coords: Dict, dims: List, ncvarname: str) -> Dataset:
     """
     Description
     -----------
 
-    This function defines an xarray DataArray object in accordance
+    This function defines an xarray Dataset object in accordance
     with the specified arguments.
 
     Parameters
@@ -295,9 +294,9 @@ def varobj(varval: numpy.array, coords: Dict, dims: List, ncvarname: str) -> obj
     Returns
     -------
 
-    var_obj: DataArray
+    var_obj: Dataset
 
-        A Python xarray DataArray object.
+        A Python xarray Dataset object.
 
     """
 
