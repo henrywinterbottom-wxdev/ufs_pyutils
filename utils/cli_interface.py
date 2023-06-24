@@ -29,6 +29,16 @@ Description
     This module contains functions to be used for any command line
     interface (CLI) argument collection(s) and schema validation(s).
 
+Classes
+-------
+
+   CLIParser()
+
+       This is the base-class object for the command-line interface
+       (CLI) argument parsing for each Python SimpleNamespace object
+       for the CLI argument(s) valid schema keys can be found at
+       https://tinyurl.com/argparse-objects.
+
 Functions
 ---------
 
@@ -84,13 +94,17 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 # ----
 
+
+import os
 from argparse import ArgumentParser
+from dataclasses import dataclass
+from pydoc import locate
 from types import SimpleNamespace
 from typing import Any, Tuple
 
 from confs.yaml_interface import YAML
 from rich_argparse import RichHelpFormatter
-from tools import parser_interface
+from tools import fileio_interface, parser_interface
 
 from utils import schema_interface
 from utils.exceptions_interface import CLIInterfaceError
@@ -98,7 +112,7 @@ from utils.exceptions_interface import CLIInterfaceError
 # ----
 
 # Define all available attributes.
-__all__ = ["init", "options"]
+__all__ = ["CLIParser", "init", "options"]
 
 # ----
 
@@ -107,6 +121,76 @@ RichHelpFormatter.styles["argparse.args"] = "green"
 RichHelpFormatter.styles["argparse.metavar"] = "cyan"
 RichHelpFormatter.styles["argparse.text"] = "default"
 RichHelpFormatter.styles["argparse.help"] = "blue_violet"
+
+# ----
+
+
+@dataclass
+class CLIParser:
+    """
+    Description
+    -----------
+
+    This is the base-class object for the command-line interface (CLI)
+    argument parsing for each Python SimpleNamespace object for the
+    CLI argument(s) valid schema keys can be found at
+    https://tinyurl.com/argparse-objects.
+
+    """
+
+    def __init__(self: dataclass):
+        """
+        Description
+        -----------
+
+        Creates a new CLIParser object.
+
+        """
+
+        # Define the base-class attributes.
+        if parser_interface.enviro_get(envvar="CLI_SCHEMA") is not None:
+            cli_yaml = parser_interface.enviro_get(envvar="CLI_SCHEMA")
+        else:
+            cli_yaml = os.path.join(os.getcwd(), "cli_schema.yaml")
+        if not fileio_interface.fileexist(path=cli_yaml):
+            msg = f"The CLI schema file {cli_yaml} does not exist. Aborting!!!"
+            raise CLIInterfaceError(msg=msg)
+        self.cli_obj = YAML().read_yaml(yaml_file=cli_yaml, return_obj=True)
+
+    def build(self: dataclass) -> Tuple[SimpleNamespace]:
+        """
+        Description
+        -----------
+
+        This method defines and defines all CLI argument
+        SimpleNamespace object tuples.
+
+        Returns
+        -------
+
+        args_objs: Tuple[SimpleNamespace]
+
+            A Python tuple of SimpleNamespace objects containing the
+            CLI argument(s) attributes.
+
+        """
+
+        # Collect all CLI attributes from the specified schema.
+        args_tuple = ()
+        for cli_arg in vars(self.cli_obj):
+            args_cli_obj = parser_interface.object_define()
+            args_obj = parser_interface.dict_toobject(
+                in_dict=parser_interface.object_getattr(
+                    object_in=self.cli_obj, key=cli_arg
+                )
+            )
+            args_cli_obj = parser_interface.object_setattr(
+                object_in=args_cli_obj, key=cli_arg, value=args_obj
+            )
+            args_tuple = args_tuple + (args_cli_obj,)
+
+        return args_tuple
+
 
 # ----
 
@@ -152,8 +236,7 @@ def __checkschema__(
     """
 
     # Validate the CLI argument schema.
-    cls_schema = schema_interface.build_schema(
-        YAML().read_yaml(yaml_file=schema_path))
+    cls_schema = schema_interface.build_schema(YAML().read_yaml(yaml_file=schema_path))
     cls_opts = parser_interface.object_todict(object_in=options_obj)
     options_obj = schema_interface.validate_schema(
         cls_schema=cls_schema,
@@ -333,29 +416,58 @@ def init(
 
     # Define the respective mandatory, optional, and task application
     # attributes accordingly.
-    for arg_obj in args_objs:
-        argdict = dict(
-            [key, value]
-            for (key, value) in vars(arg_obj).items()
-            if key not in ["longname", "shortname"]
-        )
-        arg_obj.longname = parser_interface.object_getattr(
-            object_in=arg_obj, key="longname", force=True
-        )
-        arg_obj.shortname = parser_interface.object_getattr(
-            object_in=arg_obj, key="shortname", force=True
-        )
-        if arg_obj.longname is None:
-            msg = f"The attribute `longname` for {arg_obj} is {arg_obj.longname}. Aborting!!!"
-            raise CLIInterfaceError(msg=msg)
+    for args_item_obj in args_objs:
 
+        # Define the attributes for the respective CLI argument.
+        arg_obj = parser_interface.object_define()
+        arg_key = list(parser_interface.object_todict(object_in=args_item_obj).keys())[
+            0
+        ]
+        arg_dict = dict(
+            [key, value]
+            for (key, value) in vars(
+                parser_interface.object_getattr(
+                    object_in=args_item_obj, key=arg_key, force=True
+                )
+            ).items()
+            if key not in ["action", "longname", "shortname", "type"]
+        )
+
+        # Define the minimal argument attributes.
+        arg_obj.longname = parser_interface.object_getattr(
+            object_in=args_item_obj, key=arg_key, force=True
+        ).longname
+        try:
+            arg_dict["type"] = locate(
+                parser_interface.object_getattr(
+                    object_in=args_item_obj, key=arg_key, force=True
+                ).type
+            )
+        except AttributeError:
+            try:
+                arg_dict["action"] = parser_interface.object_getattr(
+                    object_in=args_item_obj, key=arg_key, force=True
+                ).action
+            except Exception as errmsg:
+                msg = (
+                    f"Defining the parser attributes for {arg_key} failed with "
+                    f"error {errmsg}. Aborting!!!"
+                )
+                raise CLIInterfaceError(msg=msg) from errmsg
+
+        try:
+            arg_obj.shortname = parser_interface.object_getattr(
+                object_in=args_item_obj, key=arg_key, force=True
+            ).shortname
+        except AttributeError:
+            arg_obj.shortname = None
         try:
             if (arg_obj.longname is not None) and (arg_obj.shortname is not None):
                 parser.add_argument(
-                    f"--{arg_obj.longname}", f"-{arg_obj.shortname}", **argdict
+                    f"--{arg_obj.longname}", f"-{arg_obj.shortname}", **arg_dict
                 )
             if (arg_obj.longname is not None) and (arg_obj.shortname is None):
-                parser.add_argument(f"--{arg_obj.longname}", **argdict)
+                parser.add_argument(f"--{arg_obj.longname}", **arg_dict)
         except Exception as errmsg:
             msg = f"Initializing the CLI failed with error {errmsg}. Aborting!!!"
             raise CLIInterfaceError(msg=msg) from errmsg
@@ -424,8 +536,7 @@ def options(
             )
             raise CLIInterfaceError(msg=msg)
 
-        options_dict = __checkschema__(
-            options_obj=options_obj, schema_path=schema_path)
+        options_dict = __checkschema__(options_obj=options_obj, schema_path=schema_path)
         options_obj = parser_interface.dict_toobject(in_dict=options_dict)
 
     return options_obj
