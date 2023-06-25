@@ -82,7 +82,7 @@ from tools import fileio_interface, parser_interface
 from utils.decorator_interface import privatemethod
 from utils.exceptions_interface import YAMLInterfaceError
 from utils.logger_interface import Logger
-from yaml import SafeLoader, FullLoader
+from yaml import SafeLoader, FullLoader, ScalarNode
 
 # ----
 
@@ -529,6 +529,7 @@ class YAML:
         """
 
         # Define the YAML library loader type.
+        YAMLLoader.add_constructor("!APPEND", YAMLLoader.append_constructor)
         YAMLLoader.add_implicit_resolver(
             "!ENV", YAMLLoader.envvar_matcher, None)
         YAMLLoader.add_constructor("!ENV", YAMLLoader.envvar_constructor)
@@ -537,14 +538,11 @@ class YAML:
         # Open and read the contents of the specified YAML-formatted
         # file path.
         with open(yaml_file, "r", encoding="utf-8") as stream:
-            try:
-                yaml_dict = yaml.load(stream, Loader=YAMLLoader)
-            except Exception:
-                data = yaml.load_all(stream, Loader=FullLoader)
-                print(data.__next__())
-                # yaml_dict = yaml.safe_load_all(stream)
-                # print(yaml_dict.__iter__())
-                quit()
+            # try:
+            yaml_dict = yaml.load(stream, Loader=YAMLLoader)
+            # except Exception:
+            #    pass
+            # yaml_dict = yaml.load_all(stream, Loader=FullLoader)
 
         # Define the Python data type to be returned; proceed
         # accordingly.
@@ -685,18 +683,72 @@ class YAMLLoader(SafeLoader):
     # discussion found at https://tinyurl.com/yamlenvparse
     envvar_matcher = re.compile(r".*\$\{([^}^{]+)\}.*")
 
-    def envvar_constructor(self: SafeLoader, node: Any) -> Any:
+    def append_constructor(self: SafeLoader, node: ScalarNode) -> str:
+        """ 
+        Description
+        -----------
+
+        This method us the YAML value string append constructor.
+
+        Parameters
+        ----------
+
+        node: ScalarNode
+
+            A Python ScalarNode variable containing the YAML
+            attribute.
+
+        Returns
+        -------
+
+        string: str
+
+            A Python string variable containing the contents of the
+            respective list.
+
+        """
+
+        # Build the string and return the result.
+        string = str()
+        for item in node.value:
+            try:
+                string = string + item.value
+            except TypeError:
+                pass
+
+        return string
+
+    def envvar_constructor(self: SafeLoader, node: ScalarNode) -> Any:
         """
         Description
         -----------
 
         This method is the environment variable template constructor.
 
+        Parameters
+        ----------
+
+        node: ScalarNode
+
+            A Python ScalarNode variable containing the YAML
+            attribute.
+
+        Returns
+        -------
+
+        return: Any
+
+            A Python Any type variable containing the expanded/updated
+            YAML attribute(s) using the relevant environment
+            variable(s).
+
         """
 
+        # Expand and update the YAML attributes with the environment
+        # variable value(s).
         return os.path.expandvars(node.value)
 
-    def include_constructor(self: SafeLoader, node: Any) -> Any:
+    def include_constructor(self: SafeLoader, node: ScalarNode) -> Any:
         """
         Description
         -----------
@@ -704,8 +756,26 @@ class YAMLLoader(SafeLoader):
         This method is the file inclusion (i.e., opening and reading)
         template constructor.
 
+        Parameters
+        ----------
+
+        node: ScalarNode
+
+            A Python ScalarNode variable containing the YAML
+            attribute.
+
+        Returns
+        -------
+
+        return: Any
+
+            A Python Any type variable containing the contents of the
+            YAML-formatted file path.
+
         """
 
+        # Load and return the contents of the YAML-formatted file
+        # path.
         filename = self.construct_scalar(node)
         with open(filename, "r", encoding="utf-8") as file:
             return yaml.load(file, YAMLLoader)
