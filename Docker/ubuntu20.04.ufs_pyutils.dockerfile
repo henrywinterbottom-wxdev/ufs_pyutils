@@ -60,7 +60,7 @@ LABEL "version"="0.0.1"
 
 RUN $(which git) clone ${GIT_URL} -b ${GIT_BRANCH} /ufs_pyutils && \
     $(which pip) install -r /ufs_pyutils/requirements.txt && \
-    $(which conda) install -c conda-forge --file /ufs_pyutils/requirements.conda
+    $(which conda) install -c conda-forge --file /ufs_pyutils/requirements.conda && \
     $(which conda) clean --tarballs
 
 ENV PATH="/miniconda/bin:${PATH}"
