@@ -1,92 +1,46 @@
-# =========================================================================
-
-# YAML: .github/workflows/containers.yaml
-
-# Author: Henry R. Winterbottom
-
-# Email: henry.winterbottom@noaa.gov
-
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the respective public license published by the
-# Free Software Foundation and included with the repository within
-# which this application is contained.
-
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-# =========================================================================
-
-# Description
-# -----------
-
-#    This file contains a Github actions/workflow to build a Docker
-#    Engine environment, install the ufs_pyutils required packages,
-#    and build the respective Docker images. This workflow action is
-#    invoked when a Github pull request is opened, a release is
-#    published, and at 0000 UTC every day.
-
-# Author(s)
-# ---------
-
-#    Henry R. Winterbottom; 16 January 2023
-
-# History
-# -------
-
-#    2023-01-16: Henry Winterbottom -- Initial implementation.
-
-# ----
-
-# Define the name of the Github actions/workflow.
+---
 name: Docker Images
-
-# Define the Github triggers for which to launch the respective Github
-# action/workflow.
-on: 
+on:
   pull_request:
-    types: [opened]
-    
+    types:
+      - opened
   release:
-    types: [published]
-
+    types:
+      - published
   schedule:
-    - cron: "0 0 * * *"
-
+    - cron: 0 0 * * *
 jobs:
-
-  # Define the container image.
   build:
     runs-on: ubuntu-latest
     name: Run the ufs_pyutils container build tests.
-        
     steps:
+      - name: Build and install the Docker dependencies.
+        run: >
+          sudo $(which apt-get) install git
 
-    # Build and install the Docker dependencies
-    - name: Build and install the Docker dependencies.
-      run: |
-           sudo apt-get install git
-           sudo apt-get remove docker docker-engine docker.io containerd runc
-           sudo apt-get update
-           sudo apt-get install ca-certificates curl gnupg lsb-release
-           sudo mkdir -p /etc/apt/keyrings
-           sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-           sudo echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-           sudo chmod a+r /etc/apt/keyrings/docker.gpg
-           sudo apt-get update
-           sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+          sudo $(which apt-get) remove docker docker-engine docker.io containerd runc
 
-    # Clone the ufs_pytils repository branch.
-    - name: Checkout ufs_pyutils.
-      uses: actions/checkout@v2
-      with:
-        path: ufs_pyutils
+          sudo $(which apt-get) update
 
-    # Build the Docker image.
-    - name: Build the Docker images.
-      run: |
-           cd $GITHUB_WORKSPACE/ufs_pyutils/Docker
-           docker build -f ubuntu20.04-miniconda-ufs_pyutils.dockerfile --tag ubuntu20.04-miniconda-ufs_pyutils:latest .
-           docker build -f ubuntu20.04.hello_world.dockerfile --tag ubuntu20.04.hello_world:latest .
+          sudo $(which apt-get) install ca-certificates curl gnupg lsb-release
 
-           
+          sudo $(which mkdir) -p /etc/apt/keyrings
+
+          sudo $(which curl) -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+          sudo echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+          sudo $(which chmod) a+r /etc/apt/keyrings/docker.gpg
+
+          sudo $(which apt-get) update
+
+          sudo $(which apt-get) install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+      - name: Checkout ufs_pyutils.
+        uses: actions/checkout@v2
+        with:
+          path: ufs_pyutils
+      - name: Build the Docker images.
+        run: >
+          cd ${GITHUB_WORKSPACE}/ufs_pyutils/Docker
+
+          $(which docker) build -f ${GITHUB_WORKSPACE}/ufs_pyutils/Docker/ubuntu20.04.ufs_pyutils.dockerfile --tag ubuntu20.04.ufs_pyutils:latest .
