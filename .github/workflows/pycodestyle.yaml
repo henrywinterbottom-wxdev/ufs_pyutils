@@ -32,12 +32,12 @@ jobs:
         run: >
           cd ${GITHUB_WORKSPACE}/ufs_pyutils
 
-          $(which pycodestyle) -v --config ${GITHUB_WORKSPACE}/ufs_pyutils/pycodestyle confs
+          $(which pycodestyle) -v --config ${GITHUB_WORKSPACE}/ufs_pyutils/.pycodestyle confs
 
-          $(which pycodestyle) -v --config ${GITHUB_WORKSPACE}/ufs_pyutils/pycodestyle ioapps
+          $(which pycodestyle) -v --config ${GITHUB_WORKSPACE}/ufs_pyutils/.pycodestyle ioapps
 
-          $(which pycodestyle) -v --config ${GITHUB_WORKSPACE}/ufs_pyutils/pycodestyle scripts
+          $(which pycodestyle) -v --config ${GITHUB_WORKSPACE}/ufs_pyutils/.pycodestyle scripts
 
-          $(which pycodestyle) -v --config ${GITHUB_WORKSPACE}/ufs_pyutils/pycodestyle tools
+          $(which pycodestyle) -v --config ${GITHUB_WORKSPACE}/ufs_pyutils/.pycodestyle tools
 
-          $(which pycodestyle) -v --config ${GITHUB_WORKSPACE}/ufs_pyutils/pycodestyle utils
+          $(which pycodestyle) -v --config ${GITHUB_WORKSPACE}/ufs_pyutils/.pycodestyle utils
