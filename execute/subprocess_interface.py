@@ -94,7 +94,7 @@ __all__ = ["run"]
 
 # ----
 
-logger = Logger()
+logger = Logger(caller_name=__name__)
 
 # ----
 
@@ -500,6 +500,7 @@ def run(
     cmd = list(item for item in cmd if item is not None)
 
     # Launch the respective application.
-    returncode = __launch__(cmd=cmd, infile=infile, errlog=errlog, outlog=outlog)
+    returncode = __launch__(cmd=cmd, infile=infile,
+                            errlog=errlog, outlog=outlog)
 
     return returncode

@@ -85,6 +85,12 @@ from utils.logger_interface import Logger
 
 # ----
 
+# Define all available attributes.
+__all__ = ["compose"
+           ]
+
+# ----
+
 logger = Logger(caller_name=__name__)
 
 # ----
