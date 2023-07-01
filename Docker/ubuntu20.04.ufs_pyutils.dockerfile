@@ -50,7 +50,7 @@
 
 FROM noaaufsrnr/ubuntu20.04.miniconda
 ENV GIT_URL="https://www.github.com/HenryWinterbottom-NOAA/ufs_pyutils.git"
-ENV GIT_BRANCH="feature/subprocess_logger"
+ENV GIT_BRANCH="develop"
 
 LABEL "author"="Henry R. Winterbottom (henry.winterbottom@noaa.gov)"
 LABEL "description"="Ubuntu 20.04 UFS Miniconda base image for the `ufs_pyutils` package."
