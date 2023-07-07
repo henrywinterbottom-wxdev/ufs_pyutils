@@ -74,15 +74,15 @@ __email__ = "henry.winterbottom@noaa.gov"
 import os
 import re
 import sys
-from typing import Any, Dict, List, Union, Generic
 from types import SimpleNamespace
+from typing import Any, Dict, Generic, List, Union
 
 import yaml
 from tools import fileio_interface, parser_interface
 from utils.decorator_interface import privatemethod
 from utils.exceptions_interface import YAMLInterfaceError
 from utils.logger_interface import Logger
-from yaml import SafeLoader, FullLoader, ScalarNode
+from yaml import FullLoader, SafeLoader, ScalarNode
 
 # ----
 
@@ -425,8 +425,7 @@ class YAML:
         """
 
         # Define the YAML library loader type.
-        YAMLLoader.add_implicit_resolver(
-            "!ENV", YAMLLoader.envvar_matcher, None)
+        YAMLLoader.add_implicit_resolver("!ENV", YAMLLoader.envvar_matcher, None)
         YAMLLoader.add_constructor("!ENV", YAMLLoader.envvar_constructor)
 
         # Open and read the contents of the specified YAML-formatted
@@ -435,7 +434,7 @@ class YAML:
             try:
                 yaml_full_dict = yaml.load(stream, Loader=YAMLLoader)
             except yaml.composer.ComposerError:
-                yaml_full_dict = yaml.load_all(stream, yaml.FullLoader)
+                yaml_full_dict = yaml.load_all(stream, FullLoader)
 
         # For each attribute within the parsed YAML-formatted file,
         # determine whether a given file is a YAML-formatted file and
@@ -530,8 +529,7 @@ class YAML:
 
         # Define the YAML library loader type.
         YAMLLoader.add_constructor("!APPEND", YAMLLoader.append_constructor)
-        YAMLLoader.add_implicit_resolver(
-            "!ENV", YAMLLoader.envvar_matcher, None)
+        YAMLLoader.add_implicit_resolver("!ENV", YAMLLoader.envvar_matcher, None)
         YAMLLoader.add_constructor("!ENV", YAMLLoader.envvar_constructor)
         YAMLLoader.add_constructor("!INC", YAMLLoader.include_constructor)
 
@@ -684,7 +682,7 @@ class YAMLLoader(SafeLoader):
     envvar_matcher = re.compile(r".*\$\{([^}^{]+)\}.*")
 
     def append_constructor(self: SafeLoader, node: ScalarNode) -> str:
-        """ 
+        """
         Description
         -----------
 
