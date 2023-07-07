@@ -37,7 +37,7 @@ Functions
         This function provides a decorator to be used to raise
         specified exceptions
 
-    private(member):
+    privatemethod(member):
 
         This function provides a decorator to be used to desinated
         `private` methods within classes.
