@@ -73,8 +73,9 @@ import os
 from unittest import TestCase
 
 import pytest
-from confs import jinja2_interface
 from tools import fileio_interface
+
+from confs import jinja2_interface
 
 # ----
 
@@ -100,13 +101,11 @@ class TestJinja2Methods(TestCase):
         """
 
         # Define the base-class attributes.
-        self.jinja2_test_dict = {"NAME1": "ham",
-                                 "NAME2": "eggs", "NAME3": "spam"}
+        self.jinja2_test_dict = {"NAME1": "ham", "NAME2": "eggs", "NAME3": "spam"}
 
         # Define the file paths required for the test method(s).
         dirpath = os.path.join(os.getcwd(), "tests")
-        self.jinja2_template = os.path.join(
-            dirpath, "test_files", "jinja2.template")
+        self.jinja2_template = os.path.join(dirpath, "test_files", "jinja2.template")
         self.jinja2_check = os.path.join(dirpath, "test_files", "jinja2.check")
         self.jinja2_file = os.path.join(dirpath, "jinja2.test")
 

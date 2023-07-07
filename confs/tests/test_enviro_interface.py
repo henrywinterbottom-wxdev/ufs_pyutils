@@ -68,8 +68,9 @@ __email__ = "henry.winterbottom@noaa.gov"
 
 from unittest import TestCase
 
-from confs import enviro_interface
 from tools import parser_interface
+
+from confs import enviro_interface
 
 # ----
 
