@@ -616,7 +616,7 @@ def get(
     object_path: str = None,
     profile_name: str = None,
     resource: str = "s3",
-) -> object:
+) -> NamedTemporaryFile:
     """
     Description
     -----------
@@ -670,7 +670,7 @@ def get(
     Returns
     -------
 
-    object_memory: object
+    object_memory: NamedTemporaryFile
 
         A Python tempfile NamedTemporaryFile object containing the
         contents of the resource bucket and object path specified upon

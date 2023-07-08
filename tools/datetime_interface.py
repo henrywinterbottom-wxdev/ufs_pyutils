@@ -108,13 +108,6 @@ Functions
         positive and negative values for `offset_seconds` is
         supported.
 
-    datestr_list(datestr_start, datestr_stop, offset_seconds,
-                 in_frmttyp, out_frmttyp)
-
-        This function defines and returns a list of timestamp strings
-        in accordance with the parameter attributes specified upon
-        entry.
-
     datestrupdate(datestr, in_frmttyp, out_frmttyp,
                   offset_seconds=None)
 

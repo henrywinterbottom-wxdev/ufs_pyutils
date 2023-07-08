@@ -73,9 +73,10 @@ from collections import OrderedDict
 from unittest import TestCase
 
 import pytest
-from confs.template_interface import Template
 from tools import fileio_interface
 from utils.exceptions_interface import TemplateInterfaceError
+
+from confs.template_interface import Template
 
 # ----
 
@@ -125,8 +126,7 @@ class TestTemplateMethods(TestCase):
         dirpath = os.path.join(os.getcwd(), "tests")
         self.tmpl_check = os.path.join(dirpath, "test_files", "template.check")
         self.tmpl_path = os.path.join(dirpath, "template.test")
-        self.template_path = os.path.join(
-            dirpath, "test_files", "template.template")
+        self.template_path = os.path.join(dirpath, "test_files", "template.template")
 
         # Define the message to accompany any unit-test failures.
         self.unit_test_msg = "The unit-test for template_interface failed."
