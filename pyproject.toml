@@ -8,5 +8,3 @@ py-modules = []
 [project]
 name = "ufs_pyutils"
 version = 0.0.1
-
-
