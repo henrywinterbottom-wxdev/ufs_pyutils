@@ -18,6 +18,7 @@ pip.main(["install", "furo"])
 pip.main(["install", "sphinx-autoapi"])
 pip.main(["install", "sphinx-autodoc-typehints"])
 pip.main(["install", "git+https://www.github.com/HenryWinterbottom-NOAA/numpydoc@feature/ufs_pyutils_updates"])
+sys.path.insert(0, os.path.abspath('.'))
 
 # -- Project information -----------------------------------------------------
 
