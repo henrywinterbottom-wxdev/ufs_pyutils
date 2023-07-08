@@ -19,8 +19,8 @@ pip.main(["install", "sphinx-autoapi"])
 pip.main(["install", "sphinx-autodoc-typehints"])
 pip.main(["install", "git+https://www.github.com/HenryWinterbottom-NOAA/numpydoc@feature/ufs_pyutils_updates"])
 sys.path.insert(0, os.path.abspath('.'))
-sys.path.append(
-    "/home/docs/checkouts/readthedocs.org/user_builds/ufs-pyutils/checkouts/latest/")
+# sys.path.append(
+#    "/home/docs/checkouts/readthedocs.org/user_builds/ufs-pyutils/checkouts/latest/")
 
 # -- Project information -----------------------------------------------------
 
