@@ -1,6 +1,8 @@
 [![License](https://img.shields.io/badge/License-LGPL_v2.1-black)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/blob/develop/LICENSE)
 ![Linux](https://img.shields.io/badge/Linux-ubuntu%7Ccentos-lightgrey)
 ![Python Version](https://img.shields.io/badge/Python-3.5|3.6|3.7-blue)
+[![Code style: black](https://img.shields.io/badge/Code%20Style-black-purple.svg)](https://github.com/psf/black)
+[![Documentation Status](https://readthedocs.org/projects/ufs-pyutils/badge/?version=latest)](https://ufs-pyutils.readthedocs.io/en/latest/?badge=latest)
 
 [![Dependencies](https://img.shields.io/badge/Dependencies-astropy-orange)](https://github.com/astropy/astropy)
 [![](https://img.shields.io/badge/boto3-orange)](https://github.com/boto/boto3)
@@ -20,7 +22,7 @@
 [![Unit Tests](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/unittests.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/unittests.yaml)
 [![Python Coding Standards](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/pycodestyle.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/pycodestyle.yaml)
 [![Container Builds](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/containers.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/containers.yaml)
-[![Documentation Status](https://readthedocs.org/projects/ufs-pyutils/badge/?version=latest)](https://ufs-pyutils.readthedocs.io/en/latest/?badge=latest)
+
 
 # Cloning
 
@@ -65,6 +67,7 @@ In order to install the respective Python packages upon which
 user@host:$ cd ufs_pyutils
 user@host:$ /path/to/pip install update
 user@host:$ /path/to/pip install -r /path/to/ufs_pyutils/requirements.txt
+user@host:$ /path/to/conda install -c conda-forge --file /path/to/ufs_pyutils/requirements.conda
 ~~~
 
 For additional information using `pip` and `requirements.txt` type files, see [here](https://pip.pypa.io/en/stable/reference/requirements-file-format/).
@@ -75,8 +78,8 @@ In order to install via the Python setup applications, do as follows.
 
 ~~~
 user@host:$ cd ufs_pyutils
-user@host:$ python setup.py build
-user@host:$ python setup.py install
+user@host:$ python setup.py build --user
+user@host:$ python setup.py install --user
 ~~~
 
 For additional information and options for building Python packages, see [here](https://docs.python.org/3.5/distutils/setupscript.html).
