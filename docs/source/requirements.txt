@@ -1,4 +1,3 @@
 furo
 sphinx-autoapi
 sphinx-autodoc-typehints
-
