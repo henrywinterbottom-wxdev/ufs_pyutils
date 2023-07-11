@@ -1,8 +1,12 @@
 name: Publish ufs_pyutils to PyPI.
 
 on:
+  pull_request:
+    types:
+      - opened
   release:
-    types: [published, push, pull_request]
+    types:
+      - published
 
 jobs:
   build-and-publish:
