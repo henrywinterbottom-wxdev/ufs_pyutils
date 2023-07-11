@@ -72,6 +72,11 @@ Classes
         This is the base-class for exceptions encountered within the
         confs/enviro_interface module; it is a sub-class of Error.
 
+    GlobusInterfaceError(msg)
+
+        This is the base-class for exceptions encountered within the
+        utils/globus_interface module; it is a sub-class of Error.
+
     GRIBInterfaceError(msg)
 
         This is the base-class for exceptions encountered within the
@@ -212,6 +217,7 @@ __all__ = [
     "CurlInterfaceError",
     "DateTimeInterfaceError",
     "EnviroInterfaceError",
+    "GlobusInterfaceError",
     "GRIBInterfaceError",
     "HashLibInterfaceError",
     "Jinja2InterfaceError",
@@ -343,6 +349,19 @@ class EnviroInterfaceError(Error):
 
     This is the base-class for exceptions encountered within the
     confs/enviro_interface module; it is a sub-class of Error.
+
+    """
+
+# ----
+
+
+class GlobusInterfaceError(Error):
+    """
+    Description
+    -----------
+
+    This is the base-class for exceptions encountered within the
+    ioapps/globus_interface module; it is a sub-class of Error.
 
     """
 

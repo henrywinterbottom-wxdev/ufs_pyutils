@@ -1,28 +1,13 @@
 [![License](https://img.shields.io/badge/License-LGPL_v2.1-black)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/blob/develop/LICENSE)
 ![Linux](https://img.shields.io/badge/Linux-ubuntu%7Ccentos-lightgrey)
-![Python Version](https://img.shields.io/badge/Python-3.5|3.6|3.7-blue)
+![Python Version](https://img.shields.io/badge/Python-3.5|3.6|3.7|3.8|3.9-blue)
 [![Code style: black](https://img.shields.io/badge/Code%20Style-black-purple.svg)](https://github.com/psf/black)
-[![Documentation Status](https://readthedocs.org/projects/ufs-pyutils/badge/?version=latest)](https://ufs-pyutils.readthedocs.io/en/latest/?badge=latest)
-
-[![Dependencies](https://img.shields.io/badge/Dependencies-astropy-orange)](https://github.com/astropy/astropy)
-[![](https://img.shields.io/badge/boto3-orange)](https://github.com/boto/boto3)
-[![](https://img.shields.io/badge/bs4-orange)](https://github.com/waylan/beautifulsoup)
-[![](https://img.shields.io/badge/croniter-orange)](https://github.com/kiorky/croniter)
-[![](https://img.shields.io/badge/lxml-orange)](https://github.com/lxml/lxml)
-[![](https://img.shields.io/badge/netcdf4-orange)](https://github.com/Unidata/netcdf4-python)
-[![](https://img.shields.io/badge/numpy-orange)](https://github.com/numpy/numpy)
-[![](https://img.shields.io/badge/pyyaml-orange)](https://github.com/yaml/pyyaml)
-[![](https://img.shields.io/badge/rich__argparse-orange)](https://github.com/hamdanal/rich-argparse)
-[![](https://img.shields.io/badge/schema-orange)](https://github.com/keleshev/schema)
-[![](https://img.shields.io/badge/tabulate-orange)](https://github.com/gregbanks/python-tabulate)
-[![](https://img.shields.io/badge/xarray-orange)](https://github.com/pydata/xarray)
-[![](https://img.shields.io/badge/xmltodict-orange)](https://github.com/martinblech/xmltodict)
 
 [![Build Tests](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/buildtest.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/buildtest.yaml)
 [![Unit Tests](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/unittests.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/unittests.yaml)
 [![Python Coding Standards](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/pycodestyle.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/pycodestyle.yaml)
 [![Container Builds](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/containers.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/containers.yaml)
-
+[![Documentation Status](https://readthedocs.org/projects/ufs-pyutils/badge/?version=latest)](https://ufs-pyutils.readthedocs.io/en/latest/?badge=latest)
 
 # Cloning
 
@@ -46,6 +31,8 @@ installation attributes are provided in the table below.
 | [`boto3`](https://github.com/boto/boto3) | <div align="left">`pip boto3==1.24.28`</div> | 
 | [`bs4`](https://github.com/waylan/beautifulsoup) | <div align="left">`pip install bs4==0.0.1`</div> | 
 | [`croniter`](https://github.com/kiorky/croniter) | <div align="left">`pip install croniter==1.3.8`</div> |
+| [`globus-cli`](https://github.com/globus/globus-cli) | <div align="left">`pip install globus-cli==3.15.0`</div> |
+| [`globus-sdk-python`](https://github.com/globus/globus-sdk-python) | <div align="left">`pip install globus-sdk==3.21.0`</div> |
 | [`lxml`](https://github.com/lxml/lxml) | <div align="left">`pip install lxml==4.9.2`</div> |
 | [`netcdf4`](https://github.com/Unidata/netcdf4-python) | <div align="left">`pip install netcdf4==1.6.2`</div> |
 | [`numpy`](https://github.com/numpy/numpy) | <div align="left">`pip install numpy==1.22.4`</div> |
