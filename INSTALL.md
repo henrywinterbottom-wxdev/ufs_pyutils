@@ -9,13 +9,14 @@
 [![Container Builds](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/containers.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/containers.yaml)
 [![PyPI](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/pypi.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/pypi.yaml)
 
-# Purpose
+# Description
 
-This the `ufs_pyutils` package contains an API utilized by multiple
-[Unified Forecast System](https://ufscommunity.org/) (UFS)
-applications. However, it is not limited only to such applications and
-may be where the provided application interfaces are valid and/or
-useful.
+The `ufs_pyutils` package contains an toolbox of APIs for various
+workflow and diagnostic tool applications. Currently this utilized by
+multiple applications derived from the [Unified Forecast
+System](https://ufscommunity.org/) (UFS). However, it is not limited
+only to the UFS and may be useful and/or applicable to other such
+packages.
 
 # Installation
 
@@ -25,8 +26,7 @@ The `ufs_pyutils` package may be installed as follows.
 user@host:$ pip install --user ufs-pyutils
 ~~~
 
-The available unit-tests for the available APIs may be executed as
-follows.
+The unit-tests for the available APIs may be executed as follows.
 
 ~~~
 user@host:$ cd /path/to/ufs_pyutils

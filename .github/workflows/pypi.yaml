@@ -1,5 +1,5 @@
+---
 name: PyPI
-
 on:
   pull_request:
     types:
@@ -7,30 +7,28 @@ on:
   release:
     types:
       - published
-
 jobs:
   build-and-publish:
     name: Build and publish ufs_pyutils to PyPI.
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout ufs_pyutils.
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.x"
-
-    - name: Install the necessary Python packages.
-      run: |
-        python3 -m pip install build --user
-
-    - name: Build ufs_pyutils.
-      run: |
-        python3 -m build --sdist --wheel --outdir dist/ .
-
-    - name: Publish ufs_pyutils.
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        password: ${{ secrets.PYPI_UFS_TOKEN }}
+      - name: Checkout ufs_pyutils.
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+      - name: Install the necessary Python packages.
+        run: |
+          $(which python3) -m pip install build --user
+      - name: Build ufs_pyutils.
+        run: |
+          $(which python3) -m build --sdist --wheel --outdir dist/ .
+      - name: Publish ufs_pyutils.
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_UFS_TOKEN }}
+      - name: Upload coverage reports to Codecov.
+        uses: codecov/codecov-action@v3
+        env:
+           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
