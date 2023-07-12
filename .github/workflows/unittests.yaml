@@ -63,3 +63,7 @@ jobs:
           export PYTHONPATH="${GITHUB_WORKSPACE}/ufs_pyutils"
           cd ufs_pyutils/confs
           $(which pytest)
+      - name: Upload coverage reports to Codecov.
+        uses: codecov/codecov-action@v3
+        env:
+           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
