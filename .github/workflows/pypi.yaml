@@ -1,4 +1,4 @@
-name: Publish ufs_pyutils to PyPI.
+name: PyPI
 
 on:
   pull_request:
