@@ -22,7 +22,7 @@ useful.
 The `ufs_pyutils` package may be installed as follows.
 
 ~~~
-user@host:$ /path/to/pip install ufs_pyutils
+user@host:$ pip install --user ufs-pyutils
 ~~~
 
 The available unit-tests for the available APIs may be executed as

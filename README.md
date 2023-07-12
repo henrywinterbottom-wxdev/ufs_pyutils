@@ -10,6 +10,12 @@
 [![Container Builds](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/containers.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/containers.yaml)
 [![PyPI](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/pypi.yaml/badge.svg)](https://github.com/HenryWinterbottom-NOAA/ufs_pyutils/actions/workflows/pypi.yaml)
 
+# Installation
+
+~~~
+user@host:$ pip install ufs-pyutils
+~~~
+
 # Cloning
 
 This repository utilizes several sub-modules from various sources. To
