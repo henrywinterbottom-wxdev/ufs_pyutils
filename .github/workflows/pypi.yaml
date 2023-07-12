@@ -31,6 +31,6 @@ jobs:
         python3 -m build --sdist --wheel --outdir dist/ .
 
     - name: Publish ufs_pyutils.
-      uses: pypa/gh-action-pypi-publish@release/v1
+      #uses: pypa/gh-action-pypi-publish@release/v1
       with:
         password: ${{ secrets.PYPI_UFS_TOKEN }}
