@@ -353,7 +353,8 @@ def run(
     multi_prog: bool = False,
     multi_prog_conf: str = None,
 ) -> int:
-    """Description
+    """
+    Description
     -----------
 
     This function launches a job application in accordance with the
