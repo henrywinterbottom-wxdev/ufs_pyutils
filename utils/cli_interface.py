@@ -1,21 +1,10 @@
-# =========================================================================
-
-# Module: utils/cli_interface.py
-
+# File: utils/cli_interface.py
 # Author: Henry R. Winterbottom
+# Date: 28 July 2023
+# Version: 0.0.1
+# License: LGPL v2.1
 
-# Email: henry.winterbottom@noaa.gov
-
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the respective public license published by the
-# Free Software Foundation and included with the repository within
-# which this application is contained.
-
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-# =========================================================================
+# ----
 
 """
 Module
@@ -279,7 +268,6 @@ def __get_knownargs__(parser: ArgumentParser) -> SimpleNamespace:
     # Collect any mandatory arguments from the CLI.
     options_obj = parser_interface.object_define()
     args_obj = parser.parse_known_args()[0]
-
     for opt in vars(args_obj):
         options_obj = parser_interface.object_setattr(
             object_in=options_obj,
@@ -327,8 +315,8 @@ def __get_otherargs__(
 
     """
 
+    # Get the ancillary arguments from the CLI.
     otherargs_list = parser.parse_known_intermixed_args()[1]
-
     for idx in range(0, len(otherargs_list), 2):
         options_obj = parser_interface.object_setattr(
             object_in=options_obj,
@@ -430,8 +418,17 @@ def init(
                     object_in=args_item_obj, key=arg_key, force=True
                 )
             ).items()
-            if key not in ["action", "longname", "shortname", "type"]
+            if key not in ["action", "longname", "required", "shortname", "type"]
         )
+        arg_obj.required = parser_interface.object_getattr(
+            object_in=parser_interface.object_getattr(
+                object_in=args_item_obj, key=arg_key
+            ),
+            key="required",
+            force=True,
+        )
+        if arg_obj.required is None:
+            arg_obj.required = False
 
         # Define the minimal argument attributes.
         arg_obj.longname = parser_interface.object_getattr(
@@ -454,7 +451,6 @@ def init(
                     f"error {errmsg}. Aborting!!!"
                 )
                 raise CLIInterfaceError(msg=msg) from errmsg
-
         try:
             arg_obj.shortname = parser_interface.object_getattr(
                 object_in=args_item_obj, key=arg_key, force=True
@@ -462,12 +458,15 @@ def init(
         except AttributeError:
             arg_obj.shortname = None
         try:
-            if (arg_obj.longname is not None) and (arg_obj.shortname is not None):
-                parser.add_argument(
-                    f"--{arg_obj.longname}", f"-{arg_obj.shortname}", **arg_dict
-                )
-            if (arg_obj.longname is not None) and (arg_obj.shortname is None):
-                parser.add_argument(f"--{arg_obj.longname}", **arg_dict)
+            if arg_obj.required:
+                parser.add_argument(f"{arg_obj.longname}", **arg_dict)
+            if not arg_obj.required:
+                if (arg_obj.longname is not None) and (arg_obj.shortname is not None):
+                    parser.add_argument(
+                        f"--{arg_obj.longname}", f"-{arg_obj.shortname}", **arg_dict
+                    )
+                if (arg_obj.longname is not None) and (arg_obj.shortname is None):
+                    parser.add_argument(f"-{arg_obj.longname}", **arg_dict)
         except Exception as errmsg:
             msg = f"Initializing the CLI failed with error {errmsg}. Aborting!!!"
             raise CLIInterfaceError(msg=msg) from errmsg
@@ -535,7 +534,6 @@ def options(
                 "schema. Aborting!!!"
             )
             raise CLIInterfaceError(msg=msg)
-
         options_dict = __checkschema__(options_obj=options_obj, schema_path=schema_path)
         options_obj = parser_interface.dict_toobject(in_dict=options_dict)
 
