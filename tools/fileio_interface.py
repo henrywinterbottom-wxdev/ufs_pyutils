@@ -1,20 +1,9 @@
 # =========================================================================
-
-# Module: tools/fileio_interface.py
-
+# File: tools/fileio_interface.py
 # Author: Henry R. Winterbottom
-
-# Email: henry.winterbottom@noaa.gov
-
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the respective public license published by the
-# Free Software Foundation and included with the repository within
-# which this application is contained.
-
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
+# Date: 03 December 2022
+# Version: 0.0.1
+# License: LGPL v2.1
 # =========================================================================
 
 """
@@ -31,6 +20,11 @@ Description
 
 Functions
 ---------
+
+    chdir(path)
+
+        This function execute task calls within the specified datapath
+        using context management.
 
     concatenate(filelist, concatfile, sepfiles=False)
 
@@ -147,6 +141,7 @@ __email__ = "henry.winterbottom@noaa.gov"
 # ----
 
 import os
+from contextlib import contextmanager
 import shutil
 import subprocess
 import tempfile
@@ -159,6 +154,7 @@ from utils.logger_interface import Logger
 
 # Define all available functions.
 __all__ = [
+    "chdir",
     "concatenate",
     "copyfile",
     "dircontents",
@@ -178,6 +174,36 @@ __all__ = [
 # ----
 
 logger = Logger(caller_name=__name__)
+
+# ----
+
+
+@contextmanager
+def chdir(path: str) -> None:
+    """
+    Description
+    -----------
+
+    This function execute task calls within the specified datapath
+    using context management.
+
+    Parameters
+    ----------
+
+    path: str
+
+        A Python string defining the path within which specified tasks
+        will be executed.
+
+    """
+
+    # Define and navigate the directory tree.
+    cwd = os.getcwd()
+    try:
+        os.chdir(path)
+        yield
+    finally:
+        os.chdir(cwd)
 
 # ----
 
@@ -225,7 +251,6 @@ def concatenate(filelist: List, concatfile: str, sepfiles: bool = False) -> None
             if sepfiles:
                 fout.write(b"\n")
 
-
 # ----
 
 
@@ -258,7 +283,6 @@ def copyfile(srcfile: str, dstfile: str) -> None:
     # directory path; proceed accordingly.
     if os.path.isfile(dstfile):
         os.remove(dstfile)
-
     if os.path.isdir(dstfile):
         path = dstfile
         rmdir(path)
@@ -267,10 +291,9 @@ def copyfile(srcfile: str, dstfile: str) -> None:
     # file using the respective platform copy method.
     msg = f"Copying file {srcfile} to {dstfile}."
     logger.info(msg=msg)
-
     cmd = ["cp", "-rRfL", srcfile, dstfile]
-
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE)
     proc.communicate()
 
 
@@ -333,14 +356,12 @@ def dirpath_tree(path: str) -> None:
     if exist:
         msg = f"The directory tree {path} exists; nothing to be done."
         logger.info(msg=msg)
-
     if not exist:
         msg = (
             f"The directory tree {path} does not exist; an attempt "
             "will be made to create it."
         )
         logger.warn(msg=msg)
-
         makedirs(path=path)
 
 
@@ -492,10 +513,8 @@ def makedirs(path: str, force: bool = False) -> None:
     if os.path.isdir(path):
         if force:
             rmdir(path)
-
     try:
         os.makedirs(path)
-
     except OSError:
         pass
 
@@ -525,7 +544,6 @@ def removefiles(filelist: List) -> None:
     for filename in filelist:
         if os.path.isfile(filename):
             os.remove(filename)
-
 
 # ----
 
@@ -558,7 +576,6 @@ def rename(srcfile: str, dstfile: str) -> None:
     # the destination file path specified upon entry.
     try:
         shutil.move(srcfile, dstfile)
-
     except Exception:
         pass
 
@@ -588,10 +605,8 @@ def rmdir(path: str) -> None:
     # upon entry; proceed accordingly.
     if os.path.isdir(path):
         shutil.rmtree(path)
-
     if not os.path.isdir(path):
         pass
-
 
 # ----
 
@@ -625,10 +640,8 @@ def symlink(srcfile: str, dstfile: str) -> None:
     # proceed accordingly.
     if os.path.isfile(dstfile):
         os.remove(dstfile)
-
     try:
         os.symlink(srcfile, dstfile)
-
     except OSError:
         pass
 
