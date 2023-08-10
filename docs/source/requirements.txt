@@ -1,3 +1,4 @@
+sphinx==6.2.1
 furo
 sphinx-autoapi
 sphinx-autodoc-typehints
