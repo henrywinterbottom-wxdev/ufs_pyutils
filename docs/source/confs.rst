@@ -7,5 +7,6 @@ confs
    confs.enviro_interface
    confs.jinja2_interface
    confs.json_interface
+   confs.lua_interface
    confs.template_interface
    confs.yaml_interface
