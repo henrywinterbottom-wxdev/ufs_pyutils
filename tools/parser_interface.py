@@ -1,20 +1,9 @@
 # =========================================================================
-
-# Module: tools/parser_interface.py
-
+# File: tools/parser_interface.py
 # Author: Henry R. Winterbottom
-
-# Email: henry.winterbottom@noaa.gov
-
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the respective public license published by the
-# Free Software Foundation and included with the repository within
-# which this application is contained.
-
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
+# Date: 21 August 2022
+# Version: 0.0.1
+# License: LGPL v2.1
 # =========================================================================
 
 """
@@ -132,7 +121,7 @@ Functions
 
     object_define()
 
-        This function defines an empty Python object.
+        This function defines an empty Python SimpleNamespace object.
 
     object_getattr(object_in, key, force=False)
 
@@ -154,8 +143,9 @@ Functions
 
     object_todict(object_in)
 
-        This function ingests a Python object and returns a Python
-        dictionary containing the contents of the respective object.
+        This function ingests a Python SimpleNamespace object and
+        returns a Python dictionary containing the contents of the
+        respective object.
 
     str_to_bool(string)
 
@@ -257,6 +247,7 @@ __all__ = [
     "object_hasattr",
     "object_setattr",
     "object_todict",
+    "singletrue",
     "str_to_bool",
     "string_parser",
     "true_or_false",
@@ -310,7 +301,6 @@ def dict_formatter(in_dict: Dict) -> Dict:
                 if isinstance(test_value, bool):
                     if test_value:
                         value = True
-
                     if not test_value:
                         value = False
 
@@ -323,17 +313,13 @@ def dict_formatter(in_dict: Dict) -> Dict:
                             value = float(test_value)
                         else:
                             value = int(test_value)
-
                     except ValueError:
                         if test_value.lower() == "none":
                             value = None
-
                         elif test_value.lower() == "true":
                             value = True
-
                         elif test_value.lower() == "false":
                             value = False
-
                         else:
                             value = str(test_value)
 
@@ -386,7 +372,6 @@ def dict_key_remove(dict_in: Dict, key: str) -> Dict:
     # specified upon entry.
     try:
         del dict_in[key]
-
     except KeyError:
         pass
 
@@ -490,7 +475,6 @@ def dict_key_value(
             "is to be sought from the list. Aborting!!!"
         )
         raise ParserInterfaceError(msg=msg)
-
     if index_value is not None:
         if max_value:
             msg = (
@@ -499,7 +483,6 @@ def dict_key_value(
                 "please check which criteria to fulfill. Aborting!!!"
             )
             raise ParserInterfaceError(msg=msg)
-
         if min_value:
             msg = (
                 "The user has selected both a single value (as per "
@@ -522,10 +505,8 @@ def dict_key_value(
                 value = min(value)
             if index_value is not None:
                 value = value[index_value]
-
         except AttributeError:
             value = dict_in[key]
-
     except KeyError:
         if not force:
             msg = (
@@ -533,7 +514,6 @@ def dict_key_value(
                 "Aborting!!!"
             )
             raise ParserInterfaceError(msg=msg)
-
         if force:
             value = None
 
@@ -563,10 +543,10 @@ def dict_merge(dict1: Dict, dict2: Dict) -> Generator[Dict, Dict, Dict]:
 
          A Python dictionary to be merged.
 
-    Yields
-    ------
+    Returns
+    -------
 
-    Dict:
+    Generator:
 
          A Python dictionary containing the contents of `dict1` and
          `dict2`.
@@ -586,19 +566,16 @@ def dict_merge(dict1: Dict, dict2: Dict) -> Generator[Dict, Dict, Dict]:
             # Python dictionaries, proceed accordingly.
             if isinstance(dict1[k], dict) and isinstance(dict2[k], dict):
                 yield (k, dict(dict_merge(dict1[k], dict2[k])))
-
             else:
 
                 # If one of the Python dictionary key values is not a
                 # Python dictionary, update the second dictionary and
                 # continue.
                 yield (k, dict2[k])
-
         elif k in dict1:
 
             # Update the first Python dictionary accordingly.
             yield (k, dict1[k])
-
         else:
 
             # Update the second Python dictionary accordingly.
@@ -649,7 +626,6 @@ def dict_replace_value(in_dict: Dict, old: str, new: str) -> Dict:
 
     # Parse the Python dictionary and proceed accordingly.
     out_dict = {}
-
     for (key, value) in in_dict.items():
 
         # Update any Python dictionary instances.
@@ -663,7 +639,6 @@ def dict_replace_value(in_dict: Dict, old: str, new: str) -> Dict:
         # Update any remaining Python type instances.
         elif isinstance(value, str):
             value = value.replace(old, new)
-
         out_dict[key] = value
 
     return out_dict
@@ -772,7 +747,6 @@ def enviro_set(envvar: str, value: Union[bool, float, int, str]) -> None:
     # Define the run-time environment variable.
     if isinstance(value, list):
         os.environ[envvar] = ",".join([item for item in value])
-
     if not isinstance(value, list):
         os.environ[envvar] = value
 
@@ -929,11 +903,9 @@ def handler(
     # proceed accordingly.
     try:
         value = func(*args, **kwargs)
-
     except Exception as errmsg:
         if return_none:
             value = None
-
         if raise_exception:
             value = handle(errmsg)
 
@@ -976,12 +948,10 @@ def list_get_type(in_list: List, dtype: str) -> List:
     # Find all items within the list specified upon entry of a
     # specified data type upon entry.
     var_list = []
-
     try:
         for item in in_list:
             if isinstance(item, dtype):
                 var_list.append(item)
-
     except TypeError:
         var_list.append(numpy.nan)
 
@@ -1031,7 +1001,6 @@ def list_replace_value(in_list: List, old: str, new: str) -> List:
 
     # Parse the Python dictionary and proceed accordingly.
     out_list = []
-
     for item in in_list:
 
         # Update any Python list instances.
@@ -1045,10 +1014,109 @@ def list_replace_value(in_list: List, old: str, new: str) -> List:
         # Update any Python string instances.
         elif isinstance(item, str):
             item = item.replace(old, new)
-
         out_list.append(item)
 
     return out_list
+
+
+# ----
+
+
+def match_list(
+    in_list: List, match_string: str, exact: bool = False
+) -> Tuple[bool, str]:
+    """
+    Description
+    -----------
+
+    This function ingests a Python list and a Python string and
+    matches, either exact or partial, are sought for the string within
+    the provided; if `exact` is True upon entry, the matching Python
+    string is returned if a match is found; otherwise NoneType is
+    returned; if `exact` is False upon entry, a list of matching
+    Python strings is returned.
+
+    Parameters
+    ----------
+
+    in_list: List
+
+        A Python list of strings within matches will be sought.
+
+    match_string: str
+
+        A Python string for which to search for matches within the
+        ingested list.
+
+    Keywords
+    --------
+
+    exact: bool, optional
+
+        A Python boolean variable; if True, a Python string will be
+        returned assuming a match is made; if False, a Python list of
+        strings matching `match_string` will be returned assuming
+        matches can be made.
+
+    Returns
+    -------
+
+    match_chk: bool
+
+        A Python boolean variable indicating whether a match (or
+        matches) has (have) been made.
+
+    match_str: str
+
+        A Python string (if `exact` is True upon entry) or a Python
+        list of strings (if `exact` is False upon entry) containing
+        all matches to the input match string; if no matches can be
+        found, either NoneType (if `exact` is True upon entry) or an
+        empty list (if `exact` is False upon entry) is returned.
+
+    """
+
+    # Define the local lists to be used for the matching application.
+    lower_list = [word for word in in_list if word.islower()]
+    upper_list = [word for word in in_list if word.isupper()]
+    mixed_list = [word for word in in_list if not word.islower() and not word.isupper()]
+    match_chk = False
+
+    # If appropriate, seek exact matches; proceed accordingly.
+    if exact:
+        match_str = None
+        for string in lower_list:
+            if match_string.lower() == string.lower():
+                match_chk = True
+                match_str = string
+                break
+        for string in upper_list:
+            if match_string.lower() in string.lower():
+                match_chk = True
+                match_str = string
+                break
+        for string in mixed_list:
+            if match_string.lower() == string.lower():
+                match_chk = True
+                match_str = string
+                break
+
+    # If appropriate, seek non-exact matches; proceed accordingly.
+    if not exact:
+        match_str = []
+        for string in lower_list:
+            if match_string.lower() in string.lower():
+                match_str.append(string)
+        for string in upper_list:
+            if match_string.lower() in string.lower():
+                match_str.append(string)
+        for string in mixed_list:
+            if match_string.lower() in string.lower():
+                match_str.append(string)
+        if len(match_str) > 0:
+            match_chk = True
+
+    return (match_chk, match_str)
 
 
 # ----
@@ -1101,8 +1169,7 @@ def object_append(object_in: object, object_key: str, dict_in: Dict) -> object:
         object_dict[key] = value
 
     # Build the output Python object.
-    object_out = object_setattr(
-        object_in=object_out, key=object_key, value=object_dict)
+    object_out = object_setattr(object_in=object_out, key=object_key, value=object_dict)
 
     return object_out
 
@@ -1182,19 +1249,19 @@ def object_deepcopy(object_in: object) -> object:
 # ----
 
 
-def object_define() -> object:
+def object_define() -> SimpleNamespace:
     """
     Description
     -----------
 
-    This function defines an empty Python object.
+    This function defines an empty Python SimpleNamespace object.
 
     Returns
     -------
 
     empty_obj: object
 
-        An empty Python object.
+        An empty Python SimpleNamespace object.
 
     """
 
@@ -1264,7 +1331,6 @@ def object_getattr(object_in: object, key: str, force: bool = False) -> Any:
     if not hasattr(object_in, key):
         if force:
             value = None
-
         if not force:
             msg = (
                 f"The object {object_in} does not contain attribute "
@@ -1273,107 +1339,6 @@ def object_getattr(object_in: object, key: str, force: bool = False) -> Any:
             raise ParserInterfaceError(msg=msg)
 
     return value
-
-
-# ----
-
-
-def match_list(
-    in_list: List, match_string: str, exact: bool = False
-) -> Tuple[bool, str]:
-    """
-    Description
-    -----------
-
-    This function ingests a Python list and a Python string and
-    matches, either exact or partial, are sought for the string within
-    the provided; if `exact` is True upon entry, the matching Python
-    string is returned if a match is found; otherwise NoneType is
-    returned; if `exact` is False upon entry, a list of matching
-    Python strings is returned.
-
-    Parameters
-    ----------
-
-    in_list: List
-
-        A Python list of strings within matches will be sought.
-
-    match_string: str
-
-        A Python string for which to search for matches within the
-        ingested list.
-
-    Keywords
-    --------
-
-    exact: bool, optional
-
-        A Python boolean variable; if True, a Python string will be
-        returned assuming a match is made; if False, a Python list of
-        strings matching `match_string` will be returned assuming
-        matches can be made.
-
-    Returns
-    -------
-
-    match_chk: bool
-
-        A Python boolean variable indicating whether a match (or
-        matches) has (have) been made.
-
-    match_str: str
-
-        A Python string (if `exact` is True upon entry) or a Python
-        list of strings (if `exact` is False upon entry) containing
-        all matches to the input match string; if no matches can be
-        found, either NoneType (if `exact` is True upon entry) or an
-        empty list (if `exact` is False upon entry) is returned.
-
-    """
-
-    # Define the local lists to be used for the matching application.
-    lower_list = [word for word in in_list if word.islower()]
-    upper_list = [word for word in in_list if word.isupper()]
-    mixed_list = [word for word in in_list if not word.islower()
-                  and not word.isupper()]
-    match_chk = False
-
-    # If appropriate, seek exact matches; proceed accordingly.
-    if exact:
-        match_str = None
-        for string in lower_list:
-            if match_string.lower() == string.lower():
-                match_chk = True
-                match_str = string
-                break
-        for string in upper_list:
-            if match_string.lower() in string.lower():
-                match_chk = True
-                match_str = string
-                break
-        for string in mixed_list:
-            if match_string.lower() == string.lower():
-                match_chk = True
-                match_str = string
-                break
-
-    # If appropriate, seek non-exact matches; proceed accordingly.
-    if not exact:
-        match_str = []
-        for string in lower_list:
-            if match_string.lower() in string.lower():
-                match_str.append(string)
-        for string in upper_list:
-            if match_string.lower() in string.lower():
-                match_str.append(string)
-        for string in mixed_list:
-            if match_string.lower() in string.lower():
-                match_str.append(string)
-        if len(match_str) > 0:
-            match_chk = True
-
-    return (match_chk, match_str)
 
 
 # ----
@@ -1469,20 +1434,20 @@ def object_setattr(
 # ----
 
 
-def object_todict(object_in: object) -> Dict:
+def object_todict(object_in: SimpleNamespace) -> Dict:
     """
     Description
     -----------
 
-    This function ingests a Python object and returns a Python
-    dictionary containing the contents of the object.
+    This function ingests a Python SimpleNamespace object and returns
+    a Python dictionary containing the contents of the object.
 
     Parameters
     ----------
 
-    object_in: object
+    object_in: SimpleNamespace
 
-        A Python object containing specified content.
+        A Python SimpleNamespace object containing specified content.
 
     Returns
     -------
@@ -1579,7 +1544,6 @@ def str_to_bool(string: str) -> bool:
     # proceed accordingly.
     try:
         boolval = json.loads(string.lower())
-
     except JSONDecodeError:
         boolval = None
 
@@ -1618,6 +1582,11 @@ def string_parser(in_list: List, remove_comma: bool = False) -> List:
     out_list: List
 
         A Python list of appropriately formatted variable values.
+
+    Notes
+    -----
+
+    - This function does not have an active unit test.
 
     """
 
@@ -1660,15 +1629,11 @@ def string_parser(in_list: List, remove_comma: bool = False) -> List:
                         value = False
                     else:
                         value = str(test_value)
-
             try:
                 value = value.rsplit()[0]
-
             except AttributeError:
                 pass
-
             out_list.append(value)
-
     except TypeError:
         value = None
         out_list.append(value)
@@ -1676,11 +1641,9 @@ def string_parser(in_list: List, remove_comma: bool = False) -> List:
     # Update the output list accordingly.
     if remove_comma:
         new_list = []
-
         for item in out_list:
             if item != ",":
                 new_list.append(item)
-
         out_list = new_list
 
     return out_list
@@ -1713,16 +1676,19 @@ def true_or_false(argval: Any) -> Union[bool, None]:
         A Python boolean-type value if the argument is a boolean
         variable; otherwise, NoneType.
 
+    Notes
+    -----
+
+    - This function does not have an active unit test.
+
     """
 
     # Check the arguments provided upon entry and proceed accordingly.
     string = str(argval).upper()
     if "TRUE".startswith(string):
         pytype = True
-
     elif "FALSE".startswith(string):
         pytype = False
-
     else:
         pytype = None
 
@@ -1754,11 +1720,14 @@ def unique_list(in_list: List) -> List:
 
         A Python list containing only uniquely-valued strings.
 
+    Known Issues
+    ------------
+
+    - Fails for cases of mixed-case.
+
     """
     out_list = []
-    out_dict = collections.OrderedDict.fromkeys(
-        x for x in in_list if x not in out_list)
-
+    out_dict = collections.OrderedDict.fromkeys(x for x in in_list if x not in out_list)
     out_list = []
     for key in sorted(out_dict.keys()):
         out_list.append(key.replace(" ", ""))
@@ -1836,7 +1805,6 @@ def update_dict(default_dict: Dict, base_dict: Dict, update_none: bool = False) 
             if update_none:
                 if value is None:
                     pass
-
             if not update_none:
                 output_dict[key] = value
 
