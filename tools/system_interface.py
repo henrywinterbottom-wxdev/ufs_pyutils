@@ -1,20 +1,9 @@
 # =========================================================================
-
-# Module: tools/system_interface.py
-
+# File: tools/tests/test_parser_interface.py
 # Author: Henry R. Winterbottom
-
-# Email: henry.winterbottom@noaa.gov
-
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the respective public license published by the
-# Free Software Foundation and included with the repository within
-# which this application is contained.
-
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
+# Date: 03 December 2022
+# Version: 0.0.1
+# License: LGPL v2.1
 # =========================================================================
 
 """
@@ -110,7 +99,8 @@ from utils.logger_interface import Logger
 # ----
 
 # Define all available functions.
-__all__ = ["app_path", "chown", "get_app_path", "get_pid", "sleep", "task_exit", "user"]
+__all__ = ["app_path", "chown", "get_app_path",
+           "get_pid", "sleep", "task_exit", "user"]
 
 # ----
 
@@ -175,14 +165,17 @@ def app_path(app: str) -> Union[str, None]:
     # Query the run-time environment in order to collect the path for
     # the application name specified upon entry.
     cmd = ["command", "-V", app]
-
-    proc = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, stderr=subprocess.PIPE,
+                            stdout=subprocess.PIPE)
     (out, err) = proc.communicate()
 
     # Collect the run-time environment path from the query for the
     # application name specified upon entry.
     if len(out) > 0:
-        path = out.rstrip().decode("utf-8").split()[2]
+        try:
+            path = out.rstrip().decode("utf-8").split()[2]
+        except IndexError:
+            path = out.rstrip().decode("utf-8").split()[1]
     else:
         path = None
 
@@ -328,16 +321,12 @@ def task_exit() -> None:
 
     """
 
-    # Define the calling application stack frame.
+    # Parse the application stack frame, define calling application
+    # attributes, and (gracefully) exit the task.
     stack = _get_stack()
-
-    # Define calling application attributes.
     [module, lineno] = (stack[2][1], stack[2][2])
-
-    # Gracefully exit task.
     msg = f"Task exit called from file {module} line number {lineno}."
     logger.warn(msg=msg)
-
     sys.exit(0)
 
 
