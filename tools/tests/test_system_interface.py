@@ -89,7 +89,7 @@ class TestSystemInterface(unittest.TestCase):
 
     # The following are unit tests for the function `app_path`.
     @patch("subprocess.Popen")
-    def test_app_path_with_path(self, mock_popen):
+    def test_app_path_with_path(self: unittest.TestCase, mock_popen) -> None:
         mock_output = b"app: /path/to/app\n"
         mock_popen.return_value.communicate.return_value = (mock_output, b"")
         result = app_path("app")
@@ -97,27 +97,27 @@ class TestSystemInterface(unittest.TestCase):
 
     # The following are unit tests for the function `chown`.
     @patch("subprocess.Popen")
-    def test_app_path_without_path(self, mock_popen):
+    def test_app_path_without_path(self, mock_popen) -> None:
         mock_popen.return_value.communicate.return_value = (b"", b"")
         result = app_path("app")
         self.assertIsNone(result)
 
     @pytest.mark.order(1)
-    def test_chown_invalid_user(self):
+    def test_chown_invalid_user(self: unittest.TestCase) -> None:
         user = "nonexistentuser"
         group = "groupname"
         with self.assertRaises(LookupError):
             chown(path=self.temp_file, user=user, group=group)
 
     @pytest.mark.order(2)
-    def test_chown_invalid_group(self):
+    def test_chown_invalid_group(self: unittest.TestCase) -> None:
         user = "username"
         group = "nonexistentgroup"
         with self.assertRaises(LookupError):
             chown(path=self.temp_file, user=user, group=group)
 
     @pytest.mark.order(3)
-    def test_chown_invalid_path(self):
+    def test_chown_invalid_path(self: unittest.TestCase) -> None:
         user = "username"
         group = "groupname"
         invalid_path = "nonexistent_path"
@@ -132,38 +132,38 @@ class TestSystemInterface(unittest.TestCase):
             pass
 
     # The following are unit tests for the function `get_app_path`.
-    def test_existing_app(self):
+    def test_existing_app(self: unittest.TestCase) -> None:
         app_path = get_app_path("python")
         self.assertIsNotNone(app_path)
         self.assertTrue(app_path.endswith("python"))
 
-    def test_non_existing_app(self):
+    def test_non_existing_app(self: unittest.TestCase) -> None:
         app_path = get_app_path("nonexistent_app")
         self.assertIsNone(app_path)
 
-    def test_empty_app_name(self):
+    def test_empty_app_name(self: unittest.TestCase) -> None:
         app_path = get_app_path("")
         self.assertIsNone(app_path)
 
-    def test_none_app_name(self):
+    def test_none_app_name(self: unittest.TestCase) -> None:
         with self.assertRaises(TypeError):
             app_path = get_app_path(None)
 
     # The following are unit tests for the function `get_pid`.
-    def test_get_pid(self):
+    def test_get_pid(self: unittest.TestCase) -> None:
         pid = get_pid()
         self.assertIsInstance(pid, int)
         self.assertGreater(pid, 0)
 
     # The following are unit tests for the function `sleep`.
-    def test_sleep_zero_seconds(self):
+    def test_sleep_zero_seconds(self: unittest.TestCase) -> None:
         start_time = time.time()
         sleep(0)
         end_time = time.time()
         elapsed_time = end_time - start_time
         self.assertAlmostEqual(elapsed_time, 0, places=1)
 
-    def test_sleep_positive_seconds(self):
+    def test_sleep_positive_seconds(self: unittest.TestCase) -> None:
         sleep_duration = 2
         start_time = time.time()
         sleep(sleep_duration)
@@ -174,7 +174,7 @@ class TestSystemInterface(unittest.TestCase):
     # The following are unit tests for the function `task_exit`.
     @patch("utils.logger_interface.Logger")
     @patch("tools.system_interface._get_stack")
-    def test_task_exit(self, mock_get_stack, mock_logger):
+    def test_task_exit(self: unittest.TestCase, mock_get_stack, mock_logger) -> None:
         mock_stack_frame = ("module_name", "file_name.py", 42, "function_name", "code")
         mock_get_stack.return_value = [mock_stack_frame]
         with self.assertRaises(IndexError):
@@ -187,7 +187,7 @@ class TestSystemInterface(unittest.TestCase):
 
     # The following are unit tests for the function `user`.
     @patch("tools.system_interface.getpass")
-    def test_user(self, mock_getpass):
+    def test_user(self: unittest.TestCase, mock_getpass) -> None:
         expected_username = "test_user"
         mock_getpass.getuser.return_value = expected_username
         result = user()
