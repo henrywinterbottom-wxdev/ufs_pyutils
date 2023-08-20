@@ -190,7 +190,7 @@ __all__ = [
 # ----
 
 
-def _get_dateobj(datestr: str, frmttyp: str) -> object:
+def _get_dateobj(datestr: str, frmttyp: str) -> datetime.datetime:
     """
     Description
     -----------
@@ -214,13 +214,14 @@ def _get_dateobj(datestr: str, frmttyp: str) -> object:
     Returns
     -------
 
-    dateobj: object
+    dateobj: datetime.datetime
 
-        A Python datetime object defined relative to the attributes
-        provided upon entry.
+        A Python datetime.datetime object defined relative to the
+        attributes provided upon entry.
 
     """
 
+    # Define the datetime object.
     dateobj = datetime.datetime.strptime(datestr, frmttyp)
 
     return dateobj
@@ -318,7 +319,6 @@ def current_date(frmttyp: str, is_utc: bool = False) -> str:
     # Determine the timestamp corresponding to the current time upon
     # function entry; proceed accordingly.
     timestamp = datetime.datetime.fromtimestamp(time.time()).strftime(frmttyp)
-
     if is_utc:
         dateobj = _get_dateobj(datestr=timestamp, frmttyp=frmttyp).utcnow()
         timestamp = datetime.datetime.strftime(dateobj, frmttyp)
@@ -700,7 +700,8 @@ def datestrupdate(
 
     for item in comps_list:
         if f"<{item}>" in outdatestr:
-            time_attr = parser_interface.object_getattr(date_comps_obj, key=item)
+            time_attr = parser_interface.object_getattr(
+                date_comps_obj, key=item)
             outdatestr = outdatestr.replace(f"<{item}>", time_attr)
 
     return outdatestr
@@ -802,6 +803,7 @@ def epoch_to_datestr(epoch_seconds: int, out_frmttyp: str = None) -> str:
     # Define the epoch time (seconds) date-string.
     datestr = out_frmttyp or timestamp_interface.GLOBAL
 
-    epoch_datestr = datetime.datetime.fromtimestamp(epoch_seconds).strftime(datestr)
+    epoch_datestr = datetime.datetime.fromtimestamp(
+        epoch_seconds).strftime(datestr)
 
     return epoch_datestr
