@@ -276,7 +276,6 @@ def __buildtbl__(
             value = cls_opts[cls_key.key]
             default = cls_key.default
             optional = True
-
         else:
             cls_str = cls_key
             value = cls_opts[cls_key]
@@ -296,26 +295,26 @@ def __buildtbl__(
         )
 
     # Define and write the table using the specified logger method.
-    msg = (
-        "\n\n"
-        + tabulate(
-            list(set(tuple(item) for item in table)),
-            header,
-            tablefmt="outline",
-            numalign=("center", "center", "center", "center", "center"),
-            colalign=("center", "center", "center", "left", "left"),
-            disable_numparse=True,
+    if len(table) > 0:
+        msg = (
+            "\n\n"
+            + tabulate(
+                list(set(tuple(item) for item in table)),
+                header,
+                tablefmt="outline",
+                numalign=("center", "center", "center", "center", "center"),
+                colalign=("center", "center", "center", "left", "left"),
+                disable_numparse=True,
+            )
+            + "\n\n"
         )
-        + "\n\n"
-    )
-
-    logmethod = parser_interface.object_getattr(
-        object_in=logger, key=logger_method.lower(), force=True
-    )
-    if logmethod is None:
-        msg = f"Logger method {logger_method} is not supported. Aborting!!!"
-        raise SchemaInterfaceError(msg=msg)
-    logmethod(msg=msg)
+        logmethod = parser_interface.object_getattr(
+            object_in=logger, key=logger_method.lower(), force=True
+        )
+        if logmethod is None:
+            msg = f"Logger method {logger_method} is not supported. Aborting!!!"
+            raise SchemaInterfaceError(msg=msg)
+        logmethod(msg=msg)
 
 
 # ----
@@ -407,7 +406,10 @@ def __get_dtype__(
             item for item in ["bool", "float", "int", "str"] if item in str(data_type)
         ][0]
     else:
-        dtype = cls_schema[cls_key].__name__
+        try:
+            dtype = cls_schema[cls_key].__name__
+        except AttributeError:
+            dtype = "list"
 
     return dtype
 
@@ -488,7 +490,7 @@ def __get_tblrow__(
         if "bool" in dtype:
             default = str(default)
             value = str(value)
-        elif "str" in dtype and default is not None:
+        if "str" in dtype and default is not None:
             str_list = textwrap.wrap(value, width=width)
             try:
                 defstr_list = textwrap.wrap(default, width=width)
@@ -497,7 +499,13 @@ def __get_tblrow__(
         else:
             str_list = [None]
             defstr_list = [None]
-
+        if "list" in dtype:
+            if value is None:
+                str_list = ""
+            else:
+                str_list = ""
+                str_list = ", ".join(item for item in value)
+            value = str_list
         if optional:
             try:
                 default = default
@@ -506,7 +514,6 @@ def __get_tblrow__(
                 value = str_list[0]
         else:
             default = None
-
         if any(
             [isinstance(value, (bool, float, int, str))]
             + [isinstance(default, (bool, float, int, str))]
@@ -524,6 +531,9 @@ def __get_tblrow__(
             else:
                 msg = [cls_str, dtype, f"{optional}", default, value]
                 table.append(msg)
+
+    print(table)
+    quit()  # TODO: SOMETHING WRONG HERE>
 
     return table
 
@@ -679,10 +689,9 @@ def check_opts(key: str, valid_opts: List, data: Dict, check_and: bool = False) 
 
     """
 
+    # Build the schema.
     if check_and:
         schema_dict = __andopts__(key=key, valid_opts=valid_opts)
-
-    # Build the schema.
     schema = Schema([schema_dict])
 
     # Check that the respective key and value pair is valid; proceed
@@ -882,7 +891,6 @@ def validate_schema(
                 )
                 logger.warn(msg=msg)
                 cls_opts[cls_key.key] = cls_key.default
-
     cls_opts = parser_interface.dict_formatter(in_dict=cls_opts)
 
     # Validate the schema and build and write a table containing the
@@ -899,7 +907,6 @@ def validate_schema(
     except Exception as errmsg:
         msg = f"Schema validation failed with error {errmsg}. Aborting!!!"
         raise SchemaInterfaceError(msg=msg) from errmsg
-
     msg = "Schema successfully validated."
     logger.info(msg=msg)
 
