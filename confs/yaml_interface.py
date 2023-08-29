@@ -1,20 +1,9 @@
 # =========================================================================
-
-# Module: confs/yaml_interface.py
-
+# File: confs/yaml_interface.py
 # Author: Henry R. Winterbottom
-
-# Email: henry.winterbottom@noaa.gov
-
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the respective public license published by the
-# Free Software Foundation and included with the repository within
-# which this application is contained.
-
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
+# Date: 29 August 2023
+# Version: 0.0.1
+# License: LGPL v2.1
 # =========================================================================
 
 """
@@ -109,8 +98,7 @@ class YAML:
         """
 
         # Define the base-class attributes.
-        self.logger = Logger(
-            caller_name=f"{__name__}.{self.__class__.__name__}")
+        self.logger = Logger(caller_name=f"{__name__}.{self.__class__.__name__}")
 
     @privatemethod
     def yaml_obj(self: Generic, attr_dict: Dict) -> SimpleNamespace:
