@@ -14,7 +14,6 @@ import os
 import sys
 import pip
 
-
 sys.path.insert(0, os.path.abspath('.'))
 # sys.path.append(
 #    "/home/docs/checkouts/readthedocs.org/user_builds/ufs-pyutils/checkouts/latest/")
@@ -88,7 +87,6 @@ pygments_style = 'sphinx'
 #
 html_theme = "furo"  # 'sphinx_rtd_theme'
 html_theme_path = ["_themes", ]
-html_style = "furo.css"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -104,9 +102,9 @@ html_static_path = []
 html_context = {}
 
 
-def setup(app):
-    app.add_css_file('custom.css')  # may also be an URL
-    app.add_css_file('theme_overrides.css')  # may also be an URL
+# def setup(app):
+#    app.add_css_file('furo.css')  # may also be an URL
+#    app.add_css_file('theme_overrides.css')  # may also be an URL
 
 
 # Custom sidebar templates, must be a dictionary that maps document names
