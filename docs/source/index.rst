@@ -40,16 +40,16 @@ executed as follows.
 
 .. code-block:: bash
 
-   user@host:$ /path/to/docker noaaufsrnr/ubuntu20.04.ufs_pyutils:latest
-   user@host:$ /path/to/docker container run -v /localhost/path/to/ufs_pyutils:/ufs_pyutils -v /localhost/path/to/work:/work -it noaaufsrnr/ubuntu20.04.ufs_pyutils:latest
+   user@host:$ /path/to/docker ghcr.io/henrywinterbottom-noaa/ubuntu20.04.ufs_pyutils:latest
+   user@host:$ /path/to/docker container run -it ghcr.io/henrywinterbottom-noaa/ubuntu20.04.ufs_pyutils:latest
 
 To build and to excute within a Singularity version of the above
 latest container image, do as follows.
 
 .. code-block:: bash
 
-   user@host:$ /path/to/singularity build /path/to/ufs_pyutils.sif docker://noaaufsrnr/ubuntu20.04.ufs_pyutils:latest
-   user@host:$ /path/to/singularity shell --bind /localhost/path/to/ufs_pyutils:/ufs_pyutils --bind /localhost/path/to/work:/work /path/to/ufs_pyutils.sif
+   user@host:$ /path/to/singularity build /path/to/ufs_pyutils.sif docker://ghcr.io/henrywinterbottom-noaa/ubuntu20.04.ufs_pyutils:latest
+   user@host:$ /path/to/singularity shell /path/to/ufs_pyutils.sif
 
 ^^^^^^^^^^^^^
 API Reference
