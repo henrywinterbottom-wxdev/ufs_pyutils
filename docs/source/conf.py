@@ -15,10 +15,8 @@ import sys
 import pip
 
 sys.path.insert(0, os.path.abspath('.'))
-pip.main(["install", "furo==2023.03.27"])
-pip.main(["install", "sphinx-autoapi"])
-pip.main(["install", "sphinx-autodoc-typehints"])
-pip.main(["install", "git+https://www.github.com/HenryWinterbottom-NOAA/numpydoc@feature/ufs_pyutils_updates"])
+# pip.main(["install", "furo==2023.03.27"])
+# pip.main(["install", "git+https://www.github.com/HenryWinterbottom-NOAA/numpydoc@feature/ufs_pyutils_updates"])
 
 
 # -- Project information -----------------------------------------------------

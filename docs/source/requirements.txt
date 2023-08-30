@@ -1,4 +1,5 @@
 sphinx==6.2.1
+furo==2023.03.27
 sphinx-autoapi
 sphinx-autodoc-typehints
-
+git+https://www.github.com/HenryWinterbottom-NOAA/numpydoc@feature/ufs_pyutils_updates
