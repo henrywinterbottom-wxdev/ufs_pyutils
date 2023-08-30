@@ -14,13 +14,10 @@ import os
 import sys
 import pip
 
-pip.main(["install", "furo"])
-pip.main(["install", "sphinx-autoapi"])
-pip.main(["install", "sphinx-autodoc-typehints"])
-pip.main(["install", "git+https://www.github.com/HenryWinterbottom-NOAA/numpydoc@feature/ufs_pyutils_updates"])
 sys.path.insert(0, os.path.abspath('.'))
-# sys.path.append(
-#    "/home/docs/checkouts/readthedocs.org/user_builds/ufs-pyutils/checkouts/latest/")
+# pip.main(["install", "furo==2023.03.27"])
+# pip.main(["install", "git+https://www.github.com/HenryWinterbottom-NOAA/numpydoc@feature/ufs_pyutils_updates"])
+
 
 # -- Project information -----------------------------------------------------
 
@@ -91,7 +88,6 @@ pygments_style = 'sphinx'
 #
 html_theme = "furo"  # 'sphinx_rtd_theme'
 html_theme_path = ["_themes", ]
-html_style = "furo.css"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
