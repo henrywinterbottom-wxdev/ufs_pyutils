@@ -48,10 +48,10 @@ extensions = [
     "readthedocs_ext.readthedocs",
 ]
 
-autoapi_dirs = ["../../confs",
-                "../../ioapps",
-                "../../tools",
-                "../../utils",
+autoapi_dirs = ["/home/docs/checkouts/readthedocs.org/user_builds/ufs-pyutils/checkouts/bug-rtd_build/confs",
+                "/home/docs/checkouts/readthedocs.org/user_builds/ufs-pyutils/checkouts/bug-rtd_build/ioapps",
+                "/home/docs/checkouts/readthedocs.org/user_builds/ufs-pyutils/checkouts/bug-rtd_build/tools",
+                "/home/docs/checkouts/readthedocs.org/user_builds/ufs-pyutils/checkouts/bug-rtd_build/utils",
                 ]
 
 autoapi_type = "python"
