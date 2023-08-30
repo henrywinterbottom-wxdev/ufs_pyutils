@@ -48,10 +48,10 @@ extensions = [
     "readthedocs_ext.readthedocs",
 ]
 
-autoapi_dirs = ["/home/docs/checkouts/readthedocs.org/user_builds/ufs-pyutils/checkouts/bug-rtd_build/confs",
-                "/home/docs/checkouts/readthedocs.org/user_builds/ufs-pyutils/checkouts/bug-rtd_build/ioapps",
-                "/home/docs/checkouts/readthedocs.org/user_builds/ufs-pyutils/checkouts/bug-rtd_build/tools",
-                "/home/docs/checkouts/readthedocs.org/user_builds/ufs-pyutils/checkouts/bug-rtd_build/utils",
+autoapi_dirs = ["../../confs",
+                "../../ioapps",
+                "../../tools",
+                "../../utils",
                 ]
 
 autoapi_type = "python"
@@ -85,7 +85,7 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "furo"  # 'sphinx_rtd_theme'
+html_theme = 'sphinx_rtd_theme'
 html_theme_path = ["_themes", ]
 
 # Theme options are theme-specific and customize the look and feel of a theme
