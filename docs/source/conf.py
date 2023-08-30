@@ -102,7 +102,8 @@ html_static_path = []
 html_context = {}
 
 
-# def setup(app):
+def setup(app):
+    pass
 #    app.add_css_file('furo.css')  # may also be an URL
 #    app.add_css_file('theme_overrides.css')  # may also be an URL
 
