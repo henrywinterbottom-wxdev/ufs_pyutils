@@ -18,11 +18,11 @@
 
 # ----
 
-FROM ghcr.io/henrywinterbottom-noaa/ubuntu20.04.miniconda:latest
-ENV GIT_URL="https://www.github.com/HenryWinterbottom-NOAA/ufs_pyutils.git"
+FROM ghcr.io/henrywinterbottom-wxdev/ubuntu20.04.miniconda:latest
+ENV GIT_URL="https://www.github.com/henrywinterbottom-wxdev/ufs_pyutils.git"
 ENV GIT_BRANCH="develop"
 
-LABEL "author"="Henry R. Winterbottom (henry.winterbottom@noaa.gov)"
+LABEL "author"="Henry R. Winterbottom (henry.winterbottom.wxdev@gmail.com"
 LABEL "description"="Ubuntu 20.04 UFS Miniconda base image for the `ufs_pyutils` package."
 LABEL "maintainer"="Henry R. Winterbottom"
 LABEL "tag"="latest"
